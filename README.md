@@ -61,7 +61,9 @@ run-time errors.
 
 Implementations can be coded in either in C#, Go or Python as these are (currently) the main languages we use in SPaaS.
 Along with the implementation should be a README that describes how to compile (if applicable) and launch the application.
-C# implementations should contain a solutions file to compile the application. Python implementations should contain
+
+- C# implementations should contain a solutions file to compile the application. 
+- Python implementations should contain
 a `requirements.txt` or a `pyproject.toml` (for use with poetry) to install all needed dependencies.
 
 #### Payload
@@ -75,16 +77,16 @@ The payload contains 3 types of data:
    - gas(euro/MWh): the price of gas per MWh. Thus if gas is at 6 euro/MWh and if the efficiency of the powerplant is 50%
    (i.e. 2 units of gas will generate one unit of electricity), the cost of generating 1 MWh is 12 euro.
    - kerosine(euro/Mwh): the price of kerosine per MWh.
-   - co2(euro/ton): the price of emission allowances (optionally to be taken into account)
+   - co2(euro/ton): the price of emission allowances (optionally to be taken into account).
    - wind(%): percentage of wind. Example: if there is on average 25% wind during an hour, a wind-turbine 
    with a Pmax of 4 MW will generate 1MWh of energy.
- - powerplants: describes the powerplants at disposal to generate the demanded load. For each powerplant
+ - powerplants: describes the powerplants at disposal to generate the demanded load. For each powerplant.
  is specified:
    - name:
-   - type: gasfired, turbojet or windturbine
+   - type: gasfired, turbojet or windturbine.
    - efficiency: the efficiency at which they convert a MWh of fuel into a MWh of electrical energy.
    Wind-turbines do not consume 'fuel' and thus are considered to generate power at zero price.
-   - pmax: the maximum amount of power the powerplant can generate
+   - pmax: the maximum amount of power the powerplant can generate.
    - pmin: the minimum amount of power the powerplant generates when switched on. 
 
 #### response
@@ -115,4 +117,6 @@ the response to every client connected on the websocket.
 
 For more info on energy management, check out:
 
+ - [Global Energy Management Solutions](https://www.youtube.com/watch?v=SAop0RSGdHM)
  - [COO hydroelectric power station](https://www.youtube.com/watch?v=edamsBppnlg)
+ - [Management of supply](https://www.youtube.com/watch?v=eh6IIQeeX3c) - video made during winter 2018-2019

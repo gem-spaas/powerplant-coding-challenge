@@ -126,6 +126,6 @@ For more info on energy management, check out:
 
 ## FAQ
 
-#####Can an existing solver be used to calculate the unit-commitment
+##### Can an existing solver be used to calculate the unit-commitment
 Preferably implementations do not rely on an external solver and thus contain an algorithm written
 from scratch (clarified in the text as of version v1.1.0)

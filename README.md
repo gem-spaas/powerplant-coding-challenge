@@ -59,6 +59,9 @@ Build a REST API exposing a POST method that takes a payload as you can find in 
 and that returns a json with the same structure as in `example_response.json` and that manages and logs
 run-time errors.
 
+For calculating the unit-commitment, we prefer you not to rely on an existing (linear-programming) solver but
+instead write an algorithm yourself.
+
 Implementations can be coded in either in C#, Go or Python as these are (currently) the main languages we use in SPaaS.
 Along with the implementation should be a README that describes how to compile (if applicable) and launch the application.
 
@@ -120,3 +123,9 @@ For more info on energy management, check out:
  - [Global Energy Management Solutions](https://www.youtube.com/watch?v=SAop0RSGdHM)
  - [COO hydroelectric power station](https://www.youtube.com/watch?v=edamsBppnlg)
  - [Management of supply](https://www.youtube.com/watch?v=eh6IIQeeX3c) - video made during winter 2018-2019
+
+## FAQ
+
+#####Can an existing solver be used to calculate the unit-commitment
+Preferably implementations do not rely on an external solver and thus contain an algorithm written
+from scratch (clarified in the text as of version v1.1.0)

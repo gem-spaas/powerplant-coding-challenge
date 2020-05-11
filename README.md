@@ -95,7 +95,9 @@ The payload contains 3 types of data:
 #### response
 
 The response should be a json as in `example_response.json`, specifying for each powerplant how much 
-power it should deliver.
+power each powerplant should deliver. The power produced by each powerplant has to be a multiple
+of 0.1 Mw and the sum of the power produced by all the powerplants together should
+equal the load. 
 
 ### Want more challenge?
 
@@ -127,5 +129,6 @@ For more info on energy management, check out:
 ## FAQ
 
 ##### Can an existing solver be used to calculate the unit-commitment
-Preferably implementations do not rely on an external solver and thus contain an algorithm written
+Implementations should not rely on an external solver and thus contain an algorithm written
 from scratch (clarified in the text as of version v1.1.0)
+

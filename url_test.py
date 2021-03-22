@@ -2,7 +2,7 @@ import requests
 import json
 
 url = 'http://localhost:8888/productionplan'
-path = "C:\\Users\\15754\\Desktop\\homework\\payload3.json"
+path = "payload3.json"
 
 response = requests.post(url, json = path)
 

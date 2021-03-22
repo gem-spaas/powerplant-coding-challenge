@@ -1,0 +1,8 @@
+version: "3.7"
+
+services:
+  test:
+    build:
+      context: ./
+    ports:
+      - 8888:8888

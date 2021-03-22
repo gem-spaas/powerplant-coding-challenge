@@ -68,7 +68,7 @@ the service should be launched like this
 
 ![image](https://raw.githubusercontent.com/Woody1203/powerplant-coding-challenge/master/result2.PNG)
 
-Actually this is my first time to use docker for real. I am a bit lost after the machine keep failing for all kinds of reason. But not it works on my side and it supposed to be the same on your side too. I cross my fingure for that.
+Actually this is my first time to use docker for real. I am a bit lost after the machine keep failing for all kinds of reason. But not it works on my side for the moment and it supposed to be the same on your side too. I cross my fingure for that.
 
 ### Analyze the ideas
 

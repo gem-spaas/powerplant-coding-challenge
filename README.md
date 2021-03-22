@@ -1,146 +1,79 @@
 # powerplant-coding-challenge
 
+## How to run the code
 
-## Welcome !
+First of all, we should clone the repository by
+```
+git clone git@github.com:Woody1203/powerplant-coding-challenge.git
+```
 
-Below you can find the description of a coding challenge that we ask people to perform when applying
-for a job in our team.
+Then there are two cases to discuss:
 
-The goal of this coding challenge is to provide the applicant some insight into the business we're in and
-as such provide the applicant an indication about the challenges she/he will be confronted with. Next, during the
-first interview we will use the applicant's implementation as a seed to discuss all kinds of 
-interesting software engineering topics.  
+### local machine
 
-## Who are we 
+Python 3.8 and pip/pip3 need to be installed firstly and the run
+```
+pip install -r requirements.txt
+```
 
-We are the IS team of the 'Short-term Power as-a-Service' (a.k.a. SPaaS) team within [GEM](https://gems.engie.com/).
+If the code doesn't run well. Please also try
+```
+pip install -r requirements_freeze.txt
+```
 
-[GEM](https://gems.engie.com/), which stands for 'Global Energy Management', is the 
-energy management arm of [ENGIE](https://www.engie.com/), one of the largest global energy players, 
-with access to local markets all over the world.  
+In the end, run
+```
+python api.py
+```
+and then the code should run correctly.
 
-SPaaS is a team consisting of around 100 people with experience in energy markets, IT and
-modeling. In smaller teams consisting of a mix of people with different experiences, we are active on
-the [day-ahead](https://en.wikipedia.org/wiki/European_Power_Exchange#Day-ahead_markets) market, 
-[intraday markets](https://en.wikipedia.org/wiki/European_Power_Exchange#Intraday_markets) and
-[collaborate with the TSO to balance the grid continuously](https://en.wikipedia.org/wiki/Transmission_system_operator#Electricity_market_operations).
+There could be four kind of response
+1) the file is not provided. ("No json file provided")
+2) the problem sovled successfully. ("Problem solved")
+3) the problem itself is a unsolveable question("Unsolvable request")
+4) other error if there is("Solver service just crashed")
 
+For the post test, I write some simple code to verify named url_test.py by using
+```
+python url_test.py
+```
 
-## The challenge
+It supposed to have the result like below(the path of the file should be changed inside of the code):
 
-### In short
-Calculate how much power each of a multitude of different [powerplants](https://en.wikipedia.org/wiki/Power_station) need 
-to produce (a.k.a. the production-plan) when the [load](https://en.wikipedia.org/wiki/Load_profile) is given
-and taking into account the cost of the underlying energy sources (gas,  kerosine) and the Pmin and Pmax of each powerplant.
-
-### More in detail
-
-The load is the continuous demand of power. The total load at each moment in time is forecasted. For instance
-for Belgium you can see the load forecasted by the grid operator [here](https://www.elia.be/en/grid-data/load-and-load-forecasts).
-
-At any moment in time, all available powerplants need to generate the power to exactly match the load.
-The cost of generating power can be different for every powerplant and is dependent on external factors:
-The cost of producing power using a [turbojet](https://en.wikipedia.org/wiki/Gas_turbine#Industrial_gas_turbines_for_power_generation), 
-that runs on kerosine, is higher compared to the cost of generating power 
-using a gas-fired powerplant because of gas being cheaper compared to kerosine and because of the 
-[thermal efficiency](https://en.wikipedia.org/wiki/Thermal_efficiency) of a gas-fired powerplant being around
-50% (2 units of gas will generate 1 unit of electricity) while that of a turbojet is only around 30%.
-The cost of generating power using windmills however is zero. Thus deciding which powerplants to
-activate is dependent on the [merit-order](https://en.wikipedia.org/wiki/Merit_order).
-
-When deciding which powerplants in the merit-order to activate 
-(a.k.a. [unit-commitment problem](https://en.wikipedia.org/wiki/Unit_commitment_problem_in_electrical_power_production)) 
-the maximum amount of power each powerplant can produce (Pmax) obviously needs to be taken into account. 
-Additionally gas-fired powerplants generate a certain minimum amount of power when switched on, called the Pmin. 
+![image](https://github.com/Woody1203/powerplant-coding-challenge/blob/master/result1.png)
 
 
-### Performing the challenge
+### virtual machine(docker)
 
-Build a REST API exposing an endpoint `/productionplan` that accepts a POST with a payload as you can 
-find in the `example_payloads` directory and that returns a json with the same structure as 
-in `example_response.json` and that manages and logs run-time errors.
+If the docker is installed already, then we will need to create the docker group firstly by
+```
+sudo groupadd docker
+```
 
-For calculating the unit-commitment, we prefer you not to rely on an existing (linear-programming) solver but
-instead write an algorithm yourself.
+Then add user to the docker group by
+```
+sudo usermod -aG docker $USER
+```
 
-Implementations can be coded in either in C#, Go or Python as these are (currently) the main languages we use in SPaaS.
-Along with the implementation should be a README that describes how to compile (if applicable) and launch the application.
+After that, log out and log back in so that the group membership is re-evaluated
+```
+newgrp docker
+```
 
-- C# implementations should contain a solutions file to compile the application. 
-- Python implementations should contain
-a `requirements.txt` or a `pyproject.toml` (for use with poetry) to install all needed dependencies.
+In the end, run
+```
+docker-compose up
+```
+the service should be launched like this
 
-#### Payload
+![image](https://raw.githubusercontent.com/Woody1203/powerplant-coding-challenge/master/result2.PNG)
 
-The payload contains 3 types of data:
- - load: The load is the amount of energy (MWh) that need to be generated during one hour.
- - fuels: based on the cost of the fuels of each powerplant, the merit-order can be determined which is the starting
- point for deciding which powerplants should be switched on and how much power they will deliver.
- Wind-turbine are either switched-on, and in that case generate a certain amount of energy 
- depending on the % of wind, or can be switched off. 
-   - gas(euro/MWh): the price of gas per MWh. Thus if gas is at 6 euro/MWh and if the efficiency of the powerplant is 50%
-   (i.e. 2 units of gas will generate one unit of electricity), the cost of generating 1 MWh is 12 euro.
-   - kerosine(euro/Mwh): the price of kerosine per MWh.
-   - co2(euro/ton): the price of emission allowances (optionally to be taken into account).
-   - wind(%): percentage of wind. Example: if there is on average 25% wind during an hour, a wind-turbine 
-   with a Pmax of 4 MW will generate 1MWh of energy.
- - powerplants: describes the powerplants at disposal to generate the demanded load. For each powerplant.
- is specified:
-   - name:
-   - type: gasfired, turbojet or windturbine.
-   - efficiency: the efficiency at which they convert a MWh of fuel into a MWh of electrical energy.
-   Wind-turbines do not consume 'fuel' and thus are considered to generate power at zero price.
-   - pmax: the maximum amount of power the powerplant can generate.
-   - pmin: the minimum amount of power the powerplant generates when switched on. 
+Actually this is my first time to use docker for real. I am a bit lost after the machine keep failing for all kinds of reason. But not it works on my side and it supposed to be the same on your side too. I cross my fingure for that.
 
-#### response
+### Analyze the ideas
 
-The response should be a json as in `example_response.json`, specifying for each powerplant how much 
-power each powerplant should deliver. The power produced by each powerplant has to be a multiple
-of 0.1 Mw and the sum of the power produced by all the powerplants together should
-equal the load. 
-
-### Want more challenge?
-
-Having fun with this challenge and want to make it more realistic. Optionally, do one of the extra's below:
-
-#### Docker
-
-Provide a Dockerfile along with the implementation to allow deploying your solution quickly.
-
-#### CO2
-
-Taken into account that a gas-fired powerplant also emits CO2, the cost of running the powerplant should
-also take into account the cost of the [emission allowances](https://en.wikipedia.org/wiki/Carbon_emission_trading).
-For this challenge, you may take into account that each MWh generated creates 0.3 ton of CO2. 
-
-#### Websocket
-
-Provide a websocket server connection that will emit after every post the input of the POST together with
-the response to every client connected on the websocket.
-
-## Acceptance criteria
-
-For a submission to be reviewed as part of an application for a position in the team, the project
-needs to:
-  - contain a README.md explaining how to build and launch the API
-  - expose the API on port `8888`
-  - return a result where the sum of the power generated by each of the different powerplants is
-  exactly equal to the load specified in the payload for at least the example payloads provided.
-
-Failing to comply with any of these criteria will automatically disqualify the submission.
-
-## More info
-
-For more info on energy management, check out:
-
- - [Global Energy Management Solutions](https://www.youtube.com/watch?v=SAop0RSGdHM)
- - [COO hydroelectric power station](https://www.youtube.com/watch?v=edamsBppnlg)
- - [Management of supply](https://www.youtube.com/watch?v=eh6IIQeeX3c) - video made during winter 2018-2019
-
-## FAQ
-
-##### Can an existing solver be used to calculate the unit-commitment
-Implementations should not rely on an external solver and thus contain an algorithm written
-from scratch (clarified in the text as of version v1.1.0)
-
+This question could be regarded as a linear programming question. After bring the number into values. This work basically follow the greddy algorithm to provide an approximate solution. With my background, personally I may help on some aspect for extending this project into production on:
+1) link with database for storing post results and logging information
+2) predict the request of the load as a time series problem if more data provided
+3) Solve this question by linear programming algorithms like simplex and maximization flow
+4) try other approximate solutions like genetic algorithm

@@ -63,7 +63,7 @@ in `example_response.json` and that manages and logs run-time errors.
 For calculating the unit-commitment, we prefer you not to rely on an existing (linear-programming) solver but
 instead write an algorithm yourself.
 
-Implementations can be coded in either in C#, Go or Python as these are (currently) the main languages we use in SPaaS.
+Implementations can be coded in either in C# or Python as these are (currently) the main languages we use in SPaaS.
 Along with the implementation should be a README that describes how to compile (if applicable) and launch the application.
 
 - C# implementations should contain a solutions file to compile the application. 

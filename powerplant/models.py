@@ -1,7 +1,9 @@
 import enum
 import typing
+from http import HTTPStatus
 
 from pydantic import BaseModel, Field, validator
+from fastapi import HTTPException
 
 
 class FuelsCosts(BaseModel):
@@ -35,7 +37,7 @@ class PowerPlant(BaseModel):
         return cost
 
     def compute_real_power(self, power_in: int) -> int:
-        return int(power_in * self.efficiency)
+        return round(power_in * self.efficiency)
 
 
 class PowerPlantLoad(BaseModel):
@@ -94,8 +96,12 @@ class ProductionPlanRequest(BaseModel):
             key=lambda x: x.plant.compute_cost_per_mwh(fuels=self.fuels),
             reverse=True)
         while missing_load:
-            missing_load = self.assign_load(available_plants, missing_load,
-                                            used_plants)
+            if available_plants:
+                missing_load = self.assign_load(available_plants, missing_load,
+                                                used_plants)
+            else:
+                raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                                    detail="Plants are not enough for load")
         used_plants.extend(available_plants)
         return PlantLoadResponse.from_power_plants_load(used_plants)
 

@@ -94,20 +94,32 @@ class ProductionPlanRequest(BaseModel):
             key=lambda x: x.plant.compute_cost_per_mwh(fuels=self.fuels),
             reverse=True)
         while missing_load:
-            plant_to_be_used = available_plants.pop()
-            max_load = plant_to_be_used.compute_max_load(self.fuels.wind)
-            load_to_be_taken = max_load if missing_load > max_load else missing_load
-            if load_to_be_taken < plant_to_be_used.compute_min_load(self.fuels.wind):
-                missing_load_for_the_min = plant_to_be_used.compute_min_load(self.fuels.wind) - load_to_be_taken
-                for plant in used_plants:
-                    to_remove_load = missing_load_for_the_min if plant.load > missing_load_for_the_min else plant.load
-                    missing_load_for_the_min -= to_remove_load
-                    plant.load -= to_remove_load
-                    plant_to_be_used.load += to_remove_load
-                    if not missing_load_for_the_min:
-                        break
-            plant_to_be_used.load += load_to_be_taken
-            missing_load -= load_to_be_taken
-            used_plants.append(plant_to_be_used)
+            missing_load = self.assign_load(available_plants, missing_load,
+                                            used_plants)
         used_plants.extend(available_plants)
         return PlantLoadResponse.from_power_plants_load(used_plants)
+
+    def assign_load(self, available_plants, missing_load, used_plants):
+        plant_load_to_be_assign = available_plants.pop()
+        max_load = plant_load_to_be_assign.compute_max_load(self.fuels.wind)
+        load_to_be_taken = max_load if missing_load > max_load else missing_load
+        if load_to_be_taken < plant_load_to_be_assign.compute_min_load(
+                self.fuels.wind):
+            self.compensate_min_load(load_to_be_taken, plant_load_to_be_assign,
+                                     used_plants)
+        plant_load_to_be_assign.load += load_to_be_taken
+        missing_load -= load_to_be_taken
+        used_plants.append(plant_load_to_be_assign)
+        return missing_load
+
+    def compensate_min_load(self, load_to_be_taken, plant_load_to_be_assign,
+                            used_plants):
+        missing_load_for_the_min = plant_load_to_be_assign.compute_min_load(
+            self.fuels.wind) - load_to_be_taken
+        for plant in used_plants:
+            to_remove_load = missing_load_for_the_min if plant.load > missing_load_for_the_min else plant.load
+            missing_load_for_the_min -= to_remove_load
+            plant.load -= to_remove_load
+            plant_load_to_be_assign.load += to_remove_load
+            if not missing_load_for_the_min:
+                break

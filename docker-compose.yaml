@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  powerplant:
+    build:
+      context: .
+    image: gme/powerplant
+    ports:
+      - '8889:8888'

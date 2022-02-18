@@ -24,6 +24,9 @@ To lint the code run:
 make lint
 ```
 
+### Examples responses
+* Responses can be found in tests/sample/payload_response*.json
+
 ## Welcome !
 
 Below you can find the description of a coding challenge that we ask people to

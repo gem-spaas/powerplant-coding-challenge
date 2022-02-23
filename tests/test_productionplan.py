@@ -6,12 +6,12 @@ from pytest import fixture
 
 from powerplant.main import app
 from powerplant.models import (
-    PowerPlantLoad,
+    PlantLoad,
     PowerPlant,
     PowerPlantType,
     FuelsCosts,
-    ProductionPlanRequest,
-    PlantLoadResponse,
+    ProductionPlan,
+    PlantLoadResult,
 )
 
 
@@ -40,10 +40,10 @@ def test_power_plan_load_should_raise_value_error():
     assert plant.power_plant_type == PowerPlantType.GAS_FIRED
     lower_value = 50
     with pytest.raises(ValueError):
-        PowerPlantLoad(plant=plant, load=lower_value)
+        PlantLoad(plant=plant, load=lower_value)
     upper_value = 500
     with pytest.raises(ValueError):
-        PowerPlantLoad(plant=plant, load=upper_value)
+        PlantLoad(plant=plant, load=upper_value)
 
 
 def test_should_compute_cost():
@@ -114,13 +114,13 @@ def test_should_optimize_load_with_low_consumption():
         pmax=30,
     )
 
-    request = ProductionPlanRequest(
+    request = ProductionPlan(
         load=10, fuels=fuels_costs, powerplants=[gas_plant, wind_plant]
     )
 
     assert request.optimize() == [
-        PlantLoadResponse(name=wind_plant.name, p=10),
-        PlantLoadResponse(name=gas_plant.name, p=0),
+        PlantLoadResult(name=wind_plant.name, p=10),
+        PlantLoadResult(name=gas_plant.name, p=0),
     ]
 
 
@@ -149,13 +149,13 @@ def test_should_optimize_combine_load():
         pmax=30,
     )
 
-    request = ProductionPlanRequest(
+    request = ProductionPlan(
         load=160, fuels=fuels_costs, powerplants=[gas_plant, wind_plant]
     )
 
     assert request.optimize() == [
-        PlantLoadResponse(name=gas_plant.name, p=130),
-        PlantLoadResponse(name=wind_plant.name, p=30),
+        PlantLoadResult(name=gas_plant.name, p=130),
+        PlantLoadResult(name=wind_plant.name, p=30),
     ]
 
 
@@ -184,13 +184,13 @@ def test_should_optimize_load_taking_into_account_pmin():
         pmax=30,
     )
 
-    request = ProductionPlanRequest(
+    request = ProductionPlan(
         load=110, fuels=fuels_costs, powerplants=[gas_plant, wind_plant]
     )
 
     assert request.optimize() == [
-        PlantLoadResponse(name=gas_plant.name, p=100),
-        PlantLoadResponse(name=wind_plant.name, p=10),
+        PlantLoadResult(name=gas_plant.name, p=100),
+        PlantLoadResult(name=wind_plant.name, p=10),
     ]
 
 
@@ -219,13 +219,13 @@ def test_should_optimize_taking_into_account_the_efficiency():
         pmax=30,
     )
 
-    request = ProductionPlanRequest(
+    request = ProductionPlan(
         load=110, fuels=fuels_costs, powerplants=[gas_plant, wind_plant]
     )
 
     assert request.optimize() == [
-        PlantLoadResponse(name=gas_plant.name, p=95),
-        PlantLoadResponse(name=wind_plant.name, p=15),
+        PlantLoadResult(name=gas_plant.name, p=95),
+        PlantLoadResult(name=wind_plant.name, p=15),
     ]
 
 
@@ -262,14 +262,14 @@ def test_should_optimize_when_having_three_plants_and_second_should_keep_min():
         pmax=100,
     )
 
-    request = ProductionPlanRequest(
+    request = ProductionPlan(
         load=450,
         fuels=fuels_costs,
         powerplants=[gas_plant, wind_plant, turbo_jet_plant],
     )
 
     assert request.optimize() == [
-        PlantLoadResponse(name=turbo_jet_plant.name, p=200),
-        PlantLoadResponse(name=gas_plant.name, p=200),
-        PlantLoadResponse(name=wind_plant.name, p=50),
+        PlantLoadResult(name=turbo_jet_plant.name, p=200),
+        PlantLoadResult(name=gas_plant.name, p=200),
+        PlantLoadResult(name=wind_plant.name, p=50),
     ]

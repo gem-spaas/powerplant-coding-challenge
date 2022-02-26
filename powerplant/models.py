@@ -81,35 +81,37 @@ class PlantLoadResult(BaseModel):
 
 
 class ProductionPlan(BaseModel):
+    class Config:
+        underscore_attrs_are_private = True
     load: int
     fuels: FuelsCosts
     power_plants: typing.List[PowerPlant] = Field(alias="powerplants")
-    used_plant_loads: typing.Optional[typing.List[PlantLoad]]
-    available_plant_loads: typing.Optional[typing.List[PlantLoad]]
+    _used_plant_loads: typing.Optional[typing.List[PlantLoad]]
+    _available_plant_loads: typing.Optional[typing.List[PlantLoad]]
 
     def optimize(self):
-        self.used_plant_loads = []
+        self._used_plant_loads = []
         missing_load = self.load
-        self.available_plant_loads = [
+        self._available_plant_loads = [
             PlantLoad(plant=plant, load=0) for plant in self.power_plants
         ]
-        self.available_plant_loads.sort(
+        self._available_plant_loads.sort(
             key=lambda x: x.plant.compute_cost_per_mwh(fuels=self.fuels), reverse=True
         )
         while missing_load:
-            if self.available_plant_loads:
+            if self._available_plant_loads:
                 missing_load = self.assign_load(missing_load)
             else:
                 raise HTTPException(
                     status_code=HTTPStatus.BAD_REQUEST,
                     detail="Plants are not enough for load",
                 )
-        self.used_plant_loads.extend(self.available_plant_loads)
-        self.available_plant_loads = []
-        return PlantLoadResult.from_power_plants_load(self.used_plant_loads)
+        self._used_plant_loads.extend(self._available_plant_loads)
+        self._available_plant_loads = []
+        return PlantLoadResult.from_power_plants_load(self._used_plant_loads)
 
     def assign_load(self, missing_load: int):
-        plant_load_to_be_assign = self.available_plant_loads.pop()
+        plant_load_to_be_assign = self._available_plant_loads.pop()
         max_load = plant_load_to_be_assign.compute_max_load(self.fuels.wind)
         load_to_be_taken = max_load if missing_load > max_load else missing_load
         if load_to_be_taken < plant_load_to_be_assign.compute_min_load(self.fuels.wind):
@@ -118,7 +120,7 @@ class ProductionPlan(BaseModel):
             )
         plant_load_to_be_assign.load += load_to_be_taken
         missing_load -= load_to_be_taken
-        self.used_plant_loads.insert(0, plant_load_to_be_assign)
+        self._used_plant_loads.insert(0, plant_load_to_be_assign)
         return missing_load
 
     def compensate_min_load(self, _load_to_be_taken: int, _plant_load_to_be_assign):
@@ -127,7 +129,7 @@ class ProductionPlan(BaseModel):
         missing_load_for_the_min = (
             plant_load_to_be_assign.compute_min_load(self.fuels.wind) - load_to_be_taken
         )
-        for plant in self.used_plant_loads:
+        for plant in self._used_plant_loads:
             available = plant.load - plant.compute_min_load(self.fuels.wind)
             to_remove_load = (
                 missing_load_for_the_min

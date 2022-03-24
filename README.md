@@ -53,10 +53,10 @@ Import the ProductionPlan.postman_collection.json into postman to easily test
 Application Runs on  https://localhost:8888/productionplan  
 
 In may be necesarely to generate a new developers certicate to run on localhost
-step1: Clean the development certificates:	
-	dotnet dev-certs https --clean
-step2:Create a new one:
-	dotnet dev-certs https -t
+	step1: Clean the development certificates:	
+		dotnet dev-certs https --clean
+	step2:Create a new one:
+		dotnet dev-certs https -t
 
 ## The challenge
 

@@ -24,6 +24,7 @@ Please make sure you have dotnet core installed on the machine you are running
 	Run Command :	dotnet run --project "<local path to the project>"
 
 				    ***local path example : D:\Challenge\ProductionPlanApi
+	application Runs on  https://localhost:8888/productionplan  
 
 2.2 Second Option 
 

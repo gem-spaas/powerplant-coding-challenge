@@ -40,7 +40,10 @@ Please make sure you have dotnet core installed on the machine you are running
       	Hosting environment: Production
 	info: Microsoft.Hosting.Lifetime[0]
       	Content root path: D:\Challenge\ProductionPlanApi
-
+	
+## 3. Testing the project
+Within ProductionPlanApi/Postman you can find a simple Postman test collection to consume the services exposed by the ProductionPlanAPi.
+Import the ProductionPlan.postman_collection.json into postman to easily test
 
 ## The challenge
 

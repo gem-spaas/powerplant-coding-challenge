@@ -3,8 +3,9 @@
 
 ## Welcome !
 
-If you want to run this code in the chalange please make sure you have all the files in ProductionPlanApi on your local machine. 
-Folow the below inttructions
+
+If you want to run this code in the challenge please make sure you have all the files in ProductionPlanApi on your local machine.
+Follow the instructions below 
 
 ## 1. Prerequisites
 Please make sure you have dotnet core installed on the machine you are running

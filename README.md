@@ -3,7 +3,7 @@
 
 ## Welcome !
 
-
+This is an implementation of [SPaaS - Global Energy Management Solutions Challenge](https://github.com/gem-spaas/powerplant-coding-challenge)
 If you want to run this code in the challenge please make sure you have all the files in ProductionPlanApi on your local machine.
 Follow the instructions below 
 

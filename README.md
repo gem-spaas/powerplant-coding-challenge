@@ -3,27 +3,43 @@
 
 ## Welcome !
 
-Below you can find the description of a coding challenge that we ask people to perform when applying
-for a job in our team.
+If you want to run this code in the chalange please make sure you have all the files in ProductionPlanApi on your local machine. 
+Folow the below inttructions
 
-The goal of this coding challenge is to provide the applicant some insight into the business we're in and
-as such provide the applicant an indication about the challenges she/he will be confronted with. Next, during the
-first interview we will use the applicant's implementation as a seed to discuss all kinds of 
-interesting software engineering topics.  
+## 1. Prerequisites
+Please make sure you have dotnet core installed on the machine you are running
 
-## Who are we 
+	1.1. In case you need to to download https://dotnet.microsoft.com/en-us/download
+	1.2. to test the dotnet environment please run this command dotnet --version you should see
+		> dotnet --version
+		> 6.0.201
+	Version higher than 6.0 is proper for the project
 
-We are the IS team of the 'Short-term Power as-a-Service' (a.k.a. SPaaS) team within [GEM](https://gems.engie.com/).
 
-[GEM](https://gems.engie.com/), which stands for 'Global Energy Management', is the 
-energy management arm of [ENGIE](https://www.engie.com/), one of the largest global energy players, 
-with access to local markets all over the world.  
+## 2. Running the project
 
-SPaaS is a team consisting of around 100 people with experience in energy markets, IT and
-modeling. In smaller teams consisting of a mix of people with different experiences, we are active on
-the [day-ahead](https://en.wikipedia.org/wiki/European_Power_Exchange#Day-ahead_markets) market, 
-[intraday markets](https://en.wikipedia.org/wiki/European_Power_Exchange#Intraday_markets) and
-[collaborate with the TSO to balance the grid continuously](https://en.wikipedia.org/wiki/Transmission_system_operator#Electricity_market_operations).
+2.1 First option 
+
+	Run Command :	dotnet run --project "<local path to the project>"
+
+				    ***local path example : D:\Challenge\ProductionPlanApi
+
+2.2 Second Option 
+
+	step 1: select the project directory
+	step 2: Run command : dotnet run
+
+	If everything is installed correctly you should see in the terminal the following:
+		
+	Building...
+	info: Microsoft.Hosting.Lifetime[14]
+      	Now listening on: https://localhost:8888       
+	info: Microsoft.Hosting.Lifetime[0]
+      	Application started. Press Ctrl+C to shut down.
+	info: Microsoft.Hosting.Lifetime[0]
+      	Hosting environment: Production
+	info: Microsoft.Hosting.Lifetime[0]
+      	Content root path: D:\Challenge\ProductionPlanApi
 
 
 ## The challenge

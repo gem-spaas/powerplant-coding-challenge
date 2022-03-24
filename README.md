@@ -48,6 +48,7 @@ Version higher than 6.0 is proper for the project
 
 ## 3. Third Option Docker (later edit) 
 Solution is dokerised please read more on ./README DOCKER.md
+*note that in docker the application should run on http, adjust postman URLs accordingly 
 	
 ## 4. Testing the project
 Within ProductionPlanApi/Postman you can find a simple Postman test collection to consume the services exposed by the ProductionPlanAPi.

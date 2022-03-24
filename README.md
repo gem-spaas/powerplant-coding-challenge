@@ -10,7 +10,7 @@ Follow the instructions below
 ## 1. Prerequisites
 Please make sure you have dotnet core installed on the machine you are running
 
-	1.1. In case you need to to download https://dotnet.microsoft.com/en-us/download
+	1.1. In case you need to to download please use [Downloads for .NET, including ASP.NET Core](https://dotnet.microsoft.com/en-us/download)
 	1.2. to test the dotnet environment please run this command dotnet --version you should see
 		> dotnet --version
 		> 6.0.201

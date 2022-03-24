@@ -45,10 +45,11 @@ Version higher than 6.0 is proper for the project
 	
 	Application Runs on  https://localhost:8888/productionplan  
 	
-2.3 Third Option Docker (later edit) 
+
+## 3. Third Option Docker (later edit) 
 Solution is dokerised please read more on ./README DOCKER.md
 	
-## 3. Testing the project
+## 4. Testing the project
 Within ProductionPlanApi/Postman you can find a simple Postman test collection to consume the services exposed by the ProductionPlanAPi.
 Import the ProductionPlan.postman_collection.json into postman to easily test
 

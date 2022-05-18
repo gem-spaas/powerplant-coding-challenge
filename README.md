@@ -22,3 +22,7 @@ I have used the Swagger UI to test the API and it is included in the solution.
 
 ## Endpoint
 The endpoint for this code challenge is http://localhost:8888/api/v1/productionplan, which is a POST method.
+
+## Notes
+- More notes regarding the algorithm can be found in the MeritOrderHelper.cs file.
+- Select IIS Express before running the code.

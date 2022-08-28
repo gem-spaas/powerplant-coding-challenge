@@ -1,2 +1,3 @@
-pandas
-flask
+pandas==1.4.3
+Flask==2.2.2
+pytest==7.1.2

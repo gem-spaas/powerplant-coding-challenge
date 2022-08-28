@@ -24,31 +24,7 @@ def process_input(data: dict):
     potential_capacity_data = calculate_potential_capacity(data)
     sorted_potential_capacity_data = sorted(potential_capacity_data, key=lambda x: x.efficiency, reverse=True)
     energy_plan_data, target = calculate_energy_plan(load, sorted_potential_capacity_data)
-    print(energy_plan_data)
-    print(target)
-    if load > target:
-        print("Target not reached")
-        print("adjusting")
-        energy_plan_data = adjust_remaining(sorted_potential_capacity_data, energy_plan_data, load, target)
-
     return energy_plan_data
-
-
-def adjust_remaining(sorted_potential_capacity_data, energy_plan_data, load, target):
-    entry = {}
-    for d in sorted_potential_capacity_data:
-        if d.name in [i['name'] for i in energy_plan_data]:
-            print(f"skipping {d.name}")
-            continue
-
-        remaining = load - target
-        if d.pmin <= remaining <= d.pmax:
-            print("eligable")
-            entry['p'] = remaining
-            entry['name'] = d.name
-            energy_plan_data.append(entry)
-            print(energy_plan_data)
-            return energy_plan_data
 
 
 def calculate_energy_plan(load, newlist):
@@ -56,13 +32,11 @@ def calculate_energy_plan(load, newlist):
     end_result = []
     while target < load:
         for d in newlist:
-            entry = {}
             # first add windturbines if available
             remaining = load - target
             if d.type == 'windturbine' and d.pmax <= remaining:
+                entry = {'name': d.name, 'p': d.pmax}
                 target += d.pmax
-                entry['name'] = d.name
-                entry['p'] = d.pmax
                 end_result.append(entry)
 
             # next add gasfire
@@ -71,52 +45,44 @@ def calculate_energy_plan(load, newlist):
                 if remaining > 0:
                     # the remaining can be handled by on plant
                     if d.pmax > remaining:
+                        entry = {'name': d.name, 'p': remaining}
                         target += remaining
-                        entry['name'] = d.name
-                        entry['p'] = remaining
                         end_result.append(entry)
 
                     else:
                         # can it be devided on two plants ?
-                        plants = list(filter(lambda x: x.type == 'gasfired', newlist))[:2]
-
+                        plants = get_2_gasfired_plants(newlist)
                         sum_plants = sum([x.pmax for x in plants])
                         if sum_plants > remaining:
                             # each plant can take half of the load
                             for plant in plants:
-                                gas_plant = {}
+                                gas_plant = {'name': plant.name, 'p': remaining / 2}
                                 target += remaining / 2
-                                gas_plant['name'] = plant.name
-                                gas_plant['p'] = int(remaining / 2)
                                 end_result.append(gas_plant)
                         else:
-                            # use third gasfired plant
                             for plant in plants:
-                                gas_plant = {}
+                                gas_plant = {'name': plant.name, 'p': plant.pmax}
                                 target += plant.pmax
-                                gas_plant['name'] = plant.name
-                                gas_plant['p'] = plant.pmax
                                 end_result.append(gas_plant)
 
+                            # use third gasfired plant
                             remaining = load - target
                             third = list(filter(lambda x: x.type == 'gasfired', newlist))[-1]
                             last_element = {'name': third.name, 'p': remaining}
                             end_result.append(last_element)
                             target += remaining
 
-
-
-
                     if d.type == 'turbojet' and remaining > 0:
                         if d.pmax > remaining > d.pmin:
+                            turbojet = {'name': d.name, 'p': remaining}
                             target += remaining
-                            entry['name'] = d.name
-                            entry['p'] = remaining
-                            end_result.append(entry)
-
-
+                            end_result.append(turbojet)
 
     return end_result, target
+
+
+def get_2_gasfired_plants(newlist):
+    return list(filter(lambda x: x.type == 'gasfired', newlist))[:2]
 
 
 def calculate_potential_capacity(data):

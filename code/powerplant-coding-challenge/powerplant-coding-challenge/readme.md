@@ -1,4 +1,12 @@
-﻿J'ai pris le temps de tester un peut le fonctionnement de la lecture et l'écriture des fichiers json.
+﻿## Build API
+
+Pour lancer le code, j'ai utilisé le débugger de visual studio 2022.
+Le fichier d'entrée peut être modifié dans le fichier Program.cs à la constante : INPUT_FILE_NAME
+Dans la version actuelle, le fichier "payload01.json" est lu.
+
+## Petite étude avant lancement du code
+
+J'ai pris le temps de tester un peut le fonctionnement de la lecture et l'écriture des fichiers json.
 
 Date de début de la tentative : 12h40.
 
@@ -19,3 +27,5 @@ Fonction :
 3) Calculer les producteurs à activer. - Point difficile, sera découpé plus tard
 4) Remplire les données de sorties 
 5) Écrire le fichier de sortie.
+
+Fin du code : 

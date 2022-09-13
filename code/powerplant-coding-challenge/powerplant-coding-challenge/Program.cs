@@ -23,7 +23,7 @@ var app = builder.Build();
 /// <summary>
 /// This is the input file used as an input.
 /// </summary>
-const String INPUT_FILE_NAME = "payload3.json";
+const String INPUT_FILE_NAME = "payload1.json";
 
 /// <summary>
 /// This is the output file used as an output.

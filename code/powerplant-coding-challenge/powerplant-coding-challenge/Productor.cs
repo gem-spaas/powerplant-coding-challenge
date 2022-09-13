@@ -12,6 +12,11 @@
         private Double activation;
 
         /// <summary>
+        /// This is the price of the productor.
+        /// </summary>
+        private Double price;
+
+        /// <summary>
         /// This is the list of physic factor applied on the productor.
         /// </summary>
         private IList<IPhysicFactor> physicFactors = new List<IPhysicFactor>();
@@ -20,20 +25,24 @@
         /// <summary>
         /// This si the main constructor of the class productor.
         /// </summary>
+        /// <param name="index">This is the index to reorder the productors on the right order.</param>
         /// <param name="name">This is the name of the productor.</param>
         /// <param name="type">This is the type of the productor.</param>
         /// <param name="efficiency">This is the efficiency of the productor.</param>
         /// <param name="pmin">This is the minimum power that the productor produces if it is activated.</param>
         /// <param name="pmax">This is the maximum power that the productor produces if it is activated.</param>
+        /// <param name="price">This is the price rate for the current productor.</param>
         /// <param name="aon">This is the all or nothing mode of the productor.</param>
         /// <param name="physicFactor">These are the physics factor to apply on the productor.</param>
-        public Productor (String name, String type, Double efficiency, Double pmin, Double pmax, Boolean aon = false, IList<IPhysicFactor>? physicFactor = null)
+        public Productor (Int32 index, String name, String type, Double efficiency, Double pmin, Double pmax, Double price, Boolean aon = false, IList<IPhysicFactor>? physicFactor = null)
         {
+            this.Index = index;
             this.Name = name;
             this.Type = type;
             this.Efficiency = efficiency;
             this.PMin = pmin;
             this.PMax = pmax;
+            this.price = price;
             this.AON = aon;
             this.activation = 0;
 
@@ -47,6 +56,14 @@
         }
 
         // -------------- Properties --------------
+        /// <summary>
+        /// This is the index of the productor.
+        /// </summary>
+        public Int32 Index
+        {
+            get;
+        }
+
         /// <summary>
         /// This is the name of the productor.
         /// </summary>
@@ -85,6 +102,14 @@
         public Double PMax
         {
             get;
+        }
+
+        /// <summary>
+        /// This is the price of the productor.
+        /// </summary>
+        public Double PriceRate
+        {
+            get => this.price * this.Efficiency;
         }
 
         /// <summary>
@@ -149,7 +174,6 @@
                 }
 
                 power = this.PMin + this.Activation * (this.PMax - this.PMin);
-                power *= this.Efficiency;
 
                 foreach (IPhysicFactor pf in this.physicFactors)
                 {

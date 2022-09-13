@@ -116,7 +116,7 @@ String ProductionplanMethod (String fileName)
     List<Productor> productors = new List<Productor>();
     List<IPhysicFactor> windFactor = new List<IPhysicFactor>()
     {
-        new WindFactor(inputFuels.WindPercent)
+        new WindFactor(inputFuels.WindPercent / 100)
     };
 
     foreach (InputProductor inputProductor in inputProductors)
@@ -139,16 +139,52 @@ String ProductionplanMethod (String fileName)
     // FCTN 03.02 - Sort list by lower prices.
     productors.Sort(delegate(Productor p1, Productor p2)
     {
-        return Convert.ToInt32(p1.PriceRate - p2.PriceRate);
+        if (p1.PriceRate == p2.PriceRate)
+        {
+            return p1.Index - p2.Index;
+        }
+        else
+        {
+            return Convert.ToInt32(p1.PriceRate - p2.PriceRate);
+        }
     });
 
     // FCTN 03.03 - Activate the lower prices first.
+    foreach (Productor productor in productors)
+    {
+        if (productor.PriceRate == 0)
+        {
+            productor.Activation = 1;
+            loadLeft -= productor.OutputPower;
+            if (loadLeft < 0)
+            {
+                loadLeft += productor.OutputPower;
+                productor.Activation = 0;
+            }
+        }
+        else
+        {
+            break;
+        }
+    }
 
     // FCTN 03.04 - If power left activate higher price
+    if (loadLeft > 0)
+    {
+
+    }
 
     // FCTN 03.05 - If impossible due to pmin, deactivate last AON in list and activate low price linear producer.
+    if (loadLeft > 0)
+    {
+
+    }
 
     // FCTN 03.06 - Sort list by index.
+    productors.Sort(delegate (Productor p1, Productor p2)
+    {
+        return p1.Index - p2.Index;
+    });
 
     // FCTN 04 - jsonify data
     List<OutputProductor> outputProductors = new List<OutputProductor>();

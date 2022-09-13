@@ -23,7 +23,7 @@ var app = builder.Build();
 /// <summary>
 /// This is the input file used as an input.
 /// </summary>
-const String INPUT_FILE_NAME = "payload1.json";
+const String INPUT_FILE_NAME = "payload3.json";
 
 /// <summary>
 /// This is the output file used as an output.
@@ -154,12 +154,31 @@ String ProductionplanMethod (String fileName)
     {
         if (productor.PriceRate == 0)
         {
-            productor.Activation = 1;
-            loadLeft -= productor.OutputPower;
-            if (loadLeft < 0)
+            if (productor.AON)
             {
-                loadLeft += productor.OutputPower;
-                productor.Activation = 0;
+                productor.Activation = 1;
+                loadLeft -= productor.OutputPower;
+                if (loadLeft < 0)
+                {
+                    loadLeft += productor.OutputPower;
+                    productor.Activation = 0;
+                }
+            }
+            else
+            {
+                if (loadLeft > productor.PMax)
+                {
+                    productor.Activation = 1;
+                }
+                else if (loadLeft < productor.PMin)
+                {
+                    productor.Activation = 0;
+                }
+                else
+                {
+                    productor.Activation = loadLeft - productor.PMin / (productor.PMax - productor.PMin);
+                }
+                loadLeft -= productor.OutputPower;
             }
         }
         else
@@ -171,17 +190,86 @@ String ProductionplanMethod (String fileName)
     // FCTN 03.04 - If power left activate higher price
     if (loadLeft > 0)
     {
+        foreach (Productor productor in productors)
+        {
+            if (loadLeft == 0)
+            {
+                break;
+            }
 
+            if (productor.PriceRate == 0)
+            {
+                continue;
+            }
+            
+            if (productor.AON)
+            {
+                productor.Activation = 1;
+                loadLeft -= productor.OutputPower;
+                if (loadLeft < 0)
+                {
+                    loadLeft += productor.OutputPower;
+                    productor.Activation = 0;
+                }
+            }
+            else
+            {
+                if (loadLeft > productor.PMax)
+                {
+                    productor.Activation = 1;
+                }
+                else if (loadLeft < productor.PMin)
+                {
+                    productor.Activation = 0;
+                }
+                else
+                {
+                    productor.Activation = (loadLeft - productor.PMin) / (productor.PMax - productor.PMin);
+                }
+                loadLeft -= productor.OutputPower;
+            }
+        }
     }
 
     // FCTN 03.05 - If impossible due to pmin, deactivate last AON in list and activate low price linear producer.
-    if (loadLeft > 0)
+    while (loadLeft > 0)
     {
+        for (int i = productors.Count - 1; i >= 0; i--)
+        {
+            if (productors[i].AON && productors[i].Activation == 1)
+            {
+                loadLeft += productors[i].OutputPower;
+                productors[i].Activation = 0;
+            }
+        }
 
+        foreach (Productor productor in productors)
+        {
+            if (productor.AON)
+            {
+                continue;
+            }
+            else
+            {
+                if (loadLeft > productor.PMax)
+                {
+                    productor.Activation = 1;
+                }
+                else if (loadLeft < productor.PMin)
+                {
+                    productor.Activation = 0;
+                }
+                else
+                {
+                    productor.Activation = (loadLeft - productor.PMin) / (productor.PMax - productor.PMin);
+                }
+                loadLeft -= productor.OutputPower;
+            }
+        }
     }
 
     // FCTN 03.06 - Sort list by index.
-    productors.Sort(delegate (Productor p1, Productor p2)
+    productors.Sort(delegate(Productor p1, Productor p2)
     {
         return p1.Index - p2.Index;
     });

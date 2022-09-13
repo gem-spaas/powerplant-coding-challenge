@@ -6,6 +6,7 @@
     /// </summary>
     public class InputFuels
     {
+        // -------------- Properties --------------
         /// <summary>
         /// This is the price rate of the gas.
         /// </summary>

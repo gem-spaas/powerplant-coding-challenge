@@ -38,7 +38,83 @@ const String OUTPUT_FILE_NAME = "example_response.json";
 /// </summary>
 String ProductionplanMethod (String fileName)
 {
-    return "Hello World !";
+    // FCTN 01 - read data
+    if (!File.Exists(fileName))
+    {
+        return "Input file not found";
+    }
+    String fileDataReaded = File.ReadAllText(fileName);
+    JToken? jsonReaded = null;
+    try
+    {
+        jsonReaded = JValue.Parse(fileDataReaded);
+    }
+    catch (Exception ex)
+    {
+        return "Exception while parsing file : " + ex.Message;
+    }
+
+    if (jsonReaded == null)
+    {
+        return "Impossible to parse input file";
+    }
+
+    // FCTN 02 - parsing data
+    // Fuels
+    JToken fuelsData = jsonReaded["fuels"];
+
+    if (fuelsData == null)
+    {
+        return "Fuels not found in input file";
+    }
+
+    JValue gas = (JValue) fuelsData["gas(euro/MWh)"];
+    JValue kerosine = (JValue) fuelsData["kerosine(euro/MWh)"];
+    JValue co2 = (JValue) fuelsData["co2(euro/ton)"];
+    JValue wind = (JValue) fuelsData["wind(%)"];
+
+    InputFuels fuels = new InputFuels(
+        Convert.ToDouble(gas.Value),
+        Convert.ToDouble(kerosine.Value),
+        Convert.ToDouble(co2.Value),
+        Convert.ToDouble(wind.Value)
+    );
+
+    // Power plants
+    JToken powerPlantsData = jsonReaded["powerplants"];
+    IList<InputProductor> productors = new List<InputProductor>();
+
+    if (powerPlantsData == null)
+    {
+        return "Power plants not found in input file";
+    }
+
+    foreach (var powerPlant in powerPlantsData)
+    {
+        JValue nameValue = (JValue)(powerPlant["name"]);
+        JValue typeValue = (JValue)(powerPlant["type"]);
+        JValue efficiencyValue = (JValue)(powerPlant["efficiency"]);
+        JValue pminValue = (JValue)(powerPlant["pmin"]);
+        JValue pmaxValue = (JValue)(powerPlant["pmax"]);
+
+        productors.Add(new InputProductor(
+            nameValue.ToString(),
+            typeValue.ToString(),
+            Convert.ToDouble(efficiencyValue.Value),
+            Convert.ToDouble(pminValue.Value),
+            Convert.ToDouble(pmaxValue.Value)
+        ));
+    }
+
+    Input inputData = new Input(Convert.ToDouble(((JValue)jsonReaded["load"]).Value), fuels, productors);
+    
+    // FCTN 03 - activate productors
+
+    // FCTN 04 - jsonify data
+
+    // FCTN 05 - write data
+
+    return "SUCCESS";
 }
 
 /// <summary>

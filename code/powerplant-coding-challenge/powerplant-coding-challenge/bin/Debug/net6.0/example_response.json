@@ -1,11 +1,11 @@
 [
   {
     "name": "gasfiredbig1",
-    "p": 460.0
+    "p": 158.4
   },
   {
     "name": "gasfiredbig2",
-    "p": 128.39999999999998
+    "p": 0.0
   },
   {
     "name": "gasfiredsomewhatsmaller",
@@ -21,6 +21,6 @@
   },
   {
     "name": "windpark2",
-    "p": 21.599999999999998
+    "p": 21.6
   }
 ]

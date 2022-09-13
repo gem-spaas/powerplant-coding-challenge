@@ -1,7 +1,9 @@
 ﻿## Build API
 
-Pour lancer le code, j'ai utilisé le débugger de visual studio 2022.
+Pour lancer le code, j'ai utilisé le débugger de visual studio 2022 avec .NET 6.0.
+
 Le fichier d'entrée peut être modifié dans le fichier Program.cs à la constante : INPUT_FILE_NAME
+
 Dans la version actuelle, le fichier "payload01.json" est lu.
 
 ## Petite étude avant lancement du code
@@ -28,4 +30,4 @@ Fonction :
 4) Remplire les données de sorties 
 5) Écrire le fichier de sortie.
 
-Fin du code : 
+Fin du code : 15h58

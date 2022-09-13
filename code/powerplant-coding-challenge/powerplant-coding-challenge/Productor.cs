@@ -180,7 +180,7 @@
                     power = pf.ComputePower(power);
                 }
 
-                return power;
+                return Math.Round(power, 1);
             }
         }
 

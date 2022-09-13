@@ -137,6 +137,10 @@ String ProductionplanMethod (String fileName)
     }
 
     // FCTN 03.02 - Sort list by lower prices.
+    productors.Sort(delegate(Productor p1, Productor p2)
+    {
+        return Convert.ToInt32(p1.PriceRate - p2.PriceRate);
+    });
 
     // FCTN 03.03 - Activate the lower prices first.
 
@@ -147,7 +151,14 @@ String ProductionplanMethod (String fileName)
     // FCTN 03.06 - Sort list by index.
 
     // FCTN 04 - jsonify data
-    String jsonExport = "{}";
+    List<OutputProductor> outputProductors = new List<OutputProductor>();
+
+    foreach (Productor productor in productors)
+    {
+        outputProductors.Add(new OutputProductor(productor.Name, productor.OutputPower));
+    }
+
+    String jsonExport = JValue.FromObject(outputProductors).ToString();
 
     // FCTN 05 - write data
     try

@@ -6,6 +6,19 @@
     /// </summary>
     public class InputFuels
     {
+        // -------------- Constructors --------------
+        /// <summary>
+        /// This is the main constructor of the class that store the data of the imported fuel.
+        /// </summary>
+        /// <param name="gasEuroMWH">This is the price rate of the gas.</param>
+        /// <param name="kerosinEuroMWH">This is the price rate of the kerosin.</param>
+        /// <param name="CO2EuroTon">This is the price rate of the reject of CO2.</param>
+        /// <param name="windPercent">This is the wind pourcentage.</param>
+        public InputFuels (Double gasEuroMWH, Double kerosinEuroMWH, Double CO2EuroTon, Double windPercent)
+        {
+
+        }
+
         // -------------- Properties --------------
         /// <summary>
         /// This is the price rate of the gas.

@@ -3,7 +3,6 @@
 //-----------------------------------
 
 using Newtonsoft.Json.Linq;
-using powerplant_coding_challenge;
 
 //-----------------------------------
 // Fields
@@ -35,6 +34,7 @@ const String OUTPUT_FILE_NAME = "example_response.json";
 
 String ProductionplanMethod(String fileName)
 {
+    return "Hello World !";
 }
 
 //-----------------------------------
@@ -44,7 +44,7 @@ String ProductionplanMethod(String fileName)
 /// <summary>
 /// This is the required first route.
 /// </summary>
-app.MapGet("/productionplan", () => ProductionplanMethod("payload1.json"));
+app.MapGet("/productionplan", () => ProductionplanMethod(INPUT_FILE_NAME));
 
 /// <summary>
 /// This is the route in order to know that everything work.

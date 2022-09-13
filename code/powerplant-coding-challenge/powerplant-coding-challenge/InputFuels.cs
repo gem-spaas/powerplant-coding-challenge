@@ -16,7 +16,10 @@
         /// <param name="windPercent">This is the wind pourcentage.</param>
         public InputFuels (Double gasEuroMWH, Double kerosinEuroMWH, Double CO2EuroTon, Double windPercent)
         {
-
+            this.GasEuroMWH = gasEuroMWH;
+            this.KersosinEuroMWH= kerosinEuroMWH;
+            this.CO2EuroTon = CO2EuroTon;
+            this.WindPercent = windPercent;
         }
 
         // -------------- Properties --------------

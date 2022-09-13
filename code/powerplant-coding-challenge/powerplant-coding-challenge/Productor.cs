@@ -1,0 +1,152 @@
+﻿namespace powerplant_coding_challenge
+{
+    /// <summary>
+    /// This is the class that allows to holds the data of the productors.
+    /// </summary>
+    public class Productor
+    {
+        // -------------- Fields --------------
+        /// <summary>
+        /// This is the activation factor of the productor.
+        /// </summary>
+        private Double activation;
+
+        /// <summary>
+        /// This is the list of physic factor applied on the productor.
+        /// </summary>
+        private IList<IPhysicFactor> physicFactors = new List<IPhysicFactor>();
+
+        // -------------- Constructors --------------
+        /// <summary>
+        /// This si the main constructor of the class productor.
+        /// </summary>
+        /// <param name="name">This is the name of the productor.</param>
+        /// <param name="type">This is the type of the productor.</param>
+        /// <param name="efficiency">This is the efficiency of the productor.</param>
+        /// <param name="pmin">This is the minimum power that the productor produces if it is activated.</param>
+        /// <param name="pmax">This is the maximum power that the productor produces if it is activated.</param>
+        /// <param name="physicFactor">These are the physics factor to apply on the productor.</param>
+        public Productor (String name, String type, Double efficiency, Double pmin, Double pmax, IList<IPhysicFactor>? physicFactor = null)
+        {
+            this.Name = name;
+            this.Type = type;
+            this.Efficiency = efficiency;
+            this.PMin = pmin;
+            this.PMax = pmax;
+            this.activation = 0;
+
+            if (physicFactor != null)
+            {
+                foreach (IPhysicFactor pf in physicFactor)
+                {
+                    this.physicFactors.Add(pf);
+                }
+            }
+        }
+
+        // -------------- Properties --------------
+        /// <summary>
+        /// This is the name of the productor.
+        /// </summary>
+        public String Name 
+        {
+            get;
+        }
+
+        /// <summary>
+        /// This is the type of the productor.
+        /// </summary>
+        public String Type
+        {
+            get;
+        }
+
+        /// <summary>
+        /// This is the efficiency of the productor.
+        /// </summary>
+        public Double Efficiency
+        {
+            get;
+        }
+
+        /// <summary>
+        /// This is the pmin of the productor.
+        /// </summary>
+        public Double PMin
+        {
+            get;
+        }
+
+        /// <summary>
+        /// This is the pmax of the productor.
+        /// </summary>
+        public Double PMax
+        {
+            get;
+        }
+
+        /// <summary>
+        /// This is the activation state of the productor.
+        /// </summary>
+        public Double Activation
+        {
+            get => this.activation;
+            set
+            {
+                if (this.Type == "windturbine")
+                {
+                    if (value > 0)
+                    {
+                        this.activation = 1;
+                    }
+                    else
+                    {
+                        this.activation = 0;
+                    }
+                }
+                else
+                {
+                    if (value < 0)
+                    {
+                        this.activation = 0;
+                    }
+                    else if (value > 1)
+                    {
+                        this.activation = 1;
+                    }
+                    else
+                    {
+                        this.activation = value;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// This is the output power of the productor.
+        /// </summary>
+        public Double OutputPower
+        {
+            get
+            {
+                Double power = 0;
+
+                if (activation == 0)
+                {
+                    return power;
+                }
+
+                power = this.PMin + this.Activation * (this.PMax - this.PMin);
+                power *= this.Efficiency;
+
+                foreach (IPhysicFactor pf in this.physicFactors)
+                {
+                    power = pf.ComputePower(power);
+                }
+
+                return power;
+            }
+        }
+
+    }
+}

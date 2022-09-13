@@ -4,6 +4,8 @@
 
 using Newtonsoft.Json.Linq;
 
+using powerplant_coding_challenge;
+
 //-----------------------------------
 // Fields
 //-----------------------------------
@@ -34,6 +36,40 @@ const String OUTPUT_FILE_NAME = "example_response.json";
 
 String ProductionplanMethod(String fileName)
 {
+    // TEST 01
+    Productor p1 = new Productor("gasfiredbig1", "gasfired", 0.53, 100, 460);
+    p1.Activation = 1;
+
+    Double expectedP1Power = 243.8;
+    Double actualP1Power = p1.OutputPower;
+
+    Double errorP1 = expectedP1Power - actualP1Power;
+
+    if (errorP1 != 0)
+    {
+        return "The power computed for p1 is different than the expected one !";
+    }
+
+    // TEST 02
+    List<IPhysicFactor> windFactor = new List<IPhysicFactor>()
+    {
+        new WindFactor(0.60)
+    };
+
+    Productor p2 = new Productor("windpark1", "windturbine", 1, 0, 150, windFactor);
+    p2.Activation = 1;
+
+    Double expectedP2Power = 90;
+    Double actualP2Power = p2.OutputPower;
+
+    Double errorP2 = expectedP2Power - actualP2Power;
+
+    if (errorP2 != 0)
+    {
+        return "The power computed for p2 is different than the expected one !";
+    }
+
+
     return "Hello World !";
 }
 

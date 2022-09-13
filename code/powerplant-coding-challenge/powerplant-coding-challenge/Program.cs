@@ -107,12 +107,21 @@ String ProductionplanMethod (String fileName)
     }
 
     Input inputData = new Input(Convert.ToDouble(((JValue)jsonReaded["load"]).Value), fuels, productors);
-    
+
     // FCTN 03 - activate productors
 
     // FCTN 04 - jsonify data
+    String jsonExport = "{}";
 
     // FCTN 05 - write data
+    try
+    {
+        File.WriteAllText(OUTPUT_FILE_NAME, jsonExport);
+    }
+    catch (Exception ex)
+    {
+        return "Exception while writing file : " + ex.Message;
+    }
 
     return "SUCCESS";
 }

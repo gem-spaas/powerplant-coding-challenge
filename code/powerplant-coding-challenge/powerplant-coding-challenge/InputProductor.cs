@@ -15,13 +15,15 @@
         /// <param name="efficiency">This is the efficiency of the productor.</param>
         /// <param name="pmin">This is the minimum power that the productor produces if it is activated.</param>
         /// <param name="pmax">This is the maximum power that the productor produces if it is activated.</param>
-        public InputProductor (String name, String type, Double efficiency, Double pmin, Double pmax)
+        /// <param name="aon">This is the all or nothing mode of the productor.</param>
+        public InputProductor (String name, String type, Double efficiency, Double pmin, Double pmax, Boolean aon = false)
         {
             this.Name = name;
             this.Type = type;
             this.Efficiency = efficiency;
             this.PMin = pmin;
             this.PMax = pmax;
+            this.AON = aon;
         }
 
         // -------------- Methods --------------
@@ -32,7 +34,7 @@
         /// <returns>The freshly created Productor object.</returns>
         public Productor CreateProductor (IList<IPhysicFactor>? physicFactors = null)
         {
-            return new Productor(this.Name, this.Type, this.Efficiency, this.PMin, this.PMax, physicFactors);
+            return new Productor(this.Name, this.Type, this.Efficiency, this.PMin, this.PMax, this.AON, physicFactors);
         }
 
         // -------------- Properties --------------
@@ -72,6 +74,16 @@
         /// This is the pmax of the productor.
         /// </summary>
         public Double PMax
+        {
+            get;
+        }
+
+        /// <summary>
+        /// This is the method used to compute the activation function.
+        /// If it is true, the productor is in ALL OR NOTHING mode.
+        /// If it is false, the productor is in LINEAR mode.
+        /// </summary>
+        public Boolean AON
         {
             get;
         }

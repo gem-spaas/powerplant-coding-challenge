@@ -33,8 +33,18 @@ const String OUTPUT_FILE_NAME = "example_response.json";
 //-----------------------------------
 // Functions
 //-----------------------------------
+/// <summary>
+/// This si the method used to read the production data, compute the activation of the prodctuors and export the data.
+/// </summary>
+String ProductionplanMethod (String fileName)
+{
+    return "Hello World !";
+}
 
-String ProductionplanMethod(String fileName)
+/// <summary>
+/// This is the method used to test the classes and the functionnalities.
+/// </summary>
+String UnitTest ( )
 {
     // TEST 01
     Productor p1 = new Productor("gasfiredbig1", "gasfired", 0.53, 100, 460);
@@ -56,7 +66,7 @@ String ProductionplanMethod(String fileName)
         new WindFactor(0.60)
     };
 
-    Productor p2 = new Productor("windpark1", "windturbine", 1, 0, 150, windFactor);
+    Productor p2 = new Productor("windpark1", "windturbine", 1, 0, 150, true, windFactor);
     p2.Activation = 1;
 
     Double expectedP2Power = 90;
@@ -70,7 +80,7 @@ String ProductionplanMethod(String fileName)
     }
 
 
-    return "Hello World !";
+    return "Tests passed !";
 }
 
 //-----------------------------------
@@ -81,6 +91,11 @@ String ProductionplanMethod(String fileName)
 /// This is the required first route.
 /// </summary>
 app.MapGet("/productionplan", () => ProductionplanMethod(INPUT_FILE_NAME));
+
+/// <summary>
+/// This is the route used to test the classes created.
+/// </summary>
+app.MapGet("/test", () => UnitTest());
 
 /// <summary>
 /// This is the route in order to know that everything work.

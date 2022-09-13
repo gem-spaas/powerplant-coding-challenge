@@ -25,14 +25,16 @@
         /// <param name="efficiency">This is the efficiency of the productor.</param>
         /// <param name="pmin">This is the minimum power that the productor produces if it is activated.</param>
         /// <param name="pmax">This is the maximum power that the productor produces if it is activated.</param>
+        /// <param name="aon">This is the all or nothing mode of the productor.</param>
         /// <param name="physicFactor">These are the physics factor to apply on the productor.</param>
-        public Productor (String name, String type, Double efficiency, Double pmin, Double pmax, IList<IPhysicFactor>? physicFactor = null)
+        public Productor (String name, String type, Double efficiency, Double pmin, Double pmax, Boolean aon = false, IList<IPhysicFactor>? physicFactor = null)
         {
             this.Name = name;
             this.Type = type;
             this.Efficiency = efficiency;
             this.PMin = pmin;
             this.PMax = pmax;
+            this.AON = aon;
             this.activation = 0;
 
             if (physicFactor != null)
@@ -86,6 +88,16 @@
         }
 
         /// <summary>
+        /// This is the method used to compute the activation function.
+        /// If it is true, the productor is in ALL OR NOTHING mode.
+        /// If it is false, the productor is in LINEAR mode.
+        /// </summary>
+        public Boolean AON
+        {
+            get;
+        }
+
+        /// <summary>
         /// This is the activation state of the productor.
         /// </summary>
         public Double Activation
@@ -93,7 +105,7 @@
             get => this.activation;
             set
             {
-                if (this.Type == "windturbine")
+                if (this.AON)
                 {
                     if (value > 0)
                     {

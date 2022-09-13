@@ -73,7 +73,7 @@ String ProductionplanMethod (String fileName)
     JValue co2 = (JValue) fuelsData["co2(euro/ton)"];
     JValue wind = (JValue) fuelsData["wind(%)"];
 
-    InputFuels fuels = new InputFuels(
+    InputFuels inputFuels = new InputFuels(
         Convert.ToDouble(gas.Value),
         Convert.ToDouble(kerosine.Value),
         Convert.ToDouble(co2.Value),
@@ -82,7 +82,7 @@ String ProductionplanMethod (String fileName)
 
     // Power plants
     JToken powerPlantsData = jsonReaded["powerplants"];
-    IList<InputProductor> productors = new List<InputProductor>();
+    IList<InputProductor> inputProductors = new List<InputProductor>();
 
     if (powerPlantsData == null)
     {
@@ -97,7 +97,7 @@ String ProductionplanMethod (String fileName)
         JValue pminValue = (JValue)(powerPlant["pmin"]);
         JValue pmaxValue = (JValue)(powerPlant["pmax"]);
 
-        productors.Add(new InputProductor(
+        inputProductors.Add(new InputProductor(
             nameValue.ToString(),
             typeValue.ToString(),
             Convert.ToDouble(efficiencyValue.Value),
@@ -106,12 +106,35 @@ String ProductionplanMethod (String fileName)
         ));
     }
 
-    Input inputData = new Input(Convert.ToDouble(((JValue)jsonReaded["load"]).Value), fuels, productors);
+    Input inputData = new Input(Convert.ToDouble(((JValue)jsonReaded["load"]).Value), inputFuels, inputProductors);
 
     // FCTN 03 - activate productors
     Double loadLeft = inputData.Load;
 
     // FCTN 03.01 - Create productors list
+    Int32 index = 0;
+    List<Productor> productors = new List<Productor>();
+    List<IPhysicFactor> windFactor = new List<IPhysicFactor>()
+    {
+        new WindFactor(inputFuels.WindPercent)
+    };
+
+    foreach (InputProductor inputProductor in inputProductors)
+    {
+        index += 1;
+        if (inputProductor.Type == "gasfired")
+        {
+            productors.Add(new Productor(index, inputProductor.Name, inputProductor.Type, inputProductor.Efficiency, inputProductor.PMin, inputProductor.PMax, inputFuels.GasEuroMWH, false));
+        }
+        else if (inputProductor.Type == "turbojet")
+        {
+            productors.Add(new Productor(index, inputProductor.Name, inputProductor.Type, inputProductor.Efficiency, inputProductor.PMin, inputProductor.PMax, inputFuels.KersosinEuroMWH, false));
+        }
+        else if (inputProductor.Type == "windturbine")
+        {
+            productors.Add(new Productor(index, inputProductor.Name, inputProductor.Type, inputProductor.Efficiency, inputProductor.PMin, inputProductor.PMax, 0, true, windFactor));
+        }
+    }
 
     // FCTN 03.02 - Sort list by lower prices.
 

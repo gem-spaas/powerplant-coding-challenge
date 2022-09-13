@@ -109,6 +109,19 @@ String ProductionplanMethod (String fileName)
     Input inputData = new Input(Convert.ToDouble(((JValue)jsonReaded["load"]).Value), fuels, productors);
 
     // FCTN 03 - activate productors
+    Double loadLeft = inputData.Load;
+
+    // FCTN 03.01 - Create productors list
+
+    // FCTN 03.02 - Sort list by lower prices.
+
+    // FCTN 03.03 - Activate the lower prices first.
+
+    // FCTN 03.04 - If power left activate higher price
+
+    // FCTN 03.05 - If impossible due to pmin, deactivate last AON in list and activate low price linear producer.
+
+    // FCTN 03.06 - Sort list by index.
 
     // FCTN 04 - jsonify data
     String jsonExport = "{}";

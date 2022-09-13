@@ -145,7 +145,7 @@ String ProductionplanMethod (String fileName)
 String UnitTest ( )
 {
     // TEST 01
-    Productor p1 = new Productor("gasfiredbig1", "gasfired", 0.53, 100, 460);
+    Productor p1 = new Productor(0, "gasfiredbig1", "gasfired", 0.53, 100, 460, 10);
     p1.Activation = 1;
 
     Double expectedP1Power = 243.8;
@@ -164,7 +164,7 @@ String UnitTest ( )
         new WindFactor(0.60)
     };
 
-    Productor p2 = new Productor("windpark1", "windturbine", 1, 0, 150, true, windFactor);
+    Productor p2 = new Productor(1, "windpark1", "windturbine", 1, 0, 150, 0, true, windFactor);
     p2.Activation = 1;
 
     Double expectedP2Power = 90;

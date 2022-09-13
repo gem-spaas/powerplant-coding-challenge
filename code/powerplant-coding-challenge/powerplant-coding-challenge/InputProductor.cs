@@ -26,17 +26,6 @@
             this.AON = aon;
         }
 
-        // -------------- Methods --------------
-        /// <summary>
-        /// This method allows to create a Productor object thanks to the data stored inside the current InputProductor object.
-        /// </summary>
-        /// <param name="physicFactors">These are the optional physics factor.</param>
-        /// <returns>The freshly created Productor object.</returns>
-        public Productor CreateProductor (IList<IPhysicFactor>? physicFactors = null)
-        {
-            return new Productor(this.Name, this.Type, this.Efficiency, this.PMin, this.PMax, this.AON, physicFactors);
-        }
-
         // -------------- Properties --------------
         /// <summary>
         /// This is the name of the productor.

@@ -20,6 +20,7 @@ class IPhysicFactor :
     # Methods
     # -------------
 
-    def compute_power (power_input: float) -> float :
+    def compute_power (self, power_input: float) -> float :
         """This method is used to compute the output power of the power plant by affecting the physic factor."""
-        ...
+
+        return 0.0

@@ -44,12 +44,67 @@ def read_data (file_name: str) -> Optional[object] :
 
 def parse_data (data: object) -> Optional[object] :
     """This method is used to parse the raw data of the json file into power plants, physic factor and load. Take the raw data as parameter."""
-    pass
+
+    try: 
+        power_plants = []
+
+        load: float = data['load']
+        gas_price: float = data['fuels']['gas(euro/MWh)']
+        kerosine_price: float = data['fuels']['kerosine(euro/MWh)']
+        co2_price: float = data['fuels']['co2(euro/ton)']
+        wind_power: float = data['fuels']['wind(%)']
+        
+        wind_physic_factor = WindFactor(wind_power)
+        pp_index = 0
+
+        for power_plant_data in data['powerplants']: 
+
+            pp_index += 1
+            pp_name: str = power_plant_data['name']
+            pp_type: str = power_plant_data['type']
+            pp_efficiency: float = power_plant_data['efficiency']
+            pp_pmin: float = power_plant_data['pmin']
+            pp_pmax: float = power_plant_data['pmax']
+            pp_price: float = 0.0
+            pp_aon: bool = False
+            pp_physic_factors: list[IPhysicFactor] = []
+
+            if pp_type == "gasfired" :
+                pp_price = gas_price
+            
+            elif pp_type == "turbojet" :
+                pp_price = kerosine_price
+            
+            elif pp_type == "windturbine":
+                pp_physic_factors.append(wind_physic_factor)
+                pp_aon = True
+
+            power_plants.append(PowerPlant(pp_index, pp_name, pp_type, pp_efficiency, pp_pmin, pp_pmax, pp_price, pp_aon, pp_physic_factors))
+
+        return [load, power_plants]
+
+    except:
+        return None
 
 #TODO create power plant class
 def compute_powerplants (load: float, power_plants: list[PowerPlant]) -> None :
     """This method is used to edit the power plant activation. Take the load aimed and the power plants and returns nothing."""
-    pass
+
+    # Sort by computed price
+    power_plants.sort(key= lambda power_plant: (power_plant.compute_price_rate(), power_plant.get_index()))
+
+    # Activate the lower price firsts
+
+    # If power left -> activate higher price
+
+    # If power left -> it's due to pmin, deactivate last AON (expensive one, or just index wise) and activate low price linear producer
+
+    # If power left -> reactivate aon until negative power left
+
+    # If power left -> impossible to fulfill the network load
+
+    # Sort by indices
+    power_plants.sort(key= lambda power_plant: power_plant.get_index())
 
 def create_exportable_data (power_plants: list[PowerPlant]) -> Optional[list[object]] :
     """This method is used to parse the power plant into a writable nameless object."""
@@ -92,10 +147,10 @@ class handler (BaseHTTPRequestHandler) :
                 # If the parsing was succesful
                 if not(parsed_data == None) :
                     
-                    power_plants: list[PowerPlant] = parsed_data.power_plants
+                    power_plants: list[PowerPlant] = parsed_data[1]
                     """Are the power plants."""
 
-                    load: float = parsed_data.load
+                    load: float = parsed_data[0]
                     """Is the load of the network."""
 
                     # Compute the ouput power of each power plants.

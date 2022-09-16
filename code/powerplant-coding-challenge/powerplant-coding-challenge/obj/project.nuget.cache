@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qXHTZanhL8YKKfsWiCeNyqRMjismvmZjGIVlkwdm2wAjyME0ITHCDAxcE42lssNUYUSCnQ4WDJwcIk0C1odo3Q==",
+  "dgSpecHash": "MB9A4fv0STM5pcfSvH1k7TAqvgz5OtU+kCSAsl1aXU2V9FIw17MWwA7Vq+/8PNS6+EvQID68/lej7QqJxC8HQw==",
   "success": true,
-  "projectFilePath": "D:\\OneDrive\\Bureau\\Alten\\Projects attempts\\ENGIE\\powerplant-coding-challenge\\code\\powerplant-coding-challenge\\powerplant-coding-challenge\\powerplant-coding-challenge.csproj",
+  "projectFilePath": "D:\\OneDrive - ALTEN Group\\Projects attempts\\ENGIE\\powerplant-coding-challenge\\code\\powerplant-coding-challenge\\powerplant-coding-challenge\\powerplant-coding-challenge.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\moka7\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
   ],

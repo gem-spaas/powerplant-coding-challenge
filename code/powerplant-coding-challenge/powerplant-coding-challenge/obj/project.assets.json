@@ -54,11 +54,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\OneDrive\\Bureau\\Alten\\Projects attempts\\ENGIE\\powerplant-coding-challenge\\code\\powerplant-coding-challenge\\powerplant-coding-challenge\\powerplant-coding-challenge.csproj",
+      "projectUniqueName": "D:\\OneDrive - ALTEN Group\\Projects attempts\\ENGIE\\powerplant-coding-challenge\\code\\powerplant-coding-challenge\\powerplant-coding-challenge\\powerplant-coding-challenge.csproj",
       "projectName": "powerplant-coding-challenge",
-      "projectPath": "D:\\OneDrive\\Bureau\\Alten\\Projects attempts\\ENGIE\\powerplant-coding-challenge\\code\\powerplant-coding-challenge\\powerplant-coding-challenge\\powerplant-coding-challenge.csproj",
+      "projectPath": "D:\\OneDrive - ALTEN Group\\Projects attempts\\ENGIE\\powerplant-coding-challenge\\code\\powerplant-coding-challenge\\powerplant-coding-challenge\\powerplant-coding-challenge.csproj",
       "packagesPath": "C:\\Users\\moka7\\.nuget\\packages\\",
-      "outputPath": "D:\\OneDrive\\Bureau\\Alten\\Projects attempts\\ENGIE\\powerplant-coding-challenge\\code\\powerplant-coding-challenge\\powerplant-coding-challenge\\obj\\",
+      "outputPath": "D:\\OneDrive - ALTEN Group\\Projects attempts\\ENGIE\\powerplant-coding-challenge\\code\\powerplant-coding-challenge\\powerplant-coding-challenge\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -114,7 +114,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.108\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.109\\RuntimeIdentifierGraph.json"
       }
     }
   }

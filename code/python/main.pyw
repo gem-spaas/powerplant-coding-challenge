@@ -2,18 +2,24 @@
 # Imports
 #-----------------------------------
 
+from os import path
+
 from typing import Optional
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+
+from powerplant import PowerPlant
+from iphysicfactor import IPhysicFactor
+from windfactor import WindFactor
 
 #-----------------------------------
 # Constants
 #-----------------------------------
 
-INPUT_FILE: str = "payload1.json"
+INPUT_FILE: str = "./payload1.json"
 """This is the file that is supposed to be read."""
 
-OUTPUT_FILE: str = "example_response.json"
+OUTPUT_FILE: str = "./example_response.json"
 """This is the the output file of the API."""
 
 #-----------------------------------
@@ -22,7 +28,19 @@ OUTPUT_FILE: str = "example_response.json"
 
 def read_data (file_name: str) -> Optional[object] :
     """This method is used to retrieve data from a json file. Take the path to the file and returns the nameless object contained in the json file."""
-    pass
+    
+    # If the file does exists
+    if path.exists(file_name) :
+
+        file = open(file_name)
+        data = json.load(file)
+        file.close()
+
+        return data
+
+    # Otherwise the functions return none.
+    else :
+        return None
 
 def parse_data (data: object) -> Optional[object] :
     """This method is used to parse the raw data of the json file into power plants, physic factor and load. Take the raw data as parameter."""

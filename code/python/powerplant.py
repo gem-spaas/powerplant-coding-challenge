@@ -46,12 +46,18 @@ class PowerPlant :
     __power_plant_activation__: float = 0.0
     """This is the power plant's activation state."""
 
+    __power_plant_computed_price_rate__: Optional[float] = None 
+    """This is the computed price rate of the power plant."""
+
+    __power_plant_computed_power__: Optional[float] = None
+    """This is the computed output power of the power plant."""
+
     # -------------
     # Constructors
     # -------------
 
     def __init__ (self, index: int, name: str, type: str, efficiency: float, pmin: float, pmax: float, price: float, aon: bool, physic_factors: Optional[list[IPhysicFactor]] = None) :
-        
+
         self.__power_plant_index__ = index
         self.__power_plant_name__ = name
         self.__power_plant_type__ = type
@@ -75,23 +81,58 @@ class PowerPlant :
     
     def compute_price_rate (self) -> float:
         """This method is used to compute and retrieve the price production of the power plant."""
-        return self.__power_plant_price__ * self.__power_plant_efficiency__
+        
+        if self.__power_plant_computed_price_rate__ == None:
+            self.__power_plant_price_rate__ = self.__power_plant_price__ * self.__power_plant_efficiency__
+
+        return self.__power_plant_computed_price_rate__
 
     def compute_output_power (self) -> float:
         """This method is used to compute and retrieve the output power of the power plant."""
         
-        power: float = 0.0
+        if self.__power_plant_computed_power__ == None:
 
-        if self.__power_plant_activation__ == 0:
-            return power
+            power: float = 0.0
 
-        power = self.__power_plant_p_min__ + (self.__power_plant_activation__ * (self.__power_plant_p_max__ - self.__power_plant_p_min__))
+            if self.__power_plant_activation__ == 0:
+                return power
 
-        for pf in self.__power_plant_physic_factors__:
-            power = pf.compute_power(power)
+            power = self.__power_plant_p_min__ + (self.__power_plant_activation__ * (self.__power_plant_p_max__ - self.__power_plant_p_min__))
 
-        return power
+            for pf in self.__power_plant_physic_factors__:
+                power = pf.compute_power(power)
+
+            self.__power_plant_computed_power__ = power
         
+        return self.__power_plant_computed_power__
+    
+    def compute_activation (self, load_aimed) -> float:
+        """This method is used to compute and set the activation of the power plant in fonction of the loaded aimed. Returns the output power of the power plant."""
+
+        efficiency_factor = 1.0
+        for physical_factor in self.__power_plant_physic_factors__ :
+            efficiency_factor *= physical_factor.get_efficiency()
+
+        if self.__power_plant_all_or_nothing_production__ :
+
+            if load_aimed > (self.__power_plant_p_max__ * efficiency_factor) :
+                self.set_activation(1)
+            
+            else :
+                self.set_activation(0)
+
+        else :
+
+            if load_aimed > (self.__power_plant_p_max__ * efficiency_factor) :
+                self.set_activation(1)
+
+            elif load_aimed < (self.__power_plant_p_min__ * efficiency_factor) :
+                self.set_activation(0)
+            
+            else :
+                self.set_activation(load_aimed - (efficiency_factor * self.__power_plant_p_min__ / (self.__power_plant_p_max__ - self.__power_plant_p_min__)))
+
+        return self.compute_output_power()
 
     # -------------
     # Getters
@@ -118,6 +159,8 @@ class PowerPlant :
 
             else:
                 self.__power_plant_activation__ = activation
+
+        self.__power_plant_computed_power__ = None
 
     # -------------
     # Getters
@@ -151,10 +194,10 @@ class PowerPlant :
         """This method is used to retrieve the price of the power plant."""
         return self.__power_plant_price__
 
-    def get_production_mode (self) -> bool:
-        """This method is used to retrieve the production mode. True : all or nothing | False : linear mode."""
-        return self.__power_plant_all_or_nothing_production__
-
     def get_activation (self) -> float:
         """This method is used to retrieve the activation of the power plant."""
         return self.__power_plant_activation__
+
+    def is_all_or_nothing (self) -> bool:
+        """This method is used to retrieve the production mode. True : all or nothing | False : linear mode."""
+        return self.__power_plant_all_or_nothing_production__

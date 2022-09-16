@@ -32,6 +32,9 @@ class WindFactor (IPhysicFactor) :
     def compute_power (self, power_input: float) -> float :
         return power_input * self.__wind_factor__
 
+    def get_efficiency (self) -> float :
+        return self.__wind_factor__
+
     # -------------
     # Getters
     # -------------

@@ -54,7 +54,7 @@ def parse_data (data: object) -> Optional[object] :
         co2_price: float = data['fuels']['co2(euro/ton)']
         wind_power: float = data['fuels']['wind(%)']
         
-        wind_physic_factor = WindFactor(wind_power)
+        wind_physic_factor = WindFactor(wind_power/100)
         pp_index = 0
 
         for power_plant_data in data['powerplants']: 
@@ -90,18 +90,80 @@ def parse_data (data: object) -> Optional[object] :
 def compute_powerplants (load: float, power_plants: list[PowerPlant]) -> None :
     """This method is used to edit the power plant activation. Take the load aimed and the power plants and returns nothing."""
 
+    load_left: float = load
+
     # Sort by computed price
     power_plants.sort(key= lambda power_plant: (power_plant.compute_price_rate(), power_plant.get_index()))
 
     # Activate the lower price firsts
+    for power_plant in power_plants:
+
+        if power_plant.compute_price_rate() == 0 :
+
+            if load_left == 0 :
+                break
+            
+            load_left -= power_plant.compute_activation(load_left)
+
+        else:
+            break
+
 
     # If power left -> activate higher price
+    if load_left > 0 :
+
+        for power_plant in power_plants :
+
+            if power_plant.compute_price_rate() == 0 :
+
+                if load_left == 0 :
+                    break
+
+                if power_plant.compute_price_rate() == 0 :
+                    continue
+
+                load_left -= power_plant.compute_activation(load_left)
 
     # If power left -> it's due to pmin, deactivate last AON (expensive one, or just index wise) and activate low price linear producer
+    while load_left > 0 :
+    
+        power_plants.reverse()
+
+        for power_plant in power_plants :
+
+            if power_plant.is_all_or_nothing() and power_plant.get_activation() == 1 :
+                load_left += power_plant.compute_output_power()
+                power_plant.set_activation(0)
+                break
+
+        power_plants.reverse()
+
+        for power_plant in power_plants :
+            
+            if load_left == 0 :
+                break
+
+            if power_plant.is_all_or_nothing() :
+                continue
+
+            else :
+                load_left -= power_plant.compute_activation(load_left)
 
     # If power left -> reactivate aon until negative power left
+    while load_left > 0 :
 
+        for power_plant in power_plants :
+            
+            if load_left <= 0 :
+                break
+
+            if power_plant.is_all_or_nothing() and power_plant.get_activation() == 0 :
+                power_plant.set_activation(1)
+                load_left -= power_plant.compute_output_power()
+                
     # If power left -> impossible to fulfill the network load
+    if load_left > 0:
+        print ("NO MORE POWER AVAILABLE !!!")
 
     # Sort by indices
     power_plants.sort(key= lambda power_plant: power_plant.get_index())

@@ -9,7 +9,7 @@ Requirements
 console -> python -m main
 
 start coding : 11h04
-stop coding : xxhxx
+stop coding : 14h57
 
 ## TODO List
 

@@ -2,6 +2,7 @@
 # Imports
 #-----------------------------------
 
+from math import gcd
 from typing import Optional
 from iphysicfactor import IPhysicFactor
 
@@ -40,16 +41,16 @@ class PowerPlant :
     __power_plant_all_or_nothing_production__: bool
     """This is the power plant's mode of production. If it is true, the activation is 1 or 0."""
 
-    __power_plant_physic_factors__: list[IPhysicFactor] = []
+    __power_plant_physic_factors__: list[IPhysicFactor]
     """These are power plant's physic factors."""
 
-    __power_plant_activation__: float = 0.0
+    __power_plant_activation__: float
     """This is the power plant's activation state."""
 
-    __power_plant_computed_price_rate__: Optional[float] = None 
+    __power_plant_computed_price_rate__: Optional[float] 
     """This is the computed price rate of the power plant."""
 
-    __power_plant_computed_power__: Optional[float] = None
+    __power_plant_computed_power__: Optional[float]
     """This is the computed output power of the power plant."""
 
     # -------------
@@ -66,12 +67,16 @@ class PowerPlant :
         self.__power_plant_p_max__ = pmax
         self.__power_plant_price__ = price
         self.__power_plant_all_or_nothing_production__ = aon
+        self.__power_plant_physic_factors__ = []
+        self.__power_plant_activation__ = 0.0
+        self.__power_plant_computed_price_rate__ = None
+        self.__power_plant_computed_power__ = None
 
-        if not(physic_factors == None):
+        if physic_factors:
 
             for physic_factor in physic_factors :
                 
-                if not(physic_factor == None) :
+                if physic_factor :
 
                     self.__power_plant_physic_factors__.append(physic_factor)
     
@@ -82,25 +87,24 @@ class PowerPlant :
     def compute_price_rate (self) -> float:
         """This method is used to compute and retrieve the price production of the power plant."""
         
-        if self.__power_plant_computed_price_rate__ == None:
-            self.__power_plant_price_rate__ = self.__power_plant_price__ * self.__power_plant_efficiency__
+        if self.__power_plant_computed_price_rate__ is None:
+            self.__power_plant_computed_price_rate__ = self.__power_plant_price__ * self.__power_plant_efficiency__
 
         return self.__power_plant_computed_price_rate__
 
     def compute_output_power (self) -> float:
         """This method is used to compute and retrieve the output power of the power plant."""
         
-        if self.__power_plant_computed_power__ == None:
+        if self.__power_plant_computed_power__ is None:
 
             power: float = 0.0
 
-            if self.__power_plant_activation__ == 0:
-                return power
+            if not (self.__power_plant_activation__ == 0):
 
-            power = self.__power_plant_p_min__ + (self.__power_plant_activation__ * (self.__power_plant_p_max__ - self.__power_plant_p_min__))
+                power = self.__power_plant_p_min__ + (self.__power_plant_activation__ * (self.__power_plant_p_max__ - self.__power_plant_p_min__))
 
-            for pf in self.__power_plant_physic_factors__:
-                power = pf.compute_power(power)
+                for pf in self.__power_plant_physic_factors__:
+                    power = pf.compute_power(power)
 
             self.__power_plant_computed_power__ = power
         
@@ -114,7 +118,7 @@ class PowerPlant :
             efficiency_factor *= physical_factor.get_efficiency()
 
         if self.__power_plant_all_or_nothing_production__ :
-
+            
             if load_aimed > (self.__power_plant_p_max__ * efficiency_factor) :
                 self.set_activation(1)
             
@@ -130,7 +134,7 @@ class PowerPlant :
                 self.set_activation(0)
             
             else :
-                self.set_activation(load_aimed - (efficiency_factor * self.__power_plant_p_min__ / (self.__power_plant_p_max__ - self.__power_plant_p_min__)))
+                self.set_activation(((load_aimed - self.__power_plant_p_min__) / (self.__power_plant_p_max__ - self.__power_plant_p_min__)) / efficiency_factor)
 
         return self.compute_output_power()
 
@@ -161,6 +165,7 @@ class PowerPlant :
                 self.__power_plant_activation__ = activation
 
         self.__power_plant_computed_power__ = None
+
 
     # -------------
     # Getters

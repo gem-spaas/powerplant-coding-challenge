@@ -32,18 +32,26 @@ namespace GemSpaasPowerplant.Model
     public class Powerplant : IComparable<Powerplant>
     {
         /// <example>gasfiredbig1</example>
+        [JsonPropertyName("name")]
         public string name { get; set; }
         /// <example>gasfired</example>
+        [JsonPropertyName("type")]
         public string type { get; set; }
         /// <example>0.53</example>
 
+        [JsonPropertyName("efficiency")]
         public float efficiency { get; set; }
         /// <example>100</example>
+        [JsonPropertyName("pmin")]
         public int pmin { get; set; }
         /// <example>460</example>
+        [JsonPropertyName("pmax")]
         public int pmax { get; set; }
         /// <example>0</example>
+        [JsonIgnore]
+
         public float powerCost { get; set; }
+        [JsonIgnore]
         public float co2Cost { get; set; }
 
         private float getMerit()

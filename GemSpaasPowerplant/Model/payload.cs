@@ -122,7 +122,7 @@ namespace GemSpaasPowerplant.Model
             myPowerPlants.Sort();
         }
 
-        internal void updateCosts(Fuels fuels)
+        internal void UpdateCosts(Fuels fuels)
         {
             this.myPowerPlants.ForEach(pp => pp.updateCost(fuels));
         }

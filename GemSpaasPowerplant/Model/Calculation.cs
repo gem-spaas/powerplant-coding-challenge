@@ -17,7 +17,7 @@ namespace GemSpaasPowerplant.Model
         }
         private IEnumerable<PowerLoad> GeneratePlan()
         {
-            updateCosts(fuels);
+            myOrderedPowerPlants.UpdateCosts(fuels);
             myOrderedPowerPlants.Sort();// uses the implemented CompareTo method to order by merit
             List<PowerLoad> productionPlan = new List<PowerLoad>();
             int matchedLoad = 0;
@@ -62,10 +62,7 @@ namespace GemSpaasPowerplant.Model
             
         }
 
-        private void updateCosts(Fuels fuels)
-        {
-            myOrderedPowerPlants.updateCosts(fuels);
-        }
+        
 
         public IEnumerable<PowerLoad> GetProductionPlan()
         {

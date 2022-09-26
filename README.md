@@ -1,5 +1,10 @@
 # powerplant-coding-challenge
 
+If you want to follow this step-by-step. Please install some tools that will be required here.
+
+.NET 6: https://dotnet.microsoft.com/download/dotnet/6.0
+Docker: https://docs.docker.com/get-docker/
+
 ## Build the Image and Run the Container
 
 - Build your image use ```docker build . -t engieapi```

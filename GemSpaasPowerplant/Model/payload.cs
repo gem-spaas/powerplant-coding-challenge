@@ -43,22 +43,12 @@ namespace GemSpaasPowerplant.Model
         /// <example>460</example>
         public int pmax { get; set; }
         /// <example>0</example>
-        public int power { get; set; }
+        public float powerCost { get; set; }
+        public float co2Cost { get; set; }
 
-        private int getMerit()
+        private float getMerit()
         {
-            //can be improved by cost and CO2
-            switch (type)
-            {
-                case "windturbine":
-                    return 1;
-                case "gasfired":
-                    return 2;
-                case "turbojet":
-                    return 3;
-                default:
-                    throw new NotImplementedException("merit type not defined {}");
-            }
+            return this.powerCost;
     }
         /// <summary>
         /// Compares powerplants by their type, efficiency and pMin; allows to sort them
@@ -73,17 +63,30 @@ namespace GemSpaasPowerplant.Model
                 return -1;
             if (this.getMerit() > other.getMerit())
                 return 1;
-            //sort on efficiency
-            if (this.efficiency > other.efficiency)
-                return -1;
-            if (this.efficiency < other.efficiency)
-                return 1;
             //sort on pmin
             if (this.pmin < other.pmin)
                 return -1;
             if (this.pmin > other.pmin)
                 return 1;
             return 0;
+        }
+
+        internal void updateCost(Fuels fuels)
+        {
+            switch (type)
+            {
+                case "windturbine":
+                    this.powerCost = 0;
+                    break;
+                case "gasfired":
+                    this.powerCost = (float) fuels.gaseuroMWh / efficiency;
+                    break;
+                case "turbojet":
+                    this.powerCost = (float) fuels.kerosineeuroMWh / efficiency;
+                    break;
+                default:
+                    throw new NotImplementedException($" type not defined {type}");
+            }
         }
     }
     public class PowerplantComparer : IComparer<Powerplant>
@@ -117,6 +120,11 @@ namespace GemSpaasPowerplant.Model
         public void Sort()
         {
             myPowerPlants.Sort();
+        }
+
+        internal void updateCosts(Fuels fuels)
+        {
+            this.myPowerPlants.ForEach(pp => pp.updateCost(fuels));
         }
     }
 }

@@ -53,6 +53,8 @@ namespace GemSpaasPowerplant.Model
         public float powerCost { get; set; }
         [JsonIgnore]
         public float co2Cost { get; set; }
+        [JsonIgnore]
+        public int p { get; set; }
 
         private float getMerit()
         {
@@ -108,31 +110,50 @@ namespace GemSpaasPowerplant.Model
             return x.CompareTo(y);
         }
     }
-    public class PowerPlants : IEnumerable<Powerplant>
+    public class PowerPlants
     {
         private List<Powerplant> myPowerPlants;
+
+        public int Count => myPowerPlants.Count();
+
 
         public  PowerPlants(IEnumerable<Powerplant> pp)
         {
             this.myPowerPlants = pp.ToList();
         }
-        public IEnumerator<Powerplant> GetEnumerator()
-        {
-            return myPowerPlants.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return myPowerPlants.GetEnumerator();
-        }
-        public void Sort()
-        {
-            myPowerPlants.Sort();
-        }
 
         internal void UpdateCosts(Fuels fuels)
         {
             this.myPowerPlants.ForEach(pp => pp.updateCost(fuels));
+        }
+        public int MatchedLoad()
+        {
+            return (int) this.myPowerPlants.Sum(l => l.p);
+        }
+
+        internal int PMinTotal()
+        {
+            return (int)this.myPowerPlants.Where(p=>p.p >0).Sum(l => l.pmin);
+        }
+        internal int PMaxTotal()
+        {
+            return (int)this.myPowerPlants.Where(p => p.p > 0).Sum(l => l.pmax);
+        }
+
+        internal void Sort()
+        {
+             myPowerPlants.Sort();
+        }
+        internal Powerplant GetPlant(int index)
+        {
+            return this.myPowerPlants[index];
+        }
+
+        
+
+        internal IEnumerable<Powerplant> GetAll()
+        {
+            return myPowerPlants;
         }
     }
 }

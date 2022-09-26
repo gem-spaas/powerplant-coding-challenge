@@ -8,7 +8,7 @@ namespace TestPowerPlantAPI
     [TestClass]
     public class ProductionPlanControllerTest
     {
-        [TestMethod()]
+        [TestMethod(), Timeout(100)]
         [DataRow("payload1")]
         [DataRow("payload2")]
         [DataRow("payload3")]

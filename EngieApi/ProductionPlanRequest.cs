@@ -7,7 +7,7 @@ public class ProductionPlanRequest
     [JsonPropertyName("load")]
     public int Load { get; set; }
     [JsonPropertyName("fuels")]
-    public Fuel Fuels { get; set; }
+    public Fuels Fuels { get; set; }
     [JsonPropertyName("powerplants")]
     public List<PowerPlant> PowerPlants { get; set; }
 

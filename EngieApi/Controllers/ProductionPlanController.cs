@@ -1,43 +1,27 @@
+using EngieApi.Handlers;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
 namespace EngieApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("/")]
 public class ProductionPlanController : ControllerBase
 {
     private readonly ILogger<ProductionPlanController> _logger;
+    private readonly ProductionPlanHandler _productionPlanHandler;
 
-    public ProductionPlanController(ILogger<ProductionPlanController> logger)
+    public ProductionPlanController(ILogger<ProductionPlanController> logger, ProductionPlanHandler productionPlanHandler)
     {
         _logger = logger;
+        _productionPlanHandler = productionPlanHandler ?? throw new ArgumentNullException(nameof(productionPlanHandler));
     }
 
     [HttpPost(Name = "PostProduction")]
     [Consumes("application/json")]
     [Route("productionplan")]
-    public JsonResult Post([FromBody] JsonElement request)
+    public JsonResult Post([FromBody] JsonElement payload)
     {
-        _logger.LogInformation("POST PostProduction called.");
-        try
-        {
-            _logger.LogInformation("Start JSON Deserialize");
-            ProductionPlanRequest? productionPlanRequest =
-                    JsonSerializer.Deserialize<ProductionPlanRequest>(request);
-            _logger.LogInformation("JSON Deserialized");
-
-            _logger.LogInformation("Start JSON Serialize");
-            List<ProductionPlanResponse> response = Processing.GetLoadPlan(productionPlanRequest, _logger);
-            var jsonResult = JsonSerializer.Serialize(response);
-            _logger.LogInformation("JSON Serialized");
-
-            return new JsonResult(jsonResult);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, ex.Message);
-            throw new Exception(ex.Message);
-        };
+        return _productionPlanHandler.Handle(payload);
     }
 }

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace EngieApi;
 
-public class Fuel
+public class Fuels
 {
     [JsonPropertyName("gas(euro/MWh)")]
     public decimal Gas { get; set; }

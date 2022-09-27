@@ -15,7 +15,7 @@ namespace EngieApi.Controllers.Tests
         [TestMethod()]
         public void PostTestPayload1()
         {
-            var controller = new ProductionPlanController(new NullLogger<ProductionPlanController>());
+            var controller = new ProductionPlanController(new NullLogger<ProductionPlanController>(), new Handlers.ProductionPlanHandler());
             string text = File.ReadAllText(@"..\..\..\example_payloads\payload1.json");
             using JsonDocument document = JsonDocument.Parse(text);
             var result = controller.Post(document.RootElement);
@@ -34,7 +34,7 @@ namespace EngieApi.Controllers.Tests
         [TestMethod()]
         public void PostTestPayload2()
         {
-            var controller = new ProductionPlanController(new NullLogger<ProductionPlanController>());
+            var controller = new ProductionPlanController(new NullLogger<ProductionPlanController>(), new Handlers.ProductionPlanHandler());
             string text = File.ReadAllText(@"..\..\..\example_payloads\payload2.json");
             using JsonDocument document = JsonDocument.Parse(text);
             var result = controller.Post(document.RootElement);
@@ -53,7 +53,7 @@ namespace EngieApi.Controllers.Tests
         [TestMethod()]
         public void PostTestPayload3()
         {
-            var controller = new ProductionPlanController(new NullLogger<ProductionPlanController>());
+            var controller = new ProductionPlanController(new NullLogger<ProductionPlanController>(), new Handlers.ProductionPlanHandler());
             string text = File.ReadAllText(@"..\..\..\example_payloads\payload3.json");
             using JsonDocument document = JsonDocument.Parse(text);
             var result = controller.Post(document.RootElement);

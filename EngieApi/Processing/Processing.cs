@@ -1,27 +1,22 @@
-﻿using EngieApi.Controllers;
-using Microsoft.Extensions.Logging;
+﻿namespace EngieApi.Processing;
 
-namespace EngieApi;
-
-public static class Processing
+public static class Calculator
 {
-    public static List<ProductionPlanResponse> GetLoadPlan(ProductionPlanRequest request, ILogger<ProductionPlanController> logger)
+    public static List<ProductionPlanResponse> GetLoadPlan(ProductionPlanRequest request)
     {
         List<ProductionPlanResponse> response = new List<ProductionPlanResponse>();
-        List<DeliverPartial> deliverPartials = PriceCalc(request, logger);
-        PrepareResponse(request, response, deliverPartials, logger);
+        List<DeliverPartial> deliverPartials = PriceCalc(request);
+        PrepareResponse(request, response, deliverPartials);
         return response;
     }
 
     private static void PrepareResponse(
         ProductionPlanRequest request,
         List<ProductionPlanResponse> response,
-        List<DeliverPartial> deliverPartialsUnsort,
-        ILogger<ProductionPlanController> logger)
+        List<DeliverPartial> deliverPartialsUnsort)
     {
         int load = 0;
-        logger.LogInformation("Start PrepareResponse");
-        var deliverPartials = deliverPartialsUnsort.OrderBy(i => i.Price).ThenBy(i => i.PMin).ThenBy(i => i.PMax).ToList<DeliverPartial>();
+        var deliverPartials = deliverPartialsUnsort.OrderBy(i => i.Price).ThenBy(i => i.PMin).ThenBy(i => i.PMax).ToList();
         for (int i = 0; i < deliverPartials.Count(); i++)
         {
             var deliverPartial = deliverPartials[i];
@@ -66,7 +61,6 @@ public static class Processing
                 continue;
             }
         }
-        logger.LogInformation("End PrepareResponse");
     }
 
     private static int CalcPMax(List<DeliverPartial> deliverPartials, int iStart, int rest)
@@ -77,11 +71,11 @@ public static class Processing
             int sumMax = 0;
             for (int i = iStart + 1; i < deliverPartials.Count(); i++)
             {
-                if (deliverPartials[iStart].PMin == 0 || deliverPartials[iStart+1].PMin < rest - j)
+                if (deliverPartials[iStart].PMin == 0 || deliverPartials[iStart + 1].PMin < rest - j)
                 {
                     sumMax += deliverPartials[i].PMax;
                     if (rest <= sumMax + j) return j;
-                } 
+                }
                 else
                 {
                     sumMin += deliverPartials[i].PMin;
@@ -93,12 +87,11 @@ public static class Processing
         return 0;
     }
 
-    private static List<DeliverPartial> PriceCalc(ProductionPlanRequest request, ILogger<ProductionPlanController> logger)
+    private static List<DeliverPartial> PriceCalc(ProductionPlanRequest request)
     {
         var deliverPartials = new List<DeliverPartial>();
         foreach (PowerPlant powerPlant in request.PowerPlants)
         {
-            logger.LogInformation("Start PriceCalc");
             DeliverPartial deliverPartial = new DeliverPartial
             {
                 Name = powerPlant.Name,
@@ -118,13 +111,11 @@ public static class Processing
                     deliverPartial.PMax = (int)(deliverPartial.PMax * request.Fuels.Wind / 100);
                     break;
                 default:
-                    logger.LogError("This type of power plant doesn't exist");
                     throw new Exception("This type of power plant doesn't exist");
             }
             deliverPartials.Add(deliverPartial);
 
         }
-        logger.LogInformation("End PriceCalc");
         return deliverPartials;
     }
 }

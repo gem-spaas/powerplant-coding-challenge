@@ -89,10 +89,10 @@ namespace GemSpaasPowerplant.Model
                     this.powerCost = 0;
                     break;
                 case "gasfired":
-                    this.powerCost = (float) fuels.gaseuroMWh / efficiency;
+                    this.powerCost = (float) (fuels.gaseuroMWh + 0.3 * fuels.co2euroton) / efficiency;
                     break;
                 case "turbojet":
-                    this.powerCost = (float) fuels.kerosineeuroMWh / efficiency;
+                    this.powerCost = (float) (fuels.kerosineeuroMWh + 0.3 * fuels.co2euroton) / efficiency;
                     break;
                 default:
                     throw new NotImplementedException($" type not defined {type}");

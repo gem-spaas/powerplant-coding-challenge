@@ -1,52 +1,51 @@
 ﻿namespace EngieApi.Processing;
 
-public static class Calculator
+public class LoadPlanCalculator: ILoadPlanCalculator
 {
-    public static ProductionPlanResponse GetLoadPlan(ProductionPlanRequest request)
+    public ProductionPlanResponse? GetLoadPlan(ProductionPlanRequest request)
     {
         ProductionPlanResponse response = new ProductionPlanResponse();
         response.ProductionPlans = new List<ProductionPlan>();
         int load = 0;
-        var deliverPartials = PricePerMWh.Calculate(request);
+        var deliverPartials = CostCalculator.Calculate(request);
         for (int i = 0; i < deliverPartials.Count(); i++)
         {
-            var name = deliverPartials[i].Name;
             var pMin = deliverPartials[i].PMin;
             var pMax = deliverPartials[i].PMax;
             var power = 0;
-            switch (GetCondition(request.Load, load, pMax, pMin))
+            switch (GetUsageCondition(request.Load, load, pMax, pMin))
             {
                 case PowerPlantUsage.NotUsed:
                     break;
-                case PowerPlantUsage.MaximUsed:
+                case PowerPlantUsage.MaximumPossibleUsed:
                     power = CalcPMax(deliverPartials, i, request.Load - load);
                     break;
                 case PowerPlantUsage.PartiallyUsed:
                     power = request.Load - load;
                     break;
-                case PowerPlantUsage.MinimUsed:
+                case PowerPlantUsage.MinimumUsed:
                     power = pMin;
                     break;
             }
-            response.ProductionPlans.Add(new ProductionPlan { Name = name, P = power });
+            response.ProductionPlans.Add(new ProductionPlan { Name = deliverPartials[i].Name, P = power });
             load += power;
         }
-        return response;
+        return load != request.Load ? null : response;
     }
 
-    private static PowerPlantUsage GetCondition(int requestLoad, int resultLoad, int pMax, int pMin)
+    private static PowerPlantUsage GetUsageCondition(int requestLoad, int resultLoad, int pMax, int pMin)
     {
         if (requestLoad == resultLoad) return PowerPlantUsage.NotUsed;
-        if (pMax > 0 && requestLoad >= pMax + resultLoad) return PowerPlantUsage.MaximUsed;
+        if (pMax > 0 && requestLoad >= pMax + resultLoad) return PowerPlantUsage.MaximumPossibleUsed;
         if (requestLoad < pMax + resultLoad && pMin < requestLoad - resultLoad) return PowerPlantUsage.PartiallyUsed;
-        if (requestLoad >= pMin + resultLoad) return PowerPlantUsage.MinimUsed;
+        if (requestLoad >= pMin + resultLoad) return PowerPlantUsage.MinimumUsed;
 
         return 0;
     }
 
     private static int CalcPMax(List<DeliverPartial> deliverPartials, int iStart, int rest)
     {
-        for (int j = deliverPartials[iStart].PMax; j > 0; j--)
+        for (int j = deliverPartials[iStart].PMax; j > deliverPartials[iStart].PMin; j--)
         {
             int sumMin = 0;
             int sumMax = 0;
@@ -72,8 +71,8 @@ public static class Calculator
 public enum PowerPlantUsage
 {
     NotUsed = 0,
-    MaximUsed = 1,
+    MaximumPossibleUsed = 1,
     PartiallyUsed = 2,
-    MinimUsed = 3
+    MinimumUsed = 3
 }
 

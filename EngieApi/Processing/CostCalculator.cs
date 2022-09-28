@@ -1,6 +1,6 @@
 ﻿namespace EngieApi.Processing
 {
-    public static class PricePerMWh
+    public static class CostCalculator
     {
 
         public static List<DeliverPartial> Calculate(ProductionPlanRequest request)

@@ -1,13 +1,18 @@
 ﻿using EngieApi.Processing;
-using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 
 namespace EngieApi.Handlers;
 
 public class ProductionPlanHandler
 {
+    public ProductionPlanHandler(ILoadPlanCalculator loadPlanCalculator)
+    {
+        LoadPlanCalculator = loadPlanCalculator;
+    }
+
+    public ILoadPlanCalculator LoadPlanCalculator { get; }
+
     public ProductionPlanResponse Handle(ProductionPlanRequest request)
     {
-        return Calculator.GetLoadPlan(request);
+        return LoadPlanCalculator.GetLoadPlan(request);
     }
 }

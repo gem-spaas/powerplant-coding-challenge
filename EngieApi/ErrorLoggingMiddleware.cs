@@ -17,7 +17,8 @@ public class ErrorLoggingMiddleware
         }
         catch (Exception e)
         {
-            System.Diagnostics.Debug.WriteLine($"The following error happened: {e.Message}");
+            context.Response.StatusCode = 500;
+            _ = context.Response.WriteAsync($"The following error happened: {e.Message}");
             throw;
         }
     }

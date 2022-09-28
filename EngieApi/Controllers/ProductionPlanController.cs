@@ -1,5 +1,6 @@
 using EngieApi.Handlers;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
 namespace EngieApi.Controllers;
@@ -17,11 +18,9 @@ public class ProductionPlanController : ControllerBase
         _productionPlanHandler = productionPlanHandler ?? throw new ArgumentNullException(nameof(productionPlanHandler));
     }
 
-    [HttpPost(Name = "PostProduction")]
-    [Consumes("application/json")]
-    [Route("productionplan")]
-    public JsonResult Post([FromBody] JsonElement payload)
+    [HttpPost("productionplan")]
+    public ProductionPlanResponse Post([FromBody][Required] ProductionPlanRequest request)
     {
-        return _productionPlanHandler.Handle(payload);
+        return _productionPlanHandler.Handle(request);
     }
 }

@@ -2,65 +2,46 @@
 
 public static class Calculator
 {
-    public static List<ProductionPlanResponse> GetLoadPlan(ProductionPlanRequest request)
+    public static ProductionPlanResponse GetLoadPlan(ProductionPlanRequest request)
     {
-        List<ProductionPlanResponse> response = new List<ProductionPlanResponse>();
-        List<DeliverPartial> deliverPartials = PriceCalc(request);
-        PrepareResponse(request, response, deliverPartials);
+        ProductionPlanResponse response = new ProductionPlanResponse();
+        response.ProductionPlans = new List<ProductionPlan>();
+        int load = 0;
+        var deliverPartials = PricePerMWh.Calculate(request);
+        for (int i = 0; i < deliverPartials.Count(); i++)
+        {
+            var name = deliverPartials[i].Name;
+            var pMin = deliverPartials[i].PMin;
+            var pMax = deliverPartials[i].PMax;
+            var power = 0;
+            switch (GetCondition(request.Load, load, pMax, pMin))
+            {
+                case PowerPlantUsage.NotUsed:
+                    break;
+                case PowerPlantUsage.MaximUsed:
+                    power = CalcPMax(deliverPartials, i, request.Load - load);
+                    break;
+                case PowerPlantUsage.PartiallyUsed:
+                    power = request.Load - load;
+                    break;
+                case PowerPlantUsage.MinimUsed:
+                    power = pMin;
+                    break;
+            }
+            response.ProductionPlans.Add(new ProductionPlan { Name = name, P = power });
+            load += power;
+        }
         return response;
     }
 
-    private static void PrepareResponse(
-        ProductionPlanRequest request,
-        List<ProductionPlanResponse> response,
-        List<DeliverPartial> deliverPartialsUnsort)
+    private static PowerPlantUsage GetCondition(int requestLoad, int resultLoad, int pMax, int pMin)
     {
-        int load = 0;
-        var deliverPartials = deliverPartialsUnsort.OrderBy(i => i.Price).ThenBy(i => i.PMin).ThenBy(i => i.PMax).ToList();
-        for (int i = 0; i < deliverPartials.Count(); i++)
-        {
-            var deliverPartial = deliverPartials[i];
-            if (request.Load == load)
-            {
-                response.Add(new ProductionPlanResponse
-                {
-                    Name = deliverPartial.Name,
-                    P = 0
-                });
-                continue;
-            }
-            if (deliverPartial.PMax > 0 && request.Load >= deliverPartial.PMax + load)
-            {
-                int pMax = CalcPMax(deliverPartials, i, request.Load - load);
-                response.Add(new ProductionPlanResponse
-                {
-                    Name = deliverPartial.Name,
-                    P = pMax
-                });
-                load += pMax;
-                continue;
-            }
-            if (request.Load < deliverPartial.PMax + load && deliverPartial.PMin < request.Load - load)
-            {
-                response.Add(new ProductionPlanResponse
-                {
-                    Name = deliverPartial.Name,
-                    P = request.Load - load
-                });
-                load = request.Load;
-                continue;
-            }
-            if (request.Load >= deliverPartial.PMin + load)
-            {
-                response.Add(new ProductionPlanResponse
-                {
-                    Name = deliverPartial.Name,
-                    P = deliverPartial.PMin
-                });
-                load += deliverPartial.PMin;
-                continue;
-            }
-        }
+        if (requestLoad == resultLoad) return PowerPlantUsage.NotUsed;
+        if (pMax > 0 && requestLoad >= pMax + resultLoad) return PowerPlantUsage.MaximUsed;
+        if (requestLoad < pMax + resultLoad && pMin < requestLoad - resultLoad) return PowerPlantUsage.PartiallyUsed;
+        if (requestLoad >= pMin + resultLoad) return PowerPlantUsage.MinimUsed;
+
+        return 0;
     }
 
     private static int CalcPMax(List<DeliverPartial> deliverPartials, int iStart, int rest)
@@ -86,36 +67,13 @@ public static class Calculator
         if (deliverPartials[iStart].PMax == rest || deliverPartials[iStart].PMax < rest) return deliverPartials[iStart].PMax;
         return 0;
     }
-
-    private static List<DeliverPartial> PriceCalc(ProductionPlanRequest request)
-    {
-        var deliverPartials = new List<DeliverPartial>();
-        foreach (PowerPlant powerPlant in request.PowerPlants)
-        {
-            DeliverPartial deliverPartial = new DeliverPartial
-            {
-                Name = powerPlant.Name,
-                PMax = powerPlant.PMax,
-                PMin = powerPlant.PMin,
-            };
-            switch (powerPlant.Type)
-            {
-                case "gasfired":
-                    deliverPartial.Price = request.Fuels.Gas / powerPlant.Efficiency + request.Fuels.Co2 * (decimal)0.3;
-                    break;
-                case "turbojet":
-                    deliverPartial.Price = request.Fuels.Kerosine / powerPlant.Efficiency;
-                    break;
-                case "windturbine":
-                    deliverPartial.Price = 0;
-                    deliverPartial.PMax = (int)(deliverPartial.PMax * request.Fuels.Wind / 100);
-                    break;
-                default:
-                    throw new Exception("This type of power plant doesn't exist");
-            }
-            deliverPartials.Add(deliverPartial);
-
-        }
-        return deliverPartials;
-    }
 }
+
+public enum PowerPlantUsage
+{
+    NotUsed = 0,
+    MaximUsed = 1,
+    PartiallyUsed = 2,
+    MinimUsed = 3
+}
+

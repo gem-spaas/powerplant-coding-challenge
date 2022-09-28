@@ -4,8 +4,10 @@ namespace EngieApi;
 
 public class ProductionPlanResponse
 {
-    [JsonPropertyName("name")]
-    public string Name { get; set; }
-    [JsonPropertyName("p")]
-    public int P { get; set; }
+    public List<ProductionPlan> ProductionPlans { get; set; }
+}
+
+public class ProductionPlan {
+    [JsonPropertyName("name")] public string Name { get; set; }
+    [JsonPropertyName("p")] public int P { get; set; }
 }

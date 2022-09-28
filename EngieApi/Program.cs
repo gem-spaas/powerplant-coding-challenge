@@ -1,5 +1,6 @@
 using EngieApi;
 using EngieApi.Handlers;
+using EngieApi.Processing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ProductionPlanHandler>();
-
+builder.Services.AddScoped<ILoadPlanCalculator, LoadPlanCalculator>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

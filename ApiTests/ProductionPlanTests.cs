@@ -22,7 +22,7 @@ namespace ApiTests
             var payload = JsonConvert.DeserializeObject<ProductionPlanRequest>(File.ReadAllText(payloadFile));
             ILoadPlanCalculator loadPlanCalculator = new LoadPlanCalculator();
             var result = loadPlanCalculator.GetLoadPlan(payload);
-            
+
             int actual = result.ProductionPlans.Sum(x => x.P);
 
             actual.Should().Be(payload.Load);
@@ -57,7 +57,7 @@ namespace ApiTests
         [Theory]
         [InlineData("../../../payload/payload10.json")]
 
-        public void GetLoadPlan_WhenCalled_ShouldReturnNull(string payloadFile)
+        public void GetLoadPlan_WhenNoValidPlan_ShouldReturnNull(string payloadFile)
         {
             // Setup
             var payload = JsonConvert.DeserializeObject<ProductionPlanRequest>(File.ReadAllText(payloadFile));

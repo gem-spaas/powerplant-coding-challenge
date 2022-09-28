@@ -1,8 +1,8 @@
 ﻿namespace EngieApi.Processing;
 
-public class LoadPlanCalculator: ILoadPlanCalculator
+public class LoadPlanCalculator : ILoadPlanCalculator
 {
-    public ProductionPlanResponse? GetLoadPlan(ProductionPlanRequest request)
+    public ProductionPlanResponse GetLoadPlan(ProductionPlanRequest request)
     {
         ProductionPlanResponse response = new ProductionPlanResponse();
         response.ProductionPlans = new List<ProductionPlan>();

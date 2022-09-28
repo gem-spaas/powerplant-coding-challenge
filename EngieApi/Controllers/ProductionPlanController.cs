@@ -1,7 +1,6 @@
 using EngieApi.Handlers;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json;
 
 namespace EngieApi.Controllers;
 

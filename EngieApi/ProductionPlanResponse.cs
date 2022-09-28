@@ -7,7 +7,8 @@ public class ProductionPlanResponse
     public List<ProductionPlan> ProductionPlans { get; set; }
 }
 
-public class ProductionPlan {
+public class ProductionPlan
+{
     [JsonPropertyName("name")] public string Name { get; set; }
     [JsonPropertyName("p")] public int P { get; set; }
 }

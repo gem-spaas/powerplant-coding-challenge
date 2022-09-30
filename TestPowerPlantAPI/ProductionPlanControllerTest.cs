@@ -25,7 +25,7 @@ namespace TestPowerPlantAPI
                 {
                 string name = powerload.name;
                 int p = powerload.p;
-                Powerplant powerplant = payload.powerplants.Where(p => p.name == name).First();
+                PowerplantJsn powerplant = payload.powerplants.Where(p => p.name == name).First();
                 Assert.IsTrue(p>= powerplant.pmin || p==0, $"power pmin {p} < {powerplant.pmin}  constraint not respected for {powerplant.name}" );
                 Assert.IsTrue(p <= powerplant.pmax, $"power pmax{p} > {powerplant.pmax}  constraint not respected for {powerplant.name}" );
                 totalPower += p;

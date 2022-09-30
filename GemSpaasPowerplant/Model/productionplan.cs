@@ -9,15 +9,15 @@ namespace GemSpaasPowerplant.Model
     {
         public string name { get; set; }
         public int p { get; set; }
-        private Powerplant Powerplant { get; set; }
+        private PowerPlant Powerplant { get; set; }
 
-        public PowerLoad(Powerplant powerplant)
+        public PowerLoad(PowerPlant powerplant)
         {
             this.Powerplant = powerplant;
             this.name = powerplant.name;
             this.p = powerplant.p;
         }
-        public Powerplant getPowerPlant() { return Powerplant; }
+        public PowerPlant getPowerPlant() { return Powerplant; }
     }
 
 }

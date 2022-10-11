@@ -12,7 +12,8 @@
             this.myPowerPlants = pp.Select(pp => new PowerPlant(pp)).ToList();
         }
 
-        internal void UpdateCosts(Fuels fuels)
+
+        public void UpdateCosts(Fuels fuels)
         {
             this.myPowerPlants.ForEach(pp => pp.updateCost(fuels));
         }
@@ -38,7 +39,15 @@
         {
             return this.myPowerPlants[index];
         }
+        public PowerPlant GetPlant(string name)
+        {
+            return this.myPowerPlants.Where(pp=>pp.name == name).First();
+        }
 
+        public double RunningCost()
+        {
+            return (double)this.myPowerPlants.Sum(l => l.powerCost*l.p);
+        }
         
 
         internal IEnumerable<PowerPlant> GetAll()

@@ -32,6 +32,11 @@ namespace GemSpaasPowerplant.Model
                 RemainingLoadToFulfill = load - myOrderedPowerPlants.MatchedLoad();
                 deltaPMin = load - myOrderedPowerPlants.PMinTotal();
 
+                if (RemainingLoadToFulfill == 0) //load is  fulfilled
+                {
+                    break;
+                }
+              
                 if (RemainingLoadToFulfill > 0) //still load to compensate, select max extra power from this pp
                 {
                     if (powerplant.pmin > deltaPMin)
@@ -54,11 +59,6 @@ namespace GemSpaasPowerplant.Model
                     continue;
                 }
 
-                if (RemainingLoadToFulfill == 0) //load is already fulfilled
-                {
-                    i++;
-                    continue;
-                }
 
                 if (RemainingLoadToFulfill < 0) //need to drop the power of  plant
                 {

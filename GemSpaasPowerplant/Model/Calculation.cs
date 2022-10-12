@@ -6,16 +6,14 @@ using System.Runtime.Serialization;
 namespace GemSpaasPowerplant.Model
 {
 
-    public class Calculation
+    public class Calculation : ICalculation
     {
         private PowerPlants myOrderedPowerPlants;
         private Fuels fuels;
         private int load;
-        public Calculation(payload thePayload)
+        public Calculation()
         {
-            this.myOrderedPowerPlants = new PowerPlants(thePayload.powerplants);
-            this.fuels = thePayload.fuels;
-            this.load = thePayload.load;
+            
         }
         private IEnumerable<PowerLoad> GeneratePlan()
         {
@@ -86,8 +84,11 @@ namespace GemSpaasPowerplant.Model
 
 
 
-        public IEnumerable<PowerLoad> GetProductionPlan()
+        public IEnumerable<PowerLoad> GetProductionPlan(payload thePayload)
         {
+            this.myOrderedPowerPlants = new PowerPlants(thePayload.powerplants);
+            this.fuels = thePayload.fuels;
+            this.load = thePayload.load;
             return GeneratePlan();
         }
     }

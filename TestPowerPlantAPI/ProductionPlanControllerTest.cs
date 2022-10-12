@@ -15,7 +15,7 @@ namespace TestPowerPlantAPI
         [DataRow("payload4", 3660.4)]
         public void TestPayload1(string payloadFile, double expectedMinimumCost)
         {
-            ProductionPlanController controller = new (new NullLogger<ProductionPlanController>());
+            ProductionPlanController controller = new (new NullLogger<ProductionPlanController>(), new Calculation());
             string payloadString = File.ReadAllText($"..\\..\\..\\..\\example_payloads\\{payloadFile}.json");
 
             payload payload = JsonSerializer.Deserialize<payload>(payloadString);

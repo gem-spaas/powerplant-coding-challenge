@@ -10,17 +10,18 @@ namespace GemSpaasPowerplant.Controllers
        
 
         private readonly ILogger<ProductionPlanController> _logger;
+        private readonly ICalculation _calculation;
 
-        public ProductionPlanController(ILogger<ProductionPlanController> logger)
+        public ProductionPlanController(ILogger<ProductionPlanController> logger, ICalculation  calculation)
         {
             _logger = logger;
+            _calculation = calculation;
         }
 
         [HttpPost(Name = "productionplan")]
         public IEnumerable<PowerLoad> Post(payload myPayload)
         {   
-            Calculation calc = new Calculation(myPayload);
-            return calc.GetProductionPlan();
+            return _calculation.GetProductionPlan(myPayload);
         }
 
         

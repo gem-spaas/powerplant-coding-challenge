@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "prowerplant-challange"
+version = "0.1.0"
+description = ""
+authors = ["Malik Aazzaoui <malik.aazzaoui@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+django = "^3.0.6"
+django-rest-framework = "^0.1.0"
+black = "^22.10.0"
+channels = {extras = ["daphne"], version = "^4.0.0"}
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[tool.black]
+line-length = 120
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

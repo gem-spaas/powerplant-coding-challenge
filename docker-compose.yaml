@@ -1,0 +1,11 @@
+services:
+  powerplant-challenge:
+    build:
+      context: .
+    command: "./manage.py runserver 0.0.0.0:8888"
+    ports:
+      - 8888:8888
+    volumes:
+      - .:/source
+volumes:
+  data:

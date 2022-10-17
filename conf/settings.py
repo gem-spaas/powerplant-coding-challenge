@@ -25,7 +25,7 @@ ALLOWED_HOSTS = ["0.0.0.0", "localhost"]
 # Application definition
 
 INSTALLED_APPS = [
-    "channels",
+    "daphne",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -82,10 +82,7 @@ STATIC_URL = "/static/"
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("redis", 6379)],
-        },
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
     },
 }
 

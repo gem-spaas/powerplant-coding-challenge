@@ -9,6 +9,8 @@ python = "^3.8"
 django = "^3.0.6"
 django-rest-framework = "^0.1.0"
 black = "^22.10.0"
+channels = "3.0.4"
+channels-redis = "3.3.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

@@ -25,6 +25,7 @@ ALLOWED_HOSTS = ["0.0.0.0", "localhost"]
 # Application definition
 
 INSTALLED_APPS = [
+    "channels",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -46,7 +47,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "conf.urls"
 
 WSGI_APPLICATION = "conf.wsgi.application"
-
+ASGI_APPLICATION = "conf.asgi.application"
 
 # Database
 
@@ -78,37 +79,20 @@ USE_TZ = True
 STATIC_URL = "/static/"
 # Reporting
 
-# Logging
-class UtcFormatter(logging.Formatter):
-    converter = time.gmtime
 
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": True,
-    "formatters": {
-        "verbose": {
-            "()": UtcFormatter,
-            "format": "%(asctime)s %(levelname)s %(message)s",
-            "datefmt": "%Y-%m-%dT%H:%M:%S+00:00",
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
         },
-        "simple": {"format": "%(levelname)s %(asctime)s %(message)s"},
-    },
-    "handlers": {
-        "null": {"level": "DEBUG", "class": "logging.NullHandler"},
-        "console": {"level": "INFO", "class": "logging.StreamHandler", "formatter": "simple"},
-        "file": {
-            "level": "INFO",
-            "class": "logging.handlers.TimedRotatingFileHandler",
-            "filename": "django.log",
-            "when": "midnight",
-            "formatter": "verbose",
-        },
-        "mail_admins": {"level": "ERROR", "class": "django.utils.log.AdminEmailHandler"},
-    },
-    "loggers": {
-        "django": {"level": "INFO", "handlers": ["file"], "propagate": True},
-        "django.request": {"level": "ERROR", "handlers": ["file"], "propagate": False},
-        "powerplant_challenge": {"level": "INFO", "handlers": ["file"], "propagate": False},
     },
 }
+
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": ["templates"],
+    }
+]

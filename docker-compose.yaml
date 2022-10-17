@@ -6,7 +6,12 @@ services:
     ports:
       - 8888:8888
     volumes:
-      - data:/data
       - .:/source
+    links:
+      - redis
+  redis:
+    image: redis:5-alpine
+    ports:
+      - 6379:6380
 volumes:
   data:

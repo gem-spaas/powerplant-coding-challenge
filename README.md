@@ -1,10 +1,10 @@
 # powerplant-coding-challenge
 
 
-## Welcome !
 
-## The challenge
-This repo contains a .net 6 solution to solve the powerplant-coding-challeng.
+## Description
+This repo contains a .net 6 solution to solve the powerplant-coding-challeng into 4 hors.
+
 
 ## How to Run and Install the application
 

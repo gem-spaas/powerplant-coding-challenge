@@ -10,16 +10,22 @@ namespace PowerplantCodingChallenge.Controllers
     public class ProductionPlantController : ControllerBase
     {
         private readonly IPowerProductionService _powerProductionService;
-        public ProductionPlantController(IPowerProductionService powerProductionService)
+        private readonly ILogger<ProductionPlantController> _logger;
+        public ProductionPlantController(IPowerProductionService powerProductionService, ILogger<ProductionPlantController> logger)
         {
             this._powerProductionService = powerProductionService;
+            this._logger = logger;
         }
 
         [HttpPost(Name = "/productionplan")]
         public async Task<IActionResult> Post(Payload payload)
-        {
+        {          
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var powerSupply = await _powerProductionService.GetPowerSupply(payload);
-            
+
             return Ok(powerSupply);
         }
     }

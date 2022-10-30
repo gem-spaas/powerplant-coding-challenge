@@ -10,7 +10,7 @@ namespace PowerplantCodingChallenge.Models
         [Required]
         public Fuel Fuels { get; set; }
         [Required]
-        public IEnumerable<PowerPlant> PowerPlants { get; set; }
+        public List<PowerPlant> PowerPlants { get; set; }
 
     }
 }

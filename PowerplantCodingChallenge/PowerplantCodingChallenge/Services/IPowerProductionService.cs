@@ -5,6 +5,6 @@ namespace PowerplantCodingChallenge.Services
 {
     public interface IPowerProductionService
     {
-        public Task<List<PayloadResponse>> GetPowerSupply(Payload payload);
+        public Task<List<UnitCommitment>> GetPowerPlantsActivatedByUnitCost(Payload payload);
     }
 }

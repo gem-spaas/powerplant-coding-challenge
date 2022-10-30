@@ -32,6 +32,7 @@ app.Run();
 void ConfigureServices(IServiceCollection services)
 {
     services.AddTransient<IPowerProductionService, PowerProductionService>();
+    services.AddTransient<IPowerPlantService, PowerPlantService>();
     services.AddControllers().AddJsonOptions(opt =>
     {
         opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());

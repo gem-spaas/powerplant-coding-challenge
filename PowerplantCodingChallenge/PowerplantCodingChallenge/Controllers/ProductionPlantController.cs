@@ -24,7 +24,7 @@ namespace PowerplantCodingChallenge.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var powerSupply = await _powerProductionService.GetPowerSupply(payload);
+            var powerSupply = await _powerProductionService.GetPowerPlantsActivatedByUnitCost(payload);
 
             return Ok(powerSupply);
         }

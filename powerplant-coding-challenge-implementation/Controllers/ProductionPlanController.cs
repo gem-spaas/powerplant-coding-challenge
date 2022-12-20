@@ -30,6 +30,8 @@ namespace powerplant_coding_challenge_implementation.Controllers
 
             List<ProductionPlanResponse> response = _loadAssignor.Assign(meritOrderedPowerPlants,productionPlanPayload.Load);
 
+            _logger.LogTrace($"Exit PostProductionPlan Status : Ok");
+
             return Ok(response);
         }
     }

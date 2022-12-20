@@ -31,13 +31,6 @@ namespace powerplant_coding_challenge_implementation.Controllers
             List<ProductionPlanResponse> response = _loadAssignor.Assign(meritOrderedPowerPlants,productionPlanPayload.Load);
 
             return Ok(response);
-
-            //return Ok(new List<ProductionPlanResponse>() { 
-            //    new() { Name = "windpark1",Production = 75 },
-            //    new() { Name = "windpark2",Production = 18 },
-            //    new() { Name = "gasfiredbig1",Production = 200 },
-            //    new() { Name = "gasfiredbig1",Production = 0 },
-            //});
         }
     }
 }

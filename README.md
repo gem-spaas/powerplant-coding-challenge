@@ -10,7 +10,7 @@ How to run the application
 ### Create a project in PyCharm (or equivalent)
     - copy the files in a new project
     - open main.py
-    - import the relevant modules : Flask and request
+    - import the relevant modules : Flask ,request and json
     - run main.py
 
 

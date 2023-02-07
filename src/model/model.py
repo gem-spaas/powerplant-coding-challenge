@@ -6,8 +6,10 @@ def energy_plan(data):
     fuels = data.fuels
     powerplants = data.powerplants
 
-    powerplant_type_cost = {'gasfired': fuels.get('gas(euro/MWh)'), 'turbojet': fuels.get('kerosine(euro/MWh)'), 'windturbine': 0.1}
+    powerplant_type_cost = {'gasfired': fuels.get('gas(euro/MWh)'), 'turbojet': fuels.get('kerosine(euro/MWh)'), 'windturbine': fuels.get('wind(%)')}
     for powerplant in powerplants:
+        if powerplant.get('type') == 'windturbine':
+            powerplant['pmax'] *= powerplant_type_cost['windturbine']/100
         powerplant['MWH_cost'] = powerplant_type_cost.get(powerplant.get('type'))/powerplant.get('efficiency')
         powerplant['rank'] = powerplant.get('MWH_cost') * (powerplant.get('pmin') + 1) / powerplant.get('pmax')
         powerplant['p'] = 0

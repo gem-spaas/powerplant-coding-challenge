@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  flask_app:
+    container_name: flask_app
+    image: dockerhub-flask_live_app:1.0.0
+    build: .
+    ports:
+      - "8888:8888"
+    
+volumes:
+  pgdata: {}

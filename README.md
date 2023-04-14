@@ -5,29 +5,43 @@ To install the required packages from the `requirements.txt` file and run the Fa
 
 2.  Open a terminal window and navigate to the directory containing the `requirements.txt` file and the `main.py` file.
 
-3.  Create a virtual environment using the following command:
+# A. Virtualenv
+
+3. Create a virtual environment using the following command:
 ```bash
 python3 -m venv  venv
 ```
 
-4.  Activate the virtual environment using the following command:
+4. Activate the virtual environment using the following command:
 ```bash
 source  venv/bin/activate
 ```
 
-5.  Install the required packages using the following command:
+5. Install the required packages using the following command:
 ```bash
 pip install -r requirements.txt
 ```
 
-6.  Once the packages are installed, run the `main.py` file using the following command:
+6. Once the packages are installed, run the `main.py` file using the following command:
 ```bash
 uvicorn  main:app
 ```
 
-7.  The FastAPI application should now be running on `http://<computer_ip>:8888`.
+7. The FastAPI application should now be running on `http://<computer_ip>:8888`.
 
-8.  To stop the application, press `Ctrl+C` in the terminal window and then deactivate the virtual environment using the following command:
+8. To stop the application, press `Ctrl+C` in the terminal window and then deactivate the virtual environment using the following command:
 ```bash
 deactivate
+```
+
+# B. Docker (alternative)
+
+3. Run the following command to build the Docker image
+```bash
+docker build -t jeypaypowerplantimage .
+```
+
+4. Run the following command run the Docker image
+```bash
+docker run -d --name jeypaypowerplantcontainer -p 8888:8888 jeypaypowerplantimage
 ```

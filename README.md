@@ -4,16 +4,13 @@ The REST API is served on http://localhost:8888 and a swagger is available at ht
 
 ## In CLI
 
-Go to the subfolder \ProductionPlan\ProductionPlan and execute dotnet run.
+Go to the subfolder `\ProductionPlan\ProductionPlan` and execute `dotnet run`.
 
 ## Docker
 
 A Dockerfile is available in the root folder. It will build, test and publish the app. If a unit test failed during the process, it stops so we can be sure there is never an invalid image available in the registry.
 
-In the src folder, execute the following commands:
-
-docker build -t produtionplan:latest .
-docker run --rm -it -p 8888:80 produtionplan:latest
+We can run this application in docker using VS2022 by selecting start option. 
 
 ## Implementation detail
 

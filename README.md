@@ -1,10 +1,13 @@
-In Visual Studio or Rider
+## In Visual Studio or Rider
+
 The REST API is served on http://localhost:8888 and a swagger is available at http://localhost:8888/swagger/index.html when the app is launched in the development environnement.
 
-In CLI
+## In CLI
+
 Go to the subfolder \ProductionPlan\ProductionPlan and execute dotnet run.
 
-Docker
+## Docker
+
 A Dockerfile is available in the root folder. It will build, test and publish the app. If a unit test failed during the process, it stops so we can be sure there is never an invalid image available in the registry.
 
 In the src folder, execute the following commands:
@@ -12,12 +15,15 @@ In the src folder, execute the following commands:
 docker build -t produtionplan:latest .
 docker run --rm -it -p 8888:80 produtionplan:latest
 
-Implementation detail
+## Implementation detail
+
 1. Identify the merit order of the power plants based cost of operation
+
 2. Linear algorithm to find the suitable power plants based on cost of operation. I am sure this may not be perfect solution but I couldn't find any other algo for this (Dijkstra?? but it needs connections between them with weight that I couldn't establish since each type of plants have their own capacity and cost).
+
 3. Hence, I start with low/zero cost plants to match the load and then gradually to the higher cost if all lower cost plants were consumed.
 
-Note: I have used VS2022 with .Net 7.0 for the ASP.NET core WEB API project with docker support. I have tested this in my dev system using Docker for windows with DockerDefaultTargetOS as Linux.
+`Note:` I have used VS2022 with .Net 7.0 for the ASP.NET core WEB API project with docker support. I have tested this in my dev system using Docker for windows with DockerDefaultTargetOS as Linux.
 
 Original Readme
 # powerplant-coding-challenge

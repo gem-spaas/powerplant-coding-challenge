@@ -1,12 +1,21 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+FROM mcr.microsoft.com/dotnet/aspnet:7.0-alpine AS base
 WORKDIR /app
+EXPOSE 80
 
-COPY . ./
-RUN dotnet publish PowerPlant.Api -c Release -o PowerPlant.Api/out
+FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
+WORKDIR /src
+COPY ["PowerPlant.Api/PowerPlant.Api.csproj", "PowerPlant.Api/"]   
+COPY ["PowerPlant.Domain/PowerPlant.Domain.csproj", "PowerPlant.Domain/"]
+COPY ["PowerPlant.Services/PowerPlant.Services.csproj", "PowerPlant.Services/"]
+RUN dotnet restore "PowerPlant.Api/PowerPlant.Api.csproj"
+COPY . .
+WORKDIR "/src/PowerPlant.Api"
+RUN dotnet build "PowerPlant.Api.csproj" -c Release -o /app/build
 
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
+FROM build AS publish
+RUN dotnet publish "PowerPlant.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
 WORKDIR /app
-COPY --from=build-env /app/PowerPlant.Api/out .
-
-
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "PowerPlant.Api.dll"]

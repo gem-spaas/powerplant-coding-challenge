@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  powerplant-api:
+    image: powerplant-api:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+      - "443:443"

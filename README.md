@@ -4,23 +4,23 @@
 
 ## Install via docker
 To build the image cd into the project root and the type:
-```docker build -t power-planner```
+```docker build -t power-planner```.
 Then run it with:
-```docker run -p 8888:8888 power-planner```
+```docker run -p 8888:8888 power-planner```.
 Available at:
-```http://localhost:8888/docs```
+```http://localhost:8888/docs```.
 
 ## Install manually
 Change directory into project root then:
 
-```python3 -m venv venv```
-```source venv/bin/activate```
-```pip install -r requirements.txt```
+```python3 -m venv venv```.
+```source venv/bin/activate```.
+```pip install -r requirements.txt```.
 ```cd app```
 Then run it with:
-```uvicorn main:app --port 8888```
+```uvicorn main:app --port 8888```.
 Available at:
-```http://localhost:8888/docs```
+```http://localhost:8888/docs```.
 
 
 ## Comments

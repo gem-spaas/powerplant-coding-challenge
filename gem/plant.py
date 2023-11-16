@@ -57,3 +57,15 @@ class GasFired(PowerPlant):
     def maxSupply(self):
         return self.pmax()
 
+class PowerPlantFactory:
+    def powerPlant(self, plant, fuels):
+        if plant is None:
+            raise ValueError("Invalid power plant provided: {}".format(plant))
+        elif plant["type"] == "gasfired":
+            return GasFired(plant, fuels)
+        elif plant["type"] == "turbojet":
+            return TurboJet(plant, fuels)
+        elif plant["type"] == "windturbine":
+            return WindTurbine(plant, fuels)
+        else:
+            raise ValueError("Invalid power plant type provided: '{}'".format(plant["type"]))

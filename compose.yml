@@ -8,7 +8,7 @@ services:
     ports:
       - 8888:8888
     environment:
-      FLASK_APP: service.py
+      FLASK_APP: app.py
       FLASK_RUN_HOST: "0.0.0.0"
       FLASK_DEBUG: true
     restart: unless-stopped

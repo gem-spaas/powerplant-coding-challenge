@@ -14,22 +14,23 @@ logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler(sys.stderr))
 
 
+def log_error(msg):
+    logger.error(msg)
+    return msg
+
 @app.route("/productionplan", methods=["POST"])
 def production_plan():
     try:
         payload = request.get_json()
-        request.get_json()
-        if not payload:
-            logger.error({"error": "Invalid payload"})
-            response = {"error": "Invalid payload"}
-        else:
-            logger.debug({"payload" : payload})
+        if payload:
+            logger.debug({ "payload" : payload})
             response = payload
+            logger.debug({ "response" : response })
+        else:
+            response = log_error({ "error": "The requested payload is not valid" })
     except Exception as e:
-        logger.error({"error" : "Error in production plan endpoint"})
-        response = { "error": str(e) }
-
-    logger.debug({"response" : response})
+        response = log_error({ "error": { "msg": "Exception in 'productionplan' endpoint occured", "desc": str(e) } })
+    
     return jsonify(response)
 
 

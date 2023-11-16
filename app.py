@@ -5,8 +5,9 @@ import json_logging, logging
 
 from flask import Flask, request, jsonify
 
-
 from gem.power import PowerSupply
+from gem.payload import Payload
+
 
 app = Flask(__name__)
 json_logging.init_flask(enable_json=True)
@@ -26,7 +27,7 @@ def production_plan():
         payload = request.get_json()
         if payload:
             logger.debug({ "payload" : payload})
-            response = PowerSupply(payload).production_plan()
+            response = PowerSupply(Payload(payload)).calculate_production()
             logger.debug({ "response" : response })
         else:
             response = log_error({ "error": "The requested payload is not valid" })

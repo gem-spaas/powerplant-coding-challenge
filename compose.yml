@@ -1,5 +1,7 @@
 services:
   productionplan:
+    build: 
+      context: .
     image: productionplan
     networks:
       - engie

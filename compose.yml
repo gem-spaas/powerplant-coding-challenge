@@ -1,0 +1,11 @@
+services:
+  productionplan:
+    image: productionplan
+    networks:
+      - engie
+    ports:
+      - 8888:8888
+    
+networks:
+  engie:
+    name: engie

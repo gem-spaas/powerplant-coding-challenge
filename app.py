@@ -17,7 +17,7 @@ logger.addHandler(logging.StreamHandler(sys.stderr))
 @app.route("/productionplan", methods=["POST"])
 def production_plan():
     try:
-        payload = " { dummy: 'dummyval'} " 
+        payload = request.get_json()
         request.get_json()
         if not payload:
             logger.error({"error": "Invalid payload"})

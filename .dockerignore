@@ -3,3 +3,6 @@ venv
 __pycache__
 example_payloads
 .gitignore
+*.md
+Dockerfile
+compose.yml

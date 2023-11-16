@@ -32,3 +32,28 @@ class PowerPlant:
             self.name(), self.type(), self.efficiency(), self.pmin(), self.pmax(), self.cost()
         )
 
+class WindTurbine(PowerPlant):
+    def __init__(self, plant, fuels):
+        super().__init__(plant)
+        self.plant["cost(euro/MWh)"] = 0
+        self.wind = fuels["wind(%)"]
+
+    def maxSupply(self):
+        return self.pmax() * self.wind / 100
+
+class TurboJet(PowerPlant):
+    def __init__(self, plant, fuels):
+        super().__init__(plant)
+        self.plant["cost(euro/MWh)"] = fuels["kerosine(euro/MWh)"] / self.plant["efficiency"]
+
+    def maxSupply(self):
+        return self.pmax()
+
+class GasFired(PowerPlant):
+    def __init__(self, plant, fuels):
+        super().__init__(plant)
+        self.plant["cost(euro/MWh)"] = fuels["gas(euro/MWh)"] / self.plant["efficiency"]
+   
+    def maxSupply(self):
+        return self.pmax()
+

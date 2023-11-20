@@ -97,3 +97,41 @@ For more info on energy management, check out:
 ##### Can an existing solver be used to calculate the unit-commitment
 Implementations should not rely on an external solver and thus contain an algorithm written from scratch (clarified in the text as of version v1.1.0)
 
+## Challenge developed by Alvaro Ramos de Santiago
+
+#### Introduction
+
+A microservice with FastAPI and Uvicorn was developed for this challenge. The microservice receives a payload.json and returns a result.json with the powerplants activated with their own enery supply.
+
+#### Previously
+
+Install poetry:
+curl -sSL https://install.python-poetry.org | python3 -
+
+
+#### Run microservice
+
+##### Standalone
+
+cd /pat_to_git_repo
+make sure .toml file is in
+poetry shell
+poetry install
+poetry run python main.py
+
+##### Docker
+cd /pat_to_git_repo
+make sure Dockerfile is in
+docker build -t energy .
+docker run -p 8888:8888 energy
+
+#### Test microservice
+Once the microservice has been started up, open a new tab and type:
+http://localhost:8888/docs
+Open the endpoint productionplan, and push try it out.
+Stick in the body, one of the payload.json and push execute
+In reponses, it's generated the new response.json
+
+
+
+

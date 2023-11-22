@@ -39,11 +39,12 @@ class App:
         try:
             fuels = payload["fuels"]
             load = payload["load"]
-            powerplants = payload["powerplants"]
+            powerplants_data = payload["powerplants"]
         except KeyError as e:
             return {"msg": f"Invalid payload format: '{e}' is missing"}, 400
 
-        powerplants = self.service.create_powerplants(powerplants, fuels)
+        powerplants = self.service.create_powerplants(powerplants_data, fuels)
+        powerplants = self.service.sort_by_power_cost(powerplants)
 
         production_plan = self.service.get_production_plan(load, powerplants, fuels)
 

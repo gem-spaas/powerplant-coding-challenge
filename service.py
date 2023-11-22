@@ -1,4 +1,4 @@
-from model import PowerPlant
+from models.powerplant import Windturbine, Gasfired, Turbojet
 
 # Constants
 CO2_EMMISION_FACTOR = 0.3
@@ -11,61 +11,58 @@ class Service:
     def create_powerplants(self, powerplants_data, fuels):
         """
         Method that given a dictionary of powerplants data, creates a
-        Powerplant object for each one, calculating their real cost
-        of generated electric power, and sorts them in merit-order.
+        Powerplant object for each one, based on their type and taking
+        into account their extra attributes.
 
         Args:
             powerplants_data (dictionary): contains the powerplants data
             fuels (dictionary): contains the current fuels info
 
         Returns:
-            list: sorted Powerplant objects by cost
+            list: created Powerplant objects
         """
         self.powerplants = []
 
         # Create an object for each given powerplant and add it to the list
         for data in powerplants_data:
-            # Create a new Powerplant object
-            powerplant = PowerPlant(**data)
-            # Calculate the real cost of a generated MWh
-            powerplant.cost = self.calculate_cost(
-                powerplant.type, powerplant.efficiency, fuels
-            )
+            # Take into account the type of powerplant and its extra attributes
+            type_ = data["type"]
+
+            if type_ == "windturbine":
+                powerplant = Windturbine(**data)
+
+            if type_ == "gasfired":
+                gasfired_data = data.copy()
+                gasfired_data.update(
+                    {
+                        "gas_price": fuels["gas(euro/MWh)"],
+                        "co2_price": fuels["co2(euro/ton)"],
+                    }
+                )
+                powerplant = Gasfired(**gasfired_data)
+
+            if type_ == "turbojet":
+                turbojet_data = data.copy()
+                turbojet_data.update({"kerosine_price": fuels["kerosine(euro/MWh)"]})
+                powerplant = Turbojet(**turbojet_data)
+
             # Add the powerplant to the list
             self.powerplants.append(powerplant)
 
-        # Now sort the list by its real cost, but keep the original
-        sorted_plants = sorted(self.powerplants, key=lambda x: x.cost)
+        return self.powerplants
 
-        return sorted_plants
-
-    def calculate_cost(self, type, efficiency, fuels):
+    def sort_by_power_cost(self, powerplants):
         """
-        Method that calculates the real cost of generating electrical power
-        based on the powerplant type and efficiency.
+        Method that sorts the powerplants based on their real cost of
+        generating electrical power, which will be the merit-order.
 
         Args:
-            type (str): type of powerplant
-            efficiency (float): thermal efficiency of a plant
-            fuels (dictionary): contains the current fuels info
+            powerplants (list): PowerPlant objects
 
         Returns:
-            float: real cost of the generated power
+            list: sorted PowerPlant objects by cost
         """
-        if type == "windturbine":
-            return 0
-
-        elif type == "gasfired":
-            # gas(euro/MWh) / efficiency x (0.3 * co2(euro/ton))
-            return (
-                fuels["gas(euro/MWh)"]
-                / efficiency
-                * (CO2_EMMISION_FACTOR * fuels["co2(euro/ton)"])
-            )
-
-        elif type == "turbojet":
-            # kerosine(euro/MWh) / efficiency
-            return fuels["kerosine(euro/MWh)"] / efficiency
+        return sorted(powerplants, key=lambda x: x.power_cost)
 
     def get_production_plan(self, load, powerplants, fuels):
         """
@@ -88,34 +85,50 @@ class Service:
 
         production_plan = []
 
-        for plant in powerplants:
+        for i, plant in enumerate(powerplants):
             # Initialize the generated power from a plant
             generated_power = 0
-
-            # In case ww reached the needed load, we could do a break, but
-            # we want to log the unused plant as well
-            if load_remaining <= 0:
-                production_plan.append({"name": plant.name, "p": generated_power})
-                continue
 
             # Wind turbines pmax depend on the percentage of wind
             if plant.type == "windturbine":
                 plant.pmax = plant.pmax * fuels.get("wind(%)") / 100
 
+            # In case we reached the needed load, we could do a break, but
+            # we want to log the unused plant as well
+            if load_remaining == 0:
+                pass
+
+            elif plant.pmax == 0:
+                pass
+
             # If the pmin of a plant is bigger than the remaining load, we
             # shouldn't turn it on, so we pass to the next one
-            if plant.pmin > load_remaining:
-                continue
+            elif plant.pmin > load_remaining:
+                pass
 
-            # If the pmax is higher than the remaining load, we take as much
-            # load as needed to reach the remaining, which will result in 0
-            if plant.pmax > load_remaining:
+            # If the pmax is higher than the remaining load, we take all the
+            # generated power, which will result in load_remaining=0
+            elif plant.pmax > load_remaining:
                 generated_power += load_remaining
                 load_remaining -= generated_power
 
-            # Else, we take all the available energy
-            else:
-                generated_power += plant.pmax
+            # If the pmax is lower, we will take as much power as possible,
+            # taking into account the next powerplant pmin, to avoid extra
+            # cost because of not turning it on
+            elif plant.pmax < load_remaining:
+                temp_remaining = load_remaining - plant.pmax
+                try:
+                    if temp_remaining < powerplants[i + 1].pmin:
+                        generated_power += load_remaining - (
+                            plant.pmax - (powerplants[i + 1].pmin - temp_remaining)
+                        )
+
+                    else:
+                        generated_power += plant.pmax
+
+                except IndexError:
+                    generated_power += plant.pmax
+
                 load_remaining -= generated_power
 
             production_plan.append({"name": plant.name, "p": generated_power})

@@ -1,5 +1,10 @@
 from flask import Flask, Response, request
 
+from services.exceptions import (
+    InvalidPayload,
+    InvalidPayloadPowerplants,
+    InvalidPayloadFuels,
+)
 from service import Service
 
 
@@ -35,20 +40,32 @@ class App:
         if not payload:
             return {"msg": "Invalid body"}, 400
 
+        try:
+            production_plan = self.calculate_production_plan(payload)
+        except InvalidPayloadPowerplants as e:
+            return {"msg": f"{e}"}, 400
+        except InvalidPayloadFuels as e:
+            return {"msg": f"{e}"}, 400
+        except InvalidPayload as e:
+            return {"msg": f"{e}"}, 400
+
+        return production_plan, 200
+
+    def calculate_production_plan(self, payload):
         # Separate the payload, with a basic error handling
         try:
             fuels = payload["fuels"]
             load = payload["load"]
             powerplants_data = payload["powerplants"]
         except KeyError as e:
-            return {"msg": f"Invalid payload format: '{e}' is missing"}, 400
+            raise InvalidPayload(e)
 
         powerplants = self.service.create_powerplants(powerplants_data, fuels)
         powerplants = self.service.sort_by_power_cost(powerplants)
 
         production_plan = self.service.get_production_plan(load, powerplants, fuels)
 
-        return production_plan, 200
+        return production_plan
 
 
 def create_app():

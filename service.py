@@ -1,4 +1,8 @@
 from models.powerplant import Windturbine, Gasfired, Turbojet
+from services.exceptions import (
+    InvalidPayloadPowerplants,
+    InvalidPayloadFuels,
+)
 
 # Constants
 CO2_EMMISION_FACTOR = 0.3
@@ -26,24 +30,37 @@ class Service:
         # Create an object for each given powerplant and add it to the list
         for data in powerplants_data:
             # Take into account the type of powerplant and its extra attributes
-            type_ = data["type"]
+            try:
+                type_ = data["type"]
+            except KeyError as e:
+                raise InvalidPayloadPowerplants(e)
 
             if type_ == "windturbine":
                 powerplant = Windturbine(**data)
 
             if type_ == "gasfired":
                 gasfired_data = data.copy()
-                gasfired_data.update(
-                    {
-                        "gas_price": fuels["gas(euro/MWh)"],
-                        "co2_price": fuels["co2(euro/ton)"],
-                    }
-                )
+                try:
+                    gasfired_data.update(
+                        {
+                            "gas_price": fuels["gas(euro/MWh)"],
+                            "co2_price": fuels["co2(euro/ton)"],
+                        }
+                    )
+                except KeyError as e:
+                    raise InvalidPayloadFuels(e)
+
                 powerplant = Gasfired(**gasfired_data)
 
             if type_ == "turbojet":
                 turbojet_data = data.copy()
-                turbojet_data.update({"kerosine_price": fuels["kerosine(euro/MWh)"]})
+                try:
+                    turbojet_data.update(
+                        {"kerosine_price": fuels["kerosine(euro/MWh)"]}
+                    )
+                except KeyError as e:
+                    raise InvalidPayloadFuels(e)
+
                 powerplant = Turbojet(**turbojet_data)
 
             # Add the powerplant to the list

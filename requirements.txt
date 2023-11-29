@@ -1,3 +1,4 @@
 Flask
 Werkzeug==2.2.2  # Flask 2.1.2 onwards isn't made for Werkzeug 3.0.0 yet
 python-dotenv
+pytest

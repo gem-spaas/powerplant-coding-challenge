@@ -3,97 +3,100 @@
 
 ## Welcome !
 
-Below you can find the description of a coding challenge that we ask people to perform when applying for a job in our team.
+This repo is created to show the solution for **powerplant coding challenge** provided by [Engie - GEM](https://gems.engie.com/). You can access  [the original Readme](original_README.md) and [repo](https://github.com/gem-spaas/powerplant-coding-challenge) of the challenge with [link]
 
-The goal of this coding challenge is to provide the applicant some insight into the business we're in and as such provide the applicant an indication about the challenges she/he will be confronted with. Next, during the first interview we will use the applicant's implementation as a seed to discuss all kinds of interesting software engineering topics.  
+## Understand the Problem
+Main problem is that **we can not store the electricity in a cheap way**. Because of that we need to predict the **demand** about electricity consumption. To meet this electricity demand, there are different types of power plants, like ones using **gas, kerosine, or even windmills**. Each power plant has its own **cost** to produce electricity and the cost generally is like below for all of them.
+- Windmills (0) < gas (\$) < kerosine (\$$)
 
-Time is scarce, we know. Therefore we ask you not to spend more than 4 hours on this challenge. We know it is not possible to deliver a finished implementation of the challenge in only four hours. Even though your submission will not be complete, it will provide us plenty of information and topics to discuss later on during the talks.
+<br>There are 3 types of **powerplant** for 3 types of energy
 
-This coding-challenge is part of a formal process and is used in collaboration with the recruiting companies we work with.  Submitting a pull-request will not automatically trigger the recruitement process.
-## Who are we 
+1. Gasfired (gas)
+2. Turbojet (kerosine)
+3. Windturbine (wind)
 
-We are the IS team of the 'Short-term Power as-a-Service' (a.k.a. SPaaS) team within [GEM](https://gems.engie.com/).
+<p>
+An energy production company may utilize various types of power plants to fulfill electricity demand. In addition, gasfired powerplants might incur different efficiency, but gas price is same.
+</p>
 
-[GEM](https://gems.engie.com/), which stands for 'Global Energy Management', is the energy management arm of [ENGIE](https://www.engie.com/), one of the largest global energy players, 
-with access to local markets all over the world.  
+<p>
+So, at any given moment, we need to decide which power plants to turn on to meet the electricity demand in the most cost-effective way. This is where the "unit-commitment problem" comes in. We have to figure out the best combination of power plants to use, considering their costs and how much electricity they can produce.
+</p>
 
-SPaaS is a team consisting of around 100 people with experience in energy markets, IT and modeling. In smaller teams consisting of a mix of people with different experiences, we are active on the [day-ahead](https://en.wikipedia.org/wiki/European_Power_Exchange#Day-ahead_markets) market, [intraday markets](https://en.wikipedia.org/wiki/European_Power_Exchange#Intraday_markets) and [collaborate with the TSO to balance the grid continuously](https://en.wikipedia.org/wiki/Transmission_system_operator#Electricity_market_operations).
+<p>
+Here's another thing to consider: Some power plants have a minimum amount of electricity they have to produce when they're turned on. We call this the "Pmin." So, when deciding which power plants to activate, we need to think about both their maximum capacity (Pmax) and this minimum amount they have to generate (Pmin).
+</p>
 
-## The challenge
+<p>
+The goal is to supply the needed electricity at the lowest cost by choosing the right combination of power plants, considering their different costs, capacities, and minimum production requirements.
+</p>
 
-### In short
-Calculate how much power each of a multitude of different [powerplants](https://en.wikipedia.org/wiki/Power_station) need to produce (a.k.a. the production-plan) when the [load](https://en.wikipedia.org/wiki/Load_profile) is given and taking into account the cost of the underlying energy sources (gas,  kerosine) and the Pmin and Pmax of each powerplant.
+## Solution
+<p>The primary challenge lies in establishing the merit order, a crucial factor in determining the activation sequence of power plants and the corresponding power output. This sequence is determined based on the cost of fuels associated with each power plant, forming the foundation for decisions on which power plants to activate and the quantity of power they will generate.<p>
 
-### More in detail
-
-The load is the continuous demand of power. The total load at each moment in time is forecasted. For instance for Belgium you can see the load forecasted by the grid operator [here](https://www.elia.be/en/grid-data/load-and-load-forecasts).
-
-At any moment in time, all available powerplants need to generate the power to exactly match the load.  The cost of generating power can be different for every powerplant and is dependent on external factors: The cost of producing power using a [turbojet](https://en.wikipedia.org/wiki/Gas_turbine#Industrial_gas_turbines_for_power_generation), that runs on kerosine, is higher compared to the cost of generating power using a gas-fired powerplant because of gas being cheaper compared to kerosine and because of the [thermal efficiency](https://en.wikipedia.org/wiki/Thermal_efficiency) of a gas-fired powerplant being around 50% (2 units of gas will generate 1 unit of electricity) while that of a turbojet is only around 30%.  The cost of generating power using windmills however is zero. Thus deciding which powerplants to activate is dependent on the [merit-order](https://en.wikipedia.org/wiki/Merit_order).
-
-When deciding which powerplants in the merit-order to activate (a.k.a. [unit-commitment problem](https://en.wikipedia.org/wiki/Unit_commitment_problem_in_electrical_power_production)) the maximum amount of power each powerplant can produce (Pmax) obviously needs to be taken into account.  Additionally gas-fired powerplants generate a certain minimum amount of power when switched on, called the Pmin. 
+<p>Certainly! We aim to determine the minimum cost of meeting electricity demand by considering the constraints of various power plants. The selection process relies on the cost of energy production from these power plants. This involves employing a **uniform cost search algorithm**. Unlike having a predefined map, path, or graph illustrating the sequence of power plants in operation, we will generate multiple path options by initiating each power plant. Subsequently, we will choose the path with the lowest cost for our electricity production.</p>
 
 
-### Performing the challenge
+# Installation
 
-Build a REST API exposing an endpoint `/productionplan` that accepts a POST of which the body contains a payload as you can find in the `example_payloads` directory and that returns a json with the same structure as in `example_response.json` and that manages and logs run-time errors.
+## 0) Environment Management with Conda
+pre-commit is optional, not obligation
+```
+conda create --name gem python=3.11
+conda activate gem
+pip install --upgrade pip
+pip install -r requirements.txt
+pre-commit install
+```
 
-For calculating the unit-commitment, we prefer you not to rely on an existing (linear-programming) solver but instead write an algorithm yourself.
+## 1) TESTS
+- Check the test code in [tests folder](tests/).
+### Unit Tests
+- The purpose of unit testing is to validate that each unit of the software performs as designed.
+```
+pytest tests/unit_tests
+```
+### Integration Tests
+- The goal of integration testing is to detect issues that may arise when API is running.
+```
+pytest tests/integration_tests
+```
+### Performance Tets
+- The primary goal of performance testing is to identify and eliminate performance bottlenecks, ensuring that the application meets the desired performance criteria and provides a satisfactory user experience.
+```
+pytest tests/performance_tests/test_example_payloads.py
+```
 
-Implementations can be submitted in either C# (on .Net 5 or higher) or Python (3.8 or higher) as these are (currently) the main languages we use in SPaaS. Along with the implementation should be a README that describes how to compile (if applicable) and launch the application.
+## 2) API
+- Run API
+```
+uvicorn app.main:app --port 8888 --reload
+```
+- See the running API on ['http://localhost:8888/docs'](http://localhost:8888/docs) and Find the API documentation showing the endpoints
+- Send post and get requests to check whether API is working correctly. You can use example [payloads](example_payloads) to send an example post request.
+- Simulate error by sending get request in "/error" endpoint, and find the logs in error.log file in main folder.
+- The whole code about API is inside [app](app/) folder.
+![](docs/APIendpoints.jpg)
 
-- C# implementations should contain a project file to compile the application. 
-- Python implementations should contain a `requirements.txt` or a `pyproject.toml` (for use with poetry) to install all needed dependencies.
+## 3) [Install pre-commit](https://pre-commit.com/) *(optional, not obligation)*
+- Use black code formatter and check code style with flake8.
+- When you want to commit anything in git, pre-commit will check automatically your code.
+- You can check your whole code the command below.
+```
+pre-commit run --all-files
+```
 
-#### Payload
+## 4) [Version-bump your software with a single command!](https://pypi.org/project/bumpversion/)
+- Update the software version based on the scale of changes. We will use VERSION on the **docker tag** which we build.
+```
+bumpversion patch --allow-dirty
+bumpversion minor --allow-dirty
+bumpversion major --allow-dirty
+```
 
-The payload contains 3 types of data:
- - load: The load is the amount of energy (MWh) that need to be generated during one hour.
- - fuels: based on the cost of the fuels of each powerplant, the merit-order can be determined which is the starting point for deciding which powerplants should be switched on and how much power they will deliver.  Wind-turbine are either switched-on, and in that case generate a certain amount of energy depending on the % of wind, or can be switched off. 
-   - gas(euro/MWh): the price of gas per MWh. Thus if gas is at 6 euro/MWh and if the efficiency of the powerplant is 50% (i.e. 2 units of gas will generate one unit of electricity), the cost of generating 1 MWh is 12 euro.
-   - kerosine(euro/Mwh): the price of kerosine per MWh.
-   - co2(euro/ton): the price of emission allowances (optionally to be taken into account).
-   - wind(%): percentage of wind. Example: if there is on average 25% wind during an hour, a wind-turbine with a Pmax of 4 MW will generate 1MWh of energy.
- - powerplants: describes the powerplants at disposal to generate the demanded load. For each powerplant is specified:
-   - name:
-   - type: gasfired, turbojet or windturbine.
-   - efficiency: the efficiency at which they convert a MWh of fuel into a MWh of electrical energy. Wind-turbines do not consume 'fuel' and thus are considered to generate power at zero price.
-   - pmax: the maximum amount of power the powerplant can generate.
-   - pmin: the minimum amount of power the powerplant generates when switched on. 
-
-#### response
-
-The response should be a json as in `example_payloads/response3.json`, which is the expected answer for `example_payloads/payload3.json`, specifying for each powerplant how much power each powerplant should deliver. The power produced by each powerplant has to be a multiple of 0.1 Mw and the sum of the power produced by all the powerplants together should equal the load.
-
-### Want more challenge?
-
-Having fun with this challenge and want to make it more realistic. Optionally, do one of the extra's below:
-
-#### Docker
-
-Provide a Dockerfile along with the implementation to allow deploying your solution quickly.
-
-#### CO2
-
-Taken into account that a gas-fired powerplant also emits CO2, the cost of running the powerplant should also take into account the cost of the [emission allowances](https://en.wikipedia.org/wiki/Carbon_emission_trading).  For this challenge, you may take into account that each MWh generated creates 0.3 ton of CO2. 
-
-## Acceptance criteria
-
-For a submission to be reviewed as part of an application for a position in the team, the project needs to:
-  - contain a README.md explaining how to build and launch the API
-  - expose the API on port `8888`
-
-Failing to comply with any of these criteria will automatically disqualify the submission.
-
-## More info
-
-For more info on energy management, check out:
-
- - [Global Energy Management Solutions](https://www.youtube.com/watch?v=SAop0RSGdHM)
- - [COO hydroelectric power station](https://www.youtube.com/watch?v=edamsBppnlg)
- - [Management of supply](https://www.youtube.com/watch?v=eh6IIQeeX3c) - video made during winter 2018-2019
-
-## FAQ
-
-##### Can an existing solver be used to calculate the unit-commitment
-Implementations should not rely on an external solver and thus contain an algorithm written from scratch (clarified in the text as of version v1.1.0)
-
+## 5) Build  and Run Docker Container
+- Use app/requirements.txt in [Dockerfile](Dockerfile) to install the environement with only neccessary libraries to decrease the resource capacity of a Docker container.
+```
+docker build -t productionplan_api:$(cat VERSION | tr -d '\r') .
+docker run -d -p 8888:8888 productionplan_api:$(cat VERSION | tr -d '\r')
+```

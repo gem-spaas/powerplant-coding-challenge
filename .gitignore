@@ -1,0 +1,8 @@
+error.log
+*.ipynb
+*__pycache__
+*venv
+*.DS_Store
+*.csv
+*.ini
+*.json

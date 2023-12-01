@@ -63,6 +63,7 @@ def uniform_cost_search(powerplants: [PowerPlantAsset], demanded_load: float) ->
             # print(f"Visited node: {current_node.name}, load: {current_node.current_load}, cost: {current_node.current_cost}")
             frontier = []
         if path.total_load >= demanded_load:
+            path.enough_resource = True
             heapq.heappush(paths, path)
             path = Path()
             if start_state == len_powerplants - 1:

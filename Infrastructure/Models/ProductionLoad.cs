@@ -7,7 +7,7 @@ namespace powerplant_coding_challenge.Infrastructure.Models
     {
         public int Load { get; set; }
         public Fuels Fuels { get; set; } = null!;
-        public List<Powerplant> PowerPlants { get; set; } = null!;
+        public List<PowerPlant> PowerPlants { get; set; } = null!;
     }
 
     public class Fuels
@@ -22,7 +22,7 @@ namespace powerplant_coding_challenge.Infrastructure.Models
         public int Wind { get; set; }
     }
 
-    public class Powerplant
+    public class PowerPlant
     {
         public string Name { get; set; } = null!;
         public string Type { get; set; } = null!;

@@ -1,4 +1,7 @@
-﻿namespace GlobalEnergyManagement.Application.Endpoints;
+﻿using GlobalEnergyManagement.Application.Contracts;
+using GlobalEnergyManagement.Application.DTOs;
+
+namespace GlobalEnergyManagement.Application.Endpoints;
 
 public static class PowerPlantEndpoints
 {
@@ -8,11 +11,12 @@ public static class PowerPlantEndpoints
 
     }
 
-    private static async Task<IResult> CalculateProductionPlan()
+    private static async Task<IResult> CalculateProductionPlan(IPowerPlantService powerPlantService, PowerPlantPayload payload)
     {
         try
         {
-
+            var result = await powerPlantService.CalculateProductionPlan(payload);
+            
             return Results.Ok();
         }
         catch

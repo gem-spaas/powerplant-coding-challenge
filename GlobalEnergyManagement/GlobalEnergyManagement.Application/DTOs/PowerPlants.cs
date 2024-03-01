@@ -5,7 +5,12 @@ namespace GlobalEnergyManagement.Application.DTOs;
 public record PowerPlants(
     string Name,
     string Type,
-    float Efficiency,
-    [property: JsonPropertyName("pmin")] int PowerMin,
-    [property: JsonPropertyName("pmax")] int PowerMax
-);
+    double Efficiency,
+    [property: JsonPropertyName("pmin")] double PowerMin,
+    double PowerMax,
+    double Cost
+)
+{
+    [JsonPropertyName("pmax")] public double PowerMax { get; set; } = PowerMax;
+    [JsonIgnore] public double Cost { get; set; } = Cost;
+}

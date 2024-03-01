@@ -4,5 +4,6 @@ namespace GlobalEnergyManagement.Application.DTOs;
 
 public record PowerPlantPower(
     string Name,
-    [property: JsonPropertyName("p")] float Power
+    [property: JsonPropertyName("p")] double Power,
+    [property: JsonIgnore] double Cost
 );

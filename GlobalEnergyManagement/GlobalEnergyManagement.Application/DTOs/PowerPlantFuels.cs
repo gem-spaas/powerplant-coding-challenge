@@ -4,10 +4,10 @@ namespace GlobalEnergyManagement.Application.DTOs;
 
 public record PowerPlantFuels(
     [property: JsonPropertyName("gas(euro/MWh)")]
-    float GasEuroMegaWattHour,
+    double GasEuroMegaWattHour,
     [property: JsonPropertyName("kerosine(euro/MWh)")]
-    float KerosineEuroMegaWattHour,
+    double KerosineEuroMegaWattHour,
     [property: JsonPropertyName("co2(euro/ton)")]
-    float CarbonDioxideEuroTon,
+    double CarbonDioxideEuroTon,
     [property: JsonPropertyName("wind(%)")]
     int WindPercentage);

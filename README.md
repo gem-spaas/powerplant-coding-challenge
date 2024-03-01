@@ -34,7 +34,7 @@ To pull and build I could've setup a CI/CD pipeline to build the Dockerfile and 
 This is the result in debug mode just so you could see the costs. It wasn't requested by the exercice but I think it's important to show the costs.
 
 
-[Ordered results with cost for Payload 3](/docs/ordered-results-by-cost-in-unit-test.png)
+![Ordered results with cost for Payload 3](/docs/ordered-results-by-cost-in-unit-test.png)
 
 
 ## Payload 1 Result:

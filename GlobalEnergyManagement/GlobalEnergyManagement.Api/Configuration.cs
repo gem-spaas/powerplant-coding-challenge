@@ -1,4 +1,6 @@
-﻿using GlobalEnergyManagement.Application.Endpoints;
+﻿using GlobalEnergyManagement.Application.Contracts;
+using GlobalEnergyManagement.Application.Endpoints;
+using GlobalEnergyManagement.Application.Services;
 
 namespace GlobalEnergyManagement.Api;
 
@@ -6,15 +8,7 @@ public static class Configuration
 {
     public static void RegisterServices(this WebApplicationBuilder builder)
     {
-        var environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") 
-                          ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") 
-                          ?? builder.Services.BuildServiceProvider()?.GetService<IWebHostEnvironment>()?.EnvironmentName
-                          ?? string.Empty;
-
-        var configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
-            .Build();
+        builder.Services.AddScoped<IPowerPlantService, PowerPlantService>();
         
         builder.Services.AddLogging();
         builder.Services.AddHttpLogging(options => {});

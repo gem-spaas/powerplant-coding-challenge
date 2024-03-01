@@ -17,7 +17,7 @@ public static class PowerPlantEndpoints
         {
             var result = await powerPlantService.CalculateProductionPlan(payload);
             
-            return Results.Ok();
+            return Results.Ok(result);
         }
         catch
         {

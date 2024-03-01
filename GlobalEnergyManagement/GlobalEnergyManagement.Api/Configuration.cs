@@ -1,4 +1,6 @@
-﻿namespace GlobalEnergyManagement.Api;
+﻿using GlobalEnergyManagement.Application.Endpoints;
+
+namespace GlobalEnergyManagement.Api;
 
 public static class Configuration
 {
@@ -36,6 +38,7 @@ public static class Configuration
         app.UseHttpLogging();
 
         app.UseHttpsRedirection();
+        
+        app.MapGroup("/productionplan").MapPowerPlantEndpoints();
     }
-
 }

@@ -1,0 +1,6 @@
+@KiloWattNavigator_HostAddress = http://localhost:8888
+
+GET {{KiloWattNavigator_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

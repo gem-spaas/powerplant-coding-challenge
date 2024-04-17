@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34707.107
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{56EFF095-B0C3-4C49-AB6F-130D79735F57}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{25D9AB79-EB5D-4C8D-A186-DB05CA195BA7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KiloWattNavigator", "src\KiloWattNavigator\KiloWattNavigator.csproj", "{FA2A5C0B-AB6A-4C71-BC73-E727392A19AA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KiloWattNavigator.Domain", "src\KiloWattNavigator.Domain\KiloWattNavigator.Domain.csproj", "{0BA79E06-8852-4E91-8571-408AADBDDC6B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KiloWattNavigator.Service", "src\KiloWattNavigator.Service\KiloWattNavigator.Service.csproj", "{8243E0A7-E187-4CCC-AEF6-7EC0EA7F8F2E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KiloWattNavigator.Tests", "test\KiloWattNavigator.Tests\KiloWattNavigator.Tests.csproj", "{1DE3A0F0-BF94-4250-932B-39FC12CA5957}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8C2D713B-6DF7-4D5A-A0FE-29A2ADED30D7}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FA2A5C0B-AB6A-4C71-BC73-E727392A19AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA2A5C0B-AB6A-4C71-BC73-E727392A19AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA2A5C0B-AB6A-4C71-BC73-E727392A19AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA2A5C0B-AB6A-4C71-BC73-E727392A19AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BA79E06-8852-4E91-8571-408AADBDDC6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BA79E06-8852-4E91-8571-408AADBDDC6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BA79E06-8852-4E91-8571-408AADBDDC6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BA79E06-8852-4E91-8571-408AADBDDC6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8243E0A7-E187-4CCC-AEF6-7EC0EA7F8F2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8243E0A7-E187-4CCC-AEF6-7EC0EA7F8F2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8243E0A7-E187-4CCC-AEF6-7EC0EA7F8F2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8243E0A7-E187-4CCC-AEF6-7EC0EA7F8F2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DE3A0F0-BF94-4250-932B-39FC12CA5957}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DE3A0F0-BF94-4250-932B-39FC12CA5957}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DE3A0F0-BF94-4250-932B-39FC12CA5957}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DE3A0F0-BF94-4250-932B-39FC12CA5957}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FA2A5C0B-AB6A-4C71-BC73-E727392A19AA} = {56EFF095-B0C3-4C49-AB6F-130D79735F57}
+		{0BA79E06-8852-4E91-8571-408AADBDDC6B} = {56EFF095-B0C3-4C49-AB6F-130D79735F57}
+		{8243E0A7-E187-4CCC-AEF6-7EC0EA7F8F2E} = {56EFF095-B0C3-4C49-AB6F-130D79735F57}
+		{1DE3A0F0-BF94-4250-932B-39FC12CA5957} = {25D9AB79-EB5D-4C8D-A186-DB05CA195BA7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4AE7B6C2-80D3-47BF-BCB4-AFF3CB87EED2}
+	EndGlobalSection
+EndGlobal

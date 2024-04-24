@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Data\invalid-payload.json" />
+    <None Remove="Data\load-too-high.json" />
+    <None Remove="Data\payload3.json" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Data\invalid-payload.json" />
+		<EmbeddedResource Include="Data\load-too-high.json" />
+		<EmbeddedResource Include="Data\payload3.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FluentAssertions" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="xunit" />
+		<PackageReference Include="xunit.runner.visualstudio">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\GEM.PowerPlant.Api\GEM.PowerPlant.Api.csproj" />
+	</ItemGroup>
+
+</Project>

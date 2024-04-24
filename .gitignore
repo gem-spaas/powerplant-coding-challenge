@@ -1,0 +1,9 @@
+.vs/
+GEM.PowerPlant.Api.Test/bin/
+GEM.PowerPlant.Api.Test/obj/
+GEM.PowerPlant.Api/bin/
+GEM.PowerPlant.Api/obj/
+GEM.PowerPlant.Application/obj/
+GEM.PowerPlant.Domain/bin/
+GEM.PowerPlant.Domain/obj/
+GEM.PowerPlant.Application/bin/

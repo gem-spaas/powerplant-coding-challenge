@@ -1,0 +1,74 @@
+swagger: '2.0'
+info:
+  title: Production Plan API
+  description: API to calculate the optimal power distribution plan.
+  version: 1.0.0
+schemes:
+  - http
+paths:
+  /productionplan:
+    post:
+      tags:
+        - Production Plan
+      summary: Get the optimal power distribution plan
+      description: This endpoint returns the optimal power distribution plan.
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              load:
+                type: integer
+                example: 480
+              co2_cost:
+                type: number
+                example: 0
+              fuels:
+                type: object
+                properties:
+                  gas(euro/MWh):
+                    type: number
+                    example: 13.4
+                  kerosine(euro/MWh):
+                    type: number
+                    example: 50.8
+                  co2(euro/ton):
+                    type: number
+                    example: 20
+                  wind(%):
+                    type: number
+                    example: 0
+              powerplants:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: gasfiredbig1
+                    type:
+                      type: string
+                      example: gasfired
+                    efficiency:
+                      type: number
+                      example: 0.53
+                    pmin:
+                      type: number
+                      example: 100
+                    pmax:
+                      type: number
+                      example: 460
+      responses:
+        200:
+          description: A list of power output from each powerplant
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                p:
+                  type: number

@@ -1,0 +1,7 @@
+/.vs
+/Powerplants.Api/bin
+/Powerplants.Api/obj
+/Powerplants.BusinessLogic/bin
+/Powerplants.BusinessLogic/obj
+/Powerplants.UnitTests/bin
+/Powerplants.UnitTests/obj

@@ -1,0 +1,160 @@
+{
+    "openapi": "3.0.3",
+    "servers": [
+      {
+        "url": "{{server_ip}}"
+      }
+    ],
+    "info": {
+      "description": "Powerplant coding challenge based on the OpenAPI 3.0 specification.",
+      "version": "2.0.0",
+      "title": "Swagger Powerplant coding challenge - OpenAPI 3.0.3",
+      "contact": {
+        "email": "morales4dev@gmail.com"
+      }
+    },
+    "tags": [
+      {
+        "name": "plan",
+        "description": "Everything about production plan"
+      }
+    ],
+    "paths": {
+      "/productionplan": {
+        "post": {
+          "tags": [
+            "plan"
+          ],
+          "summary": "Returns a production plan according to the load, fuels and powerplants data.",
+          "description": "Returns a production plan according with the demand.",
+          "operationId": "productionplanCaller",
+          "responses": {
+            "default": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ProductionPlan"
+                  }
+                }
+              }
+            }
+          },
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnergyDemand"
+                }
+              }
+            },
+            "description": "Energy demand object"
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "EnergyDemand": {
+          "required": [
+            "load",
+            "fuels",
+            "powerplants"
+          ],
+          "properties": {
+            "load": {
+              "type": "number",
+              "multipleOf": 1,
+              "description": "The amount of energy (MWh) that need to be generated during one hour",
+              "example": 330
+            },
+            "fuels": {
+              "required": [
+                "gas(euro/MWh)",
+                "kerosine(euro/MWh)",
+                "co2(euro/ton)",
+                "wind(%)"
+              ],
+              "properties": {
+                "gas(euro/MWh)": {
+                  "type": "number"
+                },
+                "kerosine(euro/MWh)": {
+                  "type": "number"
+                },
+                "co2(euro/ton)": {
+                  "type": "number"
+                },
+                "wind(%)": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            },
+            "powerplants": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "type",
+                  "efficiency",
+                  "pmax",
+                  "pmin"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Powerplant name"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "gasfired | turbojet | windturbine",
+                    "enum": [
+                      "gasfired",
+                      "turbojet",
+                      "windturbine"
+                    ]
+                  },
+                  "efficiency": {
+                    "type": "number",
+                    "description": "The efficiency at which they convert a MWh of fuel into a MWh of electrical energy"
+                  },
+                  "pmax": {
+                    "type": "number",
+                    "description": "The maximum amount of power the powerplant can generate"
+                  },
+                  "pmin": {
+                    "type": "number",
+                    "description": "The minimum amount of power the powerplant generates when switched on"
+                  }
+                }
+              }
+            }
+          },
+          "type": "object"
+        },
+        "ProductionPlan": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "p"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Powerplant name"
+              },
+              "p": {
+                "type": "number",
+                "multipleOf": 0.1,
+                "description": "How much power the Powerplant should deliver"
+              }
+            }
+          }
+        }
+      }
+    }
+  }

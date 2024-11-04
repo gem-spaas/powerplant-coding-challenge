@@ -1,0 +1,83 @@
+{
+  "required": [
+      "load",
+      "fuels",
+      "powerplants"
+  ],
+  "properties": {
+    "load": {
+      "type": "number",
+      "multipleOf": 1,
+      "description": "The amount of energy (MWh) that need to be generated during one hour",
+      "example": 330
+    },
+    "fuels": {
+      "required": [
+        "gas(euro/MWh)",
+        "kerosine(euro/MWh)",
+        "co2(euro/ton)",
+        "wind(%)"
+      ],
+      "properties": {
+        "gas(euro/MWh)": {
+          "type": "number",
+          "description": "The price of gas per MWh"
+        },
+        "kerosine(euro/MWh)": {
+          "type": "number",
+          "description": "The price of kerosine per MWh"
+        },
+        "co2(euro/ton)": {
+          "type": "number",
+          "description": "The price of emission allowances"
+        },
+        "wind(%)": {
+          "type": "number",
+          "description": "Percentage of wind"
+        }
+      },
+      "type": "object"
+    },
+    "powerplants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "efficiency",
+          "pmax",
+          "pmin"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Powerplant name"
+          },
+          "type": {
+            "type": "string",
+            "description": "gasfired | turbojet | windturbine",
+            "enum": [
+              "gasfired",
+              "turbojet",
+              "windturbine"
+            ]
+          },
+          "efficiency": {
+            "type": "number",
+            "description": "The efficiency at which they convert a MWh of fuel into a MWh of electrical energy"
+          },
+          "pmax": {
+            "type": "number",
+            "description": "The maximum amount of power the powerplant can generate"
+          },
+          "pmin": {
+            "type": "number",
+            "description": "The minimum amount of power the powerplant generates when switched on"
+          }
+        }
+      }
+    }
+  },
+  "type": "object" 
+}

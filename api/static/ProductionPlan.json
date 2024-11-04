@@ -1,0 +1,21 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "name",
+      "p"
+    ],
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "Powerplant name"
+      },
+      "p": {
+        "type": "number",
+        "multipleOf": 0.1,
+        "description": "How much power the Powerplant should deliver"
+      }
+    }
+  }
+}

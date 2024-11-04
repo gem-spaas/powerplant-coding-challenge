@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "powerplant-coding-challenge"
+version = "0.1.0"
+description = ""
+authors = ["MatheoDalyDecathlon <matheo.daly@decathlon.com>"]
+readme = "README.md"
+packages = [{ include = "powerplant_coding_challenge", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+dataclasses = '^0.6'
+flask = "^3.0.3"
+
+[tool.poetry.scripts]
+powerplant-coding-challenge = 'powerplant-coding-challenge.main:main'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

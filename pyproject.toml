@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "powerplat-coding-challenge"
+version = "0.1.1"
+description = "Powerplants Coding Challenge"
+authors = "Irvin Heslan"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+fastapi = "^0.115.4"
+pydantic = "^2.9.2"
+PyYAML = "^6.0.2"
+uvicorn = "^0.32.0"
+requests = "^2.32.3"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

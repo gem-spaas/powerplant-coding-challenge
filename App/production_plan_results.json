@@ -1,0 +1,58 @@
+{
+    "Production plan": [
+        {
+            "name": "windpark1",
+            "type": "windturbine",
+            "efficiency": 1,
+            "pmax": 150,
+            "pmin": 0,
+            "cost": 0,
+            "p": 90.0
+        },
+        {
+            "name": "windpark2",
+            "type": "windturbine",
+            "efficiency": 1,
+            "pmax": 36,
+            "pmin": 0,
+            "cost": 0,
+            "p": 21.6
+        },
+        {
+            "name": "gasfiredbig1",
+            "type": "gasfired",
+            "efficiency": 0.53,
+            "pmax": 460,
+            "pmin": 100,
+            "cost": 31.28301886792453,
+            "p": 460.0
+        },
+        {
+            "name": "gasfiredbig2",
+            "type": "gasfired",
+            "efficiency": 0.53,
+            "pmax": 460,
+            "pmin": 100,
+            "cost": 31.28301886792453,
+            "p": 338.4
+        },
+        {
+            "name": "gasfiredsomewhatsmaller",
+            "type": "gasfired",
+            "efficiency": 0.37,
+            "pmax": 210,
+            "pmin": 40,
+            "cost": 42.21621621621622,
+            "p": 0.0
+        },
+        {
+            "name": "tj1",
+            "type": "turbojet",
+            "efficiency": 0.3,
+            "pmax": 16,
+            "pmin": 0,
+            "cost": 169.33333333333334,
+            "p": 0.0
+        }
+    ]
+}

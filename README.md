@@ -1,99 +1,135 @@
-# powerplant-coding-challenge
+# Powerplant Coding Challenge
 
+## Table of Contents 
+1. [Challenge Summary](#challenge-summary)
+2. [About the Team](#about-the-team)
+3. [Solution Overview](#solution-overview)
+4. [Repository Setup](#repository-setup)
+5. [Run Locally (with Poetry)](#run-locally-with-poetry)
+6. [Run with Docker](#run-with-docker)
+7. [Make a Test Request with cURL](#make-a-test-request-with-curl)
+8. [JSON Payload Validation](#json-payload-validation)
+9. [Technical Highlights](#technical-highlights)
+10. [Handling Unsolvable Load Scenearios](#unsolvable-scenarios)
 
-## Welcome !
+---
 
-Below you can find the description of a coding challenge that we ask people to perform when applying for a job in our team.
+## Challenge Summary
+This project solves the SPaaS coding challenge which consists of building a REST API that calculates the optimal production plan for a set of powerplants. Given the total required electrical load and the cost of fuels, the goal is to allocate production across powerplants in the most cost-efficient way while respecting constraints such as Pmin, Pmax and efficiency.
 
-The goal of this coding challenge is to provide the applicant some insight into the business we're in and as such provide the applicant an indication about the challenges she/he will be confronted with. Next, during the first interview we will use the applicant's implementation as a seed to discuss all kinds of interesting software engineering topics.  
+## About the Team
+This challenge was proposed by the Short-term Power as-a-Service (SPaaS) team within GEM (Global Energy Management) at ENGIE. The team operates on day-ahead and intraday energy markets, ensuring optimal production and grid balancing in real-time conditions.
 
-Time is scarce, we know. Therefore we ask you not to spend more than 4 hours on this challenge. We know it is not possible to deliver a finished implementation of the challenge in only four hours. Even though your submission will not be complete, it will provide us plenty of information and topics to discuss later on during the talks.
+---
 
-This coding-challenge is part of a formal process and is used in collaboration with the recruiting companies we work with.  Submitting a pull-request will not automatically trigger the recruitement process.
-## Who are we 
+## Solution Overview
+The API is developed in Python using FastAPI. It exposes a single POST endpoint `/productionplan`, which receives a JSON payload describing the load, available fuels, and a list of powerplants. The API computes the optimal production plan by prioritizing cheaper power sources and respecting technical constraints.
 
-We are the IS team of the 'Short-term Power as-a-Service' (a.k.a. SPaaS) team within [GEM](https://gems.engie.com/).
+Key aspects of the implementation include:
+- Custom algorithm to compute power allocation (no external solvers used).
+- Validation of the input payload structure and powerplant constraints.
+- Test coverage for edge cases and invalid inputs.
 
-[GEM](https://gems.engie.com/), which stands for 'Global Energy Management', is the energy management arm of [ENGIE](https://www.engie.com/), one of the largest global energy players, 
-with access to local markets all over the world.  
+## Repository Setup
+To get started, first clone the repository:
 
-SPaaS is a team consisting of around 100 people with experience in energy markets, IT and modeling. In smaller teams consisting of a mix of people with different experiences, we are active on the [day-ahead](https://en.wikipedia.org/wiki/European_Power_Exchange#Day-ahead_markets) market, [intraday markets](https://en.wikipedia.org/wiki/European_Power_Exchange#Intraday_markets) and [collaborate with the TSO to balance the grid continuously](https://en.wikipedia.org/wiki/Transmission_system_operator#Electricity_market_operations).
+```bash
+git clone https://github.com/gem-spaas/powerplant-coding-challenge.git
+cd powerplant-coding-challenge
+```
 
-## The challenge
+Then, make sure you are on the correct branch:
 
-### In short
-Calculate how much power each of a multitude of different [powerplants](https://en.wikipedia.org/wiki/Power_station) need to produce (a.k.a. the production-plan) when the [load](https://en.wikipedia.org/wiki/Load_profile) is given and taking into account the cost of the underlying energy sources (gas,  kerosine) and the Pmin and Pmax of each powerplant.
+```bash
+git checkout cc_anafernandez
+```
 
-### More in detail
+Then follow the steps below to install dependencies and run the app.
 
-The load is the continuous demand of power. The total load at each moment in time is forecasted. For instance for Belgium you can see the load forecasted by the grid operator [here](https://www.elia.be/en/grid-data/load-and-load-forecasts).
+## Run Locally (with Poetry)
 
-At any moment in time, all available powerplants need to generate the power to exactly match the load.  The cost of generating power can be different for every powerplant and is dependent on external factors: The cost of producing power using a [turbojet](https://en.wikipedia.org/wiki/Gas_turbine#Industrial_gas_turbines_for_power_generation), that runs on kerosine, is higher compared to the cost of generating power using a gas-fired powerplant because of gas being cheaper compared to kerosine and because of the [thermal efficiency](https://en.wikipedia.org/wiki/Thermal_efficiency) of a gas-fired powerplant being around 50% (2 units of gas will generate 1 unit of electricity) while that of a turbojet is only around 30%.  The cost of generating power using windmills however is zero. Thus deciding which powerplants to activate is dependent on the [merit-order](https://en.wikipedia.org/wiki/Merit_order).
+1. **Install Poetry** (if not already installed):
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
 
-When deciding which powerplants in the merit-order to activate (a.k.a. [unit-commitment problem](https://en.wikipedia.org/wiki/Unit_commitment_problem_in_electrical_power_production)) the maximum amount of power each powerplant can produce (Pmax) obviously needs to be taken into account.  Additionally gas-fired powerplants generate a certain minimum amount of power when switched on, called the Pmin. 
+2. **Install dependencies**:
+```bash
+poetry install
+```
 
+3. **Run the main script manually**:
+```bash
+poetry run python -m main
+```
 
-### Performing the challenge
+4. **Start the FastAPI server**:
+```bash
+poetry run uvicorn src.app:app --reload --port 8888
+```
 
-Build a REST API exposing an endpoint `/productionplan` that accepts a POST of which the body contains a payload as you can find in the `example_payloads` directory and that returns a json with the same structure as in `example_response.json` and that manages and logs run-time errors.
+Access the API docs at: [http://127.0.0.1:8888/docs](http://127.0.0.1:8888/docs)
 
-For calculating the unit-commitment, we prefer you not to rely on an existing (linear-programming) solver but instead write an algorithm yourself.
+## Run with Docker
 
-Implementations can be submitted in either C# (on .Net 5 or higher) or Python (3.8 or higher) as these are (currently) the main languages we use in SPaaS. Along with the implementation should be a README that describes how to compile (if applicable) and launch the application.
+1. **Build the Docker image**:
+```bash
+docker build -t production-plan .
+```
 
-- C# implementations should contain a project file to compile the application. 
-- Python implementations should contain a `requirements.txt` or a `pyproject.toml` (for use with poetry) to install all needed dependencies.
+2. **Run the container**:
+```bash
+docker run -p 8888:8888 production-plan
+```
 
-#### Payload
+API will be available at: [http://localhost:8888/docs](http://localhost:8888/docs)
 
-The payload contains 3 types of data:
- - load: The load is the amount of energy (MWh) that need to be generated during one hour.
- - fuels: based on the cost of the fuels of each powerplant, the merit-order can be determined which is the starting point for deciding which powerplants should be switched on and how much power they will deliver.  Wind-turbine are either switched-on, and in that case generate a certain amount of energy depending on the % of wind, or can be switched off. 
-   - gas(euro/MWh): the price of gas per MWh. Thus if gas is at 6 euro/MWh and if the efficiency of the powerplant is 50% (i.e. 2 units of gas will generate one unit of electricity), the cost of generating 1 MWh is 12 euro.
-   - kerosine(euro/Mwh): the price of kerosine per MWh.
-   - co2(euro/ton): the price of emission allowances (optionally to be taken into account).
-   - wind(%): percentage of wind. Example: if there is on average 25% wind during an hour, a wind-turbine with a Pmax of 4 MW will generate 1MWh of energy.
- - powerplants: describes the powerplants at disposal to generate the demanded load. For each powerplant is specified:
-   - name:
-   - type: gasfired, turbojet or windturbine.
-   - efficiency: the efficiency at which they convert a MWh of fuel into a MWh of electrical energy. Wind-turbines do not consume 'fuel' and thus are considered to generate power at zero price.
-   - pmax: the maximum amount of power the powerplant can generate.
-   - pmin: the minimum amount of power the powerplant generates when switched on. 
+## Make a Test Request with cURL
+To test the API with a sample payload, run:
+```bash
+curl -X POST "http://127.0.0.1:8888/productionplan"      -H "Content-Type: application/json"      -d @example_payloads/payload1.json
+```
+Ensure the file `payload1.json` exists inside the `example_payloads` directory at the root of the project.
 
-#### response
+## JSON Payload Validation
+A custom validation function (`validate_payload`) ensures that the incoming JSON has the correct structure and valid values:
+- Required keys: `load`, `fuels`, `powerplants`
+- `load` must be a positive number
+- `fuels` must be a dictionary
+- `powerplants` must be a non-empty list with valid fields (`name`, `type`, `efficiency`, `pmin`, `pmax`)
+- Additional checks: `pmin <= pmax`, `0 < efficiency <= 1`
 
-The response should be a json as in `example_payloads/response3.json`, which is the expected answer for `example_payloads/payload3.json`, specifying for each powerplant how much power each powerplant should deliver. The power produced by each powerplant has to be a multiple of 0.1 Mw and the sum of the power produced by all the powerplants together should equal the load.
+## Technical Highlights
 
-### Want more challenge?
+### Tools and Technologies
+- Python 3.10
+- FastAPI
+- Poetry (dependency management)
+- Uvicorn (ASGI server)
+- Docker
 
-Having fun with this challenge and want to make it more realistic. Optionally, do one of the extra's below:
+### Best Practices Applied
+- Input and output types explicitly defined in function signatures.
+- Code separated into logical modules (`models`, `planner`, `validators`, `app`).
+- Validations are decoupled from business logic.
+- Errors are handled gracefully using FastAPI's `HTTPException`.
+- Dockerized for portability and deployment.
+- API automatically documented via FastAPI at `/docs`.
 
-#### Docker
+## Handling Unsolvable Load Scenearios
 
-Provide a Dockerfile along with the implementation to allow deploying your solution quickly.
+In some edge cases, it may be impossible to satisfy the requested load using the available powerplants. This typically happens when the remaining load is lower than the minimum production (`pmin`) of all remaining available powerplants. Since powerplants cannot be partially activated below their `pmin`, no valid combination can fulfill the load.
 
-#### CO2
+In such cases, the algorithm raises an `HTTP 400` error to indicate that the production plan is infeasible.
 
-Taken into account that a gas-fired powerplant also emits CO2, the cost of running the powerplant should also take into account the cost of the [emission allowances](https://en.wikipedia.org/wiki/Carbon_emission_trading).  For this challenge, you may take into account that each MWh generated creates 0.3 ton of CO2. 
+### Example: `payload4.json`
 
-## Acceptance criteria
+An example of this scenario is included in `example_payloads/payload4.json`. In this case, the requested load is very low and all available powerplants have a `pmin` greater than the remaining load, with no wind contribution. This triggers the error condition.
 
-For a submission to be reviewed as part of an application for a position in the team, the project needs to:
-  - contain a README.md explaining how to build and launch the API
-  - expose the API on port `8888`
+Example response:
 
-Failing to comply with any of these criteria will automatically disqualify the submission.
-
-## More info
-
-For more info on energy management, check out:
-
- - [Global Energy Management Solutions](https://www.youtube.com/watch?v=SAop0RSGdHM)
- - [COO hydroelectric power station](https://www.youtube.com/watch?v=edamsBppnlg)
- - [Management of supply](https://www.youtube.com/watch?v=eh6IIQeeX3c) - video made during winter 2018-2019
-
-## FAQ
-
-##### Can an existing solver be used to calculate the unit-commitment
-Implementations should not rely on an external solver and thus contain an algorithm written from scratch (clarified in the text as of version v1.1.0)
-
+```bash
+{
+  "detail": "Unable to meet the required load with given powerplant constraints."
+}
+```

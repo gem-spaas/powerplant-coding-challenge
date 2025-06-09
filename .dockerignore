@@ -1,0 +1,32 @@
+# Files and folders you don’t need in the image
+__pycache__/
+*.pyc
+*.pyo
+
+# Tests and examples (not needed in production)
+tests/
+example_payloads/
+
+# Documentation
+README.md
+README_hagr27.md
+
+# Static files (if you don’t use them in the backend app inside the container)
+static/
+
+# Virtual environment and local configurations
+venv/
+.env
+
+# Git
+.git
+.gitignore
+
+# Logs and other temporary files
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Docker Compose (usually not needed inside the image)
+docker-compose.yml

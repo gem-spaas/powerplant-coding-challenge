@@ -1,0 +1,28 @@
+services:
+  powerplant_app:
+    # Build the Docker image from the Dockerfile in the current directory
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    # Name the container instance
+    container_name: powerplant_app
+
+    # Name and tag the image (useful for pushing to Docker Hub or versioning)
+    image: hagr27/powerplant_app:v1
+
+    # Map port 8888 of the container to port 8888 on the host machine
+    ports:
+      - "8888:8888"
+
+    # Mount the current directory to /app inside the container (for live code updates) - [dev]
+    volumes:
+      - .:/app
+
+    # Environment variables for Python to improve behavior inside the container
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1  # Prevent Python from writing .pyc files
+      - PYTHONUNBUFFERED=1         # Force stdout and stderr to be unbuffered
+
+    # Command to start the FastAPI app with Uvicorn on host 0.0.0.0 and port 8888
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8888 --reload # [dev]

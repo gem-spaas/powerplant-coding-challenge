@@ -1,0 +1,17 @@
+# Dockerfile for running tests
+FROM python:3.13-slim
+
+WORKDIR /app
+
+# Install dependencies
+COPY requirements.txt ./
+COPY requirements-test.txt ./
+RUN pip install --no-cache-dir -r requirements-test.txt
+
+# Copy source and tests
+COPY app ./app
+COPY tests ./tests
+COPY example_payloads ./example_payloads
+
+# Default command runs tests
+CMD ["pytest", "-q"]

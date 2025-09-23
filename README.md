@@ -1,5 +1,29 @@
 # powerplant-coding-challenge
 
+This repository contains a FastAPI service that solves the production planning challenge.
+
+## How to run
+- Requirements: Python 3.13+ (tested with 3.13), pip
+- Install deps: pip install -r requirements.txt (pip install -r requirements-test.txt for testing)
+- Start API (port 8888): uvicorn app.main:create_app --factory --host 0.0.0.0 --port 8888 --reload
+- Endpoint: POST http://localhost:8888/productionplan
+  - Body: one of the payloads in example_payloads (payload1.json etc.)
+  - Response: list of {"name": str, "p": float} with 0.1 MW granularity and sum equal to load
+
+### Optional: Docker
+- Build: docker build -t powerplant-api .
+- Run: docker run -p 8888:8888 powerplant-api
+
+### Project layout
+- app/api: FastAPI routes
+- app/schemas: Pydantic request/response schemas
+- app/services: Production planner algorithm
+
+### Notes
+- CO2 cost (0.3 ton/MWh) is applied to gas-fired units as per the README extra challenge.
+- Errors return 422 with a message when the load cannot be met or constraints make it infeasible.
+
+------------
 
 ## Welcome !
 

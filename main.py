@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from controllers import cours, inscription, note
+from controllers import production_plan
 from settings import settings
 
 description = """
@@ -10,13 +10,11 @@ description = """
 app = FastAPI(
     title="powerplant-coding-challenge",
     description=description,
-    summary="This API allows to get how much electricity given powerplants should generate based on fuels and load.",
+    summary="This API allows getting how much load given powerplants should generate based on key parameters.",
     version=str(settings.API_VERSION),
 )
 
-VERSION_STRING = f"/v{settings.API_VERSION}"
-
-app.include_router(powerplant.router, prefix=VERSION_STRING)
+app.include_router(production_plan.router)
 
 
 @app.get("/")

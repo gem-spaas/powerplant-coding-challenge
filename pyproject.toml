@@ -13,5 +13,8 @@ dependencies = [
 [dependency-groups]
 dev = [
     "black>=25.9.0",
+    "polyfactory>=2.22.2",
+    "pytest>=8.4.2",
+    "pytest-sugar>=1.1.1",
     "ruff>=0.13.3",
 ]

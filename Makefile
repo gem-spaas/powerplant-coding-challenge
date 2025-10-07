@@ -18,7 +18,7 @@ help:
 .PHONY: dev ruff test run build stop
 
 dev:
-	uv run uvicorn main:app --reload
+	uv run uvicorn main:app --port 8888 --reload
 
 lint:
 	black .

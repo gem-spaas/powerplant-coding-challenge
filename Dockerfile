@@ -16,4 +16,4 @@ COPY . .
 ENV PYTHONPATH=/app
 
 # Run the application.
-CMD [".venv/bin/fastapi", "run", "--host", "0.0.0.0"]
+CMD [".venv/bin/fastapi", "run", "--host", "0.0.0.0", "--port", "8888"]

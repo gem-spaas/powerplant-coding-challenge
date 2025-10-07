@@ -23,6 +23,7 @@ This API allows getting how much load given powerplants should generate based on
 │ ├── models/ --> Models definition
 ├── settings.py --> Constants and environment variables
 ├── main.py --> Entrypoint
+├── errors.py --> Server and validation error handling
 ```
 
 ## 🚀 Getting started

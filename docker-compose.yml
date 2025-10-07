@@ -1,0 +1,10 @@
+services:
+  api:
+    build:
+      context: .
+    container_name: powerplant-coding-challenge-achraf-boutat
+    stdin_open: true
+    tty: true
+    ports:
+      - "8888:8888"
+    restart: "no"

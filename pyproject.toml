@@ -1,0 +1,20 @@
+[project]
+name = "powerplant-coding-challenge"
+version = "0.1.0"
+description = "This project implements an API that allows to get how much electricity given powerplants should generate based on fuels and load."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.118.0",
+    "pydantic>=2.11.10",
+    "pydantic-settings>=2.11.0",
+]
+
+[dependency-groups]
+dev = [
+    "black>=25.9.0",
+    "polyfactory>=2.22.2",
+    "pytest>=8.4.2",
+    "pytest-sugar>=1.1.1",
+    "ruff>=0.13.3",
+]

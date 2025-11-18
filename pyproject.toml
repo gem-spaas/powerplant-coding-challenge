@@ -7,3 +7,23 @@ requires-python = ">=3.14"
 dependencies = [
     "fastapi[standard]>=0.121.2",
 ]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.18.2",
+    "pytest>=9.0.1",
+    "ruff>=0.14.5",
+    "pre-commit>=4.4.0",
+]
+
+[tool.ruff]
+target-version = "py314"
+
+[tool.mypy]
+python_version = "3.14"
+warn_return_any = true
+warn_unused_ignores = true
+check_untyped_defs = true
+no_implicit_optional = true
+disallow_untyped_defs = false
+ignore_missing_imports = true

@@ -21,7 +21,7 @@ pre-commit = "^4.5.1"
 httpx = "^0.28.1"
 
 [tool.ruff]
-line-length = 100
+line-length = 120
 target-version = "py312"
 
 [tool.ruff.lint]

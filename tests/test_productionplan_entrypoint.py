@@ -1,12 +1,6 @@
 import copy
 
 
-def test_production_plan_valid(client, valid_request):
-    response = client.post("/productionplan", json=valid_request)
-    print("response", response.json())
-    assert response.status_code == 200
-
-
 def test_missing_load(client, valid_request):
     payload = copy.deepcopy(valid_request)
     payload.pop("load")

@@ -4,14 +4,16 @@ from fastapi import APIRouter, HTTPException
 
 from app.data.request import ProductionPlanRequest
 from app.data.response import ProductionPlanResponse
+from app.services.production_planner import ProductionPlanner
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
+production_planner = ProductionPlanner()
 
 
 @router.get("/")
 async def root():
-    return {"message": "Welcom to the Powerplan Planner API"}
+    return {"message": "Welcome to the Powerplan Planner API"}
 
 
 @router.get("/healthcheck")
@@ -22,8 +24,7 @@ async def healthcheck():
 @router.post("/productionplan", response_model=ProductionPlanResponse)
 async def production_plan(payload: ProductionPlanRequest):
     try:
-        # TODO
-        return []
+        return production_planner.create_plan(payload.load, payload.fuels, payload.powerplants)
 
     except ValueError as e:
         logger.exception("Bad request")

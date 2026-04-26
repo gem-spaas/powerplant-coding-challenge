@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PowerplantCodingChallenge.Business.Models.Exceptions;
 using PowerplantCodingChallenge.Domain.Request;
 using PowerplantCodingChallenge.IBusiness;
 
@@ -27,10 +28,10 @@ namespace PowerplantCodingChallenge.WebAPI.Controllers
                 var response = _pps.GetProductionPlan(request);
                 return Ok(response);
             }
-            catch (NotImplementedException ex)
+            catch (BusinessException ex)
             {
-                _logger.LogError(ex, "Call attempted on an unimplemented method.");
-                return StatusCode(501, new { message = "This method is not yet supported. Please try again later." });
+                _logger.LogError(ex, "Business error while computing production plan.");
+                return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {

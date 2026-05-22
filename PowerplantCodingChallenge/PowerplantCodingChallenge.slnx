@@ -1,7 +1,4 @@
 <Solution>
-  <Folder Name="/Éléments de solution/">
-    <File Path="challenge.md" />
-  </Folder>
   <Project Path="PowerplantCodingChallenge.API/PowerplantCodingChallenge.API.csproj" />
   <Project Path="PowerplantCodingChallenge.Application/PowerplantCodingChallenge.Application.csproj" />
   <Project Path="PowerplantCodingChallenge.Domain/PowerplantCodingChallenge.Domain.csproj" />

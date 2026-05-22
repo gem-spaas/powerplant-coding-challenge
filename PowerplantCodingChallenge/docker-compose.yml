@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  powerplant-api:
+    image: powerplant-coding-challenge:latest
+    container_name: powerplant-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8888
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/productionplan"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

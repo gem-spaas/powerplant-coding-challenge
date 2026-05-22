@@ -1,0 +1,34 @@
+# Directories
+**/bin/
+**/obj/
+**/out/
+**/publish/
+**/TestResults/
+
+# Files
+**/*.trx
+**/*.user
+**/*.suo
+**/*.cache
+**/.vs/
+**/.vscode/
+**/.idea/
+**/*.log
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation
+README.md
+challenge.md
+**/*.md
+
+# Test data (optional - uncomment if you don't want to include example payloads)
+# example_payloads/

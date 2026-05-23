@@ -1,4 +1,62 @@
-# powerplant-coding-challenge
+# Powerplant Coding Challenge
+
+REST API for calculating a powerplant production plan.
+
+## Start the API
+
+The API listens on port `8888` when started with Docker.
+
+Swagger UI is available at:
+
+```text
+http://localhost:8888/swagger
+```
+
+The production-plan endpoint is:
+
+```text
+POST http://localhost:8888/productionplan
+```
+
+## Using Docker
+
+Run these commands from the repository root, where the `Dockerfile` is located:
+
+```bash
+docker build -t powerplant-coding-challenge .
+docker run --rm -p 8888:8888 --name powerplant-coding-challenge powerplant-coding-challenge
+```
+
+The container may log something like:
+
+```text
+Now listening on: http://[::]:8888
+```
+
+That is normal. It means the API is listening inside the container on port `8888`.
+From your host machine, open:
+
+```text
+http://localhost:8888/swagger
+```
+
+## Without Docker
+
+1. Open the solution in Visual Studio or JetBrains Rider.
+2. Build the solution.
+3. Select the API project as the startup project:
+
+```text
+powerplant-coding-challenge/src/Powerplant.Api/Powerplant.Api.csproj
+```
+
+4. Run the project.
+
+## Requirements
+
+- .NET 9 SDK, when running without Docker
+- Docker Desktop, when running with Docker
+
 
 
 ## Welcome !

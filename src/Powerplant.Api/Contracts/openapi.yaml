@@ -1,0 +1,158 @@
+openapi: 3.0.3
+info:
+  title: Powerplant Production Plan API
+  version: 1.0.0
+  description: API for the powerplant production-plan.
+servers:
+  - url: /
+paths:
+  /productionplan:
+    post:
+      operationId: calculateProductionPlan
+      tags:
+        - ProductionPlan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductionPlanRequest'
+      responses:
+        '200':
+          description: Production plan
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductionPlanResponseItem'
+        '400':
+          description: Invalid request payload.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '422':
+          description: The request is syntactically valid but no feasible plan can satisfy the load.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Unexpected server error.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '501':
+          description: Production-plan algorithm is not implemented yet in this scaffold.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+components:
+  schemas:
+    ProductionPlanRequest:
+      type: object
+      required:
+        - load
+        - fuels
+        - powerplants
+      properties:
+        load:
+          type: number
+          format: decimal
+          example: 480
+        fuels:
+          $ref: '#/components/schemas/Fuels'
+        powerplants:
+          type: array
+          items:
+            $ref: '#/components/schemas/PowerPlantDto'
+
+    Fuels:
+      type: object
+      required:
+        - gas(euro/MWh)
+        - kerosine(euro/MWh)
+        - co2(euro/ton)
+        - wind(%)
+      additionalProperties:
+        type: number
+        format: decimal
+      example:
+        gas(euro/MWh): 13.4
+        kerosine(euro/MWh): 50.8
+        co2(euro/ton): 20
+        wind(%): 60
+
+    PowerPlantDto:
+      type: object
+      required:
+        - name
+        - type
+        - efficiency
+        - pmin
+        - pmax
+      properties:
+        name:
+          type: string
+          example: gasfiredbig1
+        type:
+          type: string
+          enum:
+            - gasfired
+            - turbojet
+            - windturbine
+          example: gasfired
+        efficiency:
+          type: number
+          format: decimal
+          example: 0.53
+        pmin:
+          type: number
+          format: decimal
+          example: 100
+        pmax:
+          type: number
+          format: decimal
+          example: 460
+
+    ProductionPlanResponseItem:
+      type: object
+      required:
+        - name
+        - p
+      properties:
+        name:
+          type: string
+          example: windpark1
+        p:
+          type: number
+          format: decimal
+          example: 90.0
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+          example: Bad Request
+        status:
+          type: integer
+          format: int32
+          nullable: true
+          example: 400
+        detail:
+          type: string
+          nullable: true
+          example: The request payload is invalid.
+        instance:
+          type: string
+          nullable: true
+          example: /productionplan
+      additionalProperties: true
+

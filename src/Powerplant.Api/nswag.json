@@ -1,0 +1,34 @@
+{
+  "runtime": "Net90",
+  "documentGenerator": {
+    "fromDocument": {
+      "url": "Contracts/openapi.yaml",
+      "output": null
+    }
+  },
+  "codeGenerators": {
+    "openApiToCSharpController": {
+      "controllerBaseClass": "Microsoft.AspNetCore.Mvc.ControllerBase",
+      "controllerStyle": "Abstract",
+      "controllerTarget": "AspNetCore",
+      "useCancellationToken": true,
+      "useActionResultType": true,
+      "routeNamingStrategy": "None",
+      "generateModelValidationAttributes": true,
+      "generateDataAnnotations": true,
+      "generateNullableReferenceTypes": true,
+      "generateOptionalPropertiesAsNullable": true,
+      "generateDefaultValues": true,
+      "generateDtoTypes": true,
+      "jsonLibrary": "SystemTextJson",
+      "className": "ProductionPlanControllerBase",
+      "namespace": "Powerplant.Api.Generated",
+      "operationGenerationMode": "MultipleClientsFromOperationId",
+      "responseArrayType": "System.Collections.Generic.ICollection",
+      "responseDictionaryType": "System.Collections.Generic.IDictionary",
+      "parameterArrayType": "System.Collections.Generic.IEnumerable",
+      "parameterDictionaryType": "System.Collections.Generic.IDictionary",
+      "output": "Generated/ProductionPlanControllerBase.g.cs"
+    }
+  }
+}

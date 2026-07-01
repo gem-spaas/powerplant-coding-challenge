@@ -1,0 +1,32 @@
+# Build outputs
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docview
+
+# Rider
+.idea/
+
+# NuGet
+*.nupkg
+*.snupkg
+project.lock.json
+packages/
+
+# Test results
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

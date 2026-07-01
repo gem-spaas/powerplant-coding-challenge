@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="power-plant-coding-challenge-API/power-plant-coding-challenge-API.csproj" />
+  <Project Path="power-plant-coding-challenge-core/power-plant-coding-challenge-core.csproj" />
+  <Project Path="power-plant-coding-challenge-domain/power-plant-coding-challenge-domain.csproj" />
+  <Project Path="power-plant-coding-challenge-tests/power-plant-coding-challenge-tests.csproj" />
+</Solution>

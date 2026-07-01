@@ -1,0 +1,4 @@
+@power_plant_coding_challenge_API_HostAddress = http://localhost:5065
+
+POST {{power_plant_coding_challenge_API_HostAddress}}/productionplan
+Accept: application/json

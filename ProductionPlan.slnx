@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/Tests/">
+    <Project Path="ApplicationTests/ApplicationTests.csproj" />
+    <Project Path="ArchitectureTests/ArchitectureTests.csproj" />
+    <Project Path="DomainTests/DomainTests.csproj" />
+  </Folder>
+  <Folder Name="/Éléments de solution/">
+    <File Path="Directory.Packages.props" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="Application/Application.csproj" />
+  <Project Path="Domain/Domain.csproj" />
+  <Project Path="ProductionPlanHost/ProductionPlanHost.csproj" />
+  <Project Path="SharedKernel/SharedKernel.csproj" />
+</Solution>
